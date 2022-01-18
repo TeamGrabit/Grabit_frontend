@@ -2,5 +2,13 @@
 	import {link, push} from 'svelte-spa-router'
 </script>
 
-<div>home</div>
-<button on:click={()=>{push('/test')}}>이동</button>
+<div class="home">
+	home
+	<button on:click={()=>{push('/test')}}>이동</button>
+</div>
+
+<style>
+	.home{
+		height: 400px;
+	}
+</style>
