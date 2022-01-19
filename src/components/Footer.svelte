@@ -21,7 +21,7 @@
 	.footer{
 		height: 60px;
 		width: 1400px;
-		min-width: 100vw;
+		min-width: 100%;
 		background-color: #F7F7F7;
 		bottom: 0;
 	}

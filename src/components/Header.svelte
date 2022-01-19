@@ -1,11 +1,12 @@
 <script>
+	import {link, push} from 'svelte-spa-router'
 	let name = "Grabit";
 	let profile = "K"
 </script>
 
 <div class="header">
 	<div class="header_inner">
-		<div class="header_logo">
+		<div class="header_logo" on:click={()=>{push('/')}}>
 			<img class="logo_img" src="images/grabit_logo.png" alt="logo" />
 			<div class="header_title">
 				{name}
@@ -19,8 +20,8 @@
 <style>
 	.header{
 		height: 60px;
-		width: 1200px;
-		min-width: 100vw;
+		width: 1400px;
+		min-width: 100%;
 		border-bottom: #96E6B3 solid 2px;
 	}
 	.header_inner{
@@ -37,6 +38,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		cursor: pointer;
 	}
 	.logo_img{
 		height: 40px;
