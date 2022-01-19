@@ -19,8 +19,7 @@
 <style>
 	.header{
 		height: 60px;
-		width: 1200px;
-		min-width: 100vw;
+		width: 100%;
 		border-bottom: #96E6B3 solid 2px;
 	}
 	.header_inner{
