@@ -1,136 +1,99 @@
 <script>
 	import {link, push} from 'svelte-spa-router'
 	import Gnb from '../components/GNB.svelte';
+	import Container from '../components/Container.svelte';
+	import Profile from '../components/Profile.svelte';
+	import Grass from '../components/Grass.svelte';
 
-	let user_id = "grabit_123";
 	let challenge_list = [
 		{num: 1, name: "CS 1일 1커밋 방", intro: "하루에 한 번씩 커밋하기!"},
 		{num: 2, name: "My Private Challenge", intro: "이 챌린지는 내가 관리하는 챌린지다!!"},
 		{num: 3, name: "No.3", intro: "누가 넘바 쓰리래, 나 넘바 투야!"},
 	]
-	let row_length = parseInt(challenge_list.length / 2) + 1;
-	console.log(row_length);
+	
+	let grass_list = new Array(365);
+	
+	for (let i=0; i<365; i+=1){
+		grass_list[i] = i % 2;
+	};
+
 </script>
 
 <div class="home">
 	<Gnb />
-	<div class="overview">
-		<div class="profile">
-			<div class="profile_img" />
-			<div class="profile_id">{user_id}</div>
-			<div class="edit_btn">Edit profile</div>
-		</div>
-		<div class="content">
-			<div class="pinned">
-				<div class="content_title">즐겨찾는 챌린지</div>
-				<div class="box_container">
-					{#each challenge_list as c}
-						<div class="challenge_box">
-							<div class="box_title">{c.name}</div>
-							<div class="box_intro">{c.intro}</div>
-						</div>
-					{/each}
+	<Container>
+		<div class="overview">
+			<Profile />
+			<div class="content">
+				<div class="pinned">
+					<div class="content_title">즐겨찾는 챌린지</div>
+					<div class="box_container">
+						{#each challenge_list as c}
+							<div class="challenge_box">
+								<div class="box_title">{c.name}</div>
+								<div class="box_intro">{c.intro}</div>
+							</div>
+						{/each}
+					</div>
+				</div>
+				<div class="grass">
+					<div class=content_title>나의 잔디</div>
+					<Grass grass_list={grass_list} />
 				</div>
 			</div>
-			<div class="grass">
-				<div class=content_title>나의 잔디</div>
-				<div class=grass_box>
-					<div>잔디들</div>
-				</div>
-			</div>
-			<button on:click={()=>{push('/test')}}>테스트 이동</button>
 		</div>
-	</div>
+	</Container>
 </div>
 
 <style>
 	.home{
-		width: 1400px;
+		z-index: 2;
 		min-width: 100%;
-		height: 700px;
+		padding-bottom: 5%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 	}
-	/*.gnb_profile{
-		position: relative;
-	}
-	.profile_container{
-		position: absolute;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}*/
 	.overview{
-		width: 1200px;
+		padding-top: 4%;
+		width: 100%;
 		display: flex;
 		flex-direction: row;
 	}
-	.profile{
-		width: 400px;
-	}
 	.content{
-		width: 800px;
-		padding: 30px 10px 0px 10px;
-	}
-	.profile_img{
-		border: #AAAAAA solid 2px;
-		background-color: #FAE5E5;
-		border-radius: 200px;
-		height: 360px;
-		width: 360px;
-	}
-	.profile_id{
-		padding: 10px 0px 10px 0px;
-		font-size: 1.2em;
-		color: #666666;
-	}
-	.edit_btn{
-		width: 360px;
-		height: 30px;
-		padding-top: 7.5px;
-		text-align: center;
-		background-color: #FBFBFB;
-		border: #AAAAAA solid 2px;
-		border-radius: 10px;
-		font-family: 'Noto Sans KR', 'Roboto';
-		font-size: 0.9em;
-		font-weight: bold;
+		width: 67%;
+		margin-top: 2%;
+		padding: 1.875rem 0.625rem 0 0.625rem;
 	}
 	.content_title{
 		font-family: 'Noto Sans KR', 'Roboto';
-		font-size: 1em;
+		font-size: 1rem;
 		font-weight: bold;
-		padding-bottom: 10px;
+		padding-bottom: 0.625rem;
 	}
 	.box_container{
 		display: grid;
-		grid-template-columns: 380px 380px;
-		column-gap: 20px;
-		row-gap: 20px;
-		margin-bottom: 30px;
+		grid-template-columns: 48% 48%;
+		column-gap: 4%;
+		row-gap: 1.75rem;
+		margin-bottom: 1.875rem;
 	}
 	.challenge_box{
 		border: #AAAAAA solid 2px;
-		height: 110px;
-		border-radius: 10px;
+		height: 6.875rem;
+		border-radius: 0.625rem;
 		display: inline-block;
 	}
 	.box_title{
-		padding: 15px 0 0 15px;
+		padding: 0.9375rem 0 0 0.9375rem;
 		color: #336CFF;
 		font-family: 'Noto Sans KR', 'Roboto';
-		font-size: 0.9em;
+		font-size: 0.9rem;
 		font-weight: bold;
 	}
 	.box_intro{
-		padding: 5px 0 0 15px;
+		padding: 0.3125rem 0 0 0.9375rem;
 		font-family: 'Noto Sans KR', 'Roboto';
-		font-size: 0.85em;
-	}
-	.grass_box{
-		border: #AAAAAA solid 2px;
-		border-radius: 10px;
-		height: 120px;
+		font-size: 0.85rem;
 	}
 </style>

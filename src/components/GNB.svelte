@@ -14,9 +14,9 @@
 </div>
 <style>
 	.gnb{
-		/*position: absolute;*/
-		height: 80px;
-		width: 1400px;
+		position: absolute;
+		height: 5rem;
+		width: 75rem;
 		min-width: 100%;
 		border-bottom: #DDDDDD solid 2px;
 		display: flex;
@@ -24,17 +24,17 @@
 		align-items: center;
 	}
 	.gnb_inner{
-		padding-top: 30px;
-		padding-right: 20px;
-		height: 40px;
+		padding-top: 1.875rem;
+		padding-right: 1.25rem;
+		height: 2.5rem;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 	}
 	.gnb_menu{
-		padding-left: 40px;
+		padding-left: 2.5rem;
 		font-family: 'Noto Sans KR', 'Roboto';
-		font-size: 1em;
+		font-size: 1rem;
 		font-weight: bold;
 	}
 </style>
