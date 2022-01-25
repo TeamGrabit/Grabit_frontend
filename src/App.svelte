@@ -5,11 +5,15 @@
 	import Home from './pages/Home.svelte';
 	import Test from './pages/Test.svelte';
 	import Login from './pages/Login.svelte';
+	import Profile from './pages/Profile.svelte';
+	import CreateChallenge from './pages/CreateChallenge.svelte';
 
 	const routes = {
 		'/': Home,
 		'/test' : Test,
 		'/login' : Login,
+		'/profile' : Profile,
+		'/createchall' : CreateChallenge,
 	}
 </script>
 

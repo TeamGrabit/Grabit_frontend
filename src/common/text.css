@@ -1,0 +1,30 @@
+.--title-text{
+    font-family: 'Noto Sans KR';
+    font-size: 1.3rem;
+    color:black;
+    margin-top: 1rem;
+    margin-bottom:1rem;
+}
+.--subtitle-text{
+    font-family: 'Noto Sans KR';
+    font-size: 1.1rem;
+    color:black;
+    margin-top:0.7rem;
+    margin-bottom:0.7rem;
+}
+.--common-text{
+    font-family: 'Noto Sans KR', 'Roboto';
+    font-size: 0.9rem;
+    color:black;
+}
+.--explain-text{
+    font-family: 'Noto Sans KR', 'Roboto';
+    font-size: 0.6rem;
+    color:#8F8F8F;
+}
+.--button-text{
+    font-family: 'Noto Sans KR', 'Roboto';
+    font-size: 0.9rem;
+    font-weight: bold;
+    color:black;
+}
