@@ -23,7 +23,6 @@
 
 <style>
 	.body {
-		padding: 0 10rem;
 		min-height: calc(100% - 7.6rem);
 		background-color: var(--main-background-color);
 	}

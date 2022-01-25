@@ -19,16 +19,17 @@
 </div>
 <style>
 	.footer{
-		height: 60px;
-		width:100%;
+		height: 3.75rem;
+		/*width: 87.5rem;*/
+		min-width: 100%;
 		background-color: #F7F7F7;
 		bottom: 0;
 	}
 	.footer_inner{
-		padding-top: 10px;
-		padding-right: 300px;
-		padding-left: 300px;
-		height: 40px;
+		padding-top: 0.625rem;
+		padding-right: 20%;
+		padding-left: 20%;
+		height: 2.5rem;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -40,11 +41,11 @@
 		align-items: center;
 	}
 	.logo_img{
-		height: 40px;
+		height: 2.5rem;
 	}
 	.footer_title{
 		font-weight: 600;
-		font-size: 0.9em;
+		font-size: 0.9rem;
 		font-family: 'Noto Sans KR', 'Roboto';
 	}
 	.footer_menu{
@@ -53,8 +54,8 @@
 		align-items: center;
 	}
 	.menu_text{
-		padding-left: 30px;
-		font-size: 0.8em;
+		padding-left: 1.875rem;
+		font-size: 0.8rem;
 		font-family: 'Noto Sans KR', 'Roboto';
 		color: #777777;
 	}
