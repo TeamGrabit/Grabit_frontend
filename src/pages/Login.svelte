@@ -1,11 +1,26 @@
 <script>
+	import { push } from 'svelte-spa-router'
+	import { login } from '../store/user';
 	import Button from '../components/Button.svelte';
+	
+	function onClick() {
+		push('/')
+		login();
+	}
 </script>
 
 <div class="Login">
 	<img class="Login__logo" src="images/grabit_logo.png" alt="logo" />
-	<Button width='15rem' height='2.5rem' backgroundColor='var(--main-green-color)'>
-		깃허브 로그인
+	<Button
+		width='15rem'
+		height='2.5rem'
+		backgroundColor='var(--main-white-color)'
+		{onClick}
+	>
+		<span class="Login__slot">
+			<img class="Login__icon" src="images/github.png" alt="gitIcon" />
+			<span>깃허브 로그인</span>
+		</span>
 	</Button>
 </div>
 
@@ -19,6 +34,17 @@
 
 		&__logo {
 			height: 9.375rem;
+		}
+
+		&__slot {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 0.3rem;
+		}
+
+		&__icon {
+			width: 1.5rem;
 		}
 	}
 </style>
