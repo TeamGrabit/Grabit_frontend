@@ -1,6 +1,5 @@
 <script>
-	import {link, push} from 'svelte-spa-router'
-	import Gnb from '../components/GlobalNavigationBar.svelte';
+	import { link, push } from 'svelte-spa-router'
 	import Container from '../components/Container.svelte';
 	import Grass from '../components/Grass.svelte';
 	

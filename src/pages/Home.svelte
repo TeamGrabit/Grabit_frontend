@@ -1,7 +1,7 @@
 <script>
-	import {link, push} from 'svelte-spa-router';
+	import { link, push } from 'svelte-spa-router';
 	import { beforeUpdate } from 'svelte';
-	import Gnb from '../components/GlobalNavigationBar.svelte';
+	import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
 	import Profile from '../components/Profile.svelte';
 	import Grass from '../components/Grass.svelte';
 	import { user } from '../store/user.js';
@@ -17,7 +17,7 @@
 	for (let i=0; i<365; i+=1){
 		grass_list[i] = i % 2;
 	};
-	
+
 	// TODO: 유저별로 home을 만들지 자기 home만 보이게 할 것인지 회의 필요
 	beforeUpdate(() => {
 		if (!$user){
@@ -26,7 +26,7 @@
 	});
 </script>
 
-<Gnb />
+<GlobalNavigationBar />
 <div class="overview">
 	<Profile />
 	<div class="content">
