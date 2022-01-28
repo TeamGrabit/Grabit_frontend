@@ -1,6 +1,6 @@
 <script>
 	import {link, push} from 'svelte-spa-router'
-	import Gnb from '../components/Global_Navigation_Bar.svelte';
+	import Gnb from '../components/GlobalNavigationBar.svelte';
 	import Container from '../components/Container.svelte';
 	import Grass from '../components/Grass.svelte';
 	
@@ -12,9 +12,7 @@
 
 </script>
 
-<Container>
-	<div>상세 페이지</div>
-</Container>
+<div>상세 페이지</div>
 
 <style>
 
