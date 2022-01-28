@@ -1,7 +1,7 @@
 <script>
 import Button from '../components/Button.svelte';
 import Inputxt from '../components/Inputxt.svelte'; 
-import Container from '../components/Container.svelte';
+import GNB from '../components/GlobalNavigationBar.svelte';
 import "../common/colorVariable.css";
 import "../common/text.css";
 
@@ -15,6 +15,7 @@ function checkBlank(challengename){
 		alert(challengename + "이 생성되었습니다."); 
 }
 </script>
+<GNB />
 <div class="Page">
 	<div class="Content">
 		<div class=title_text>Create New Challenge</div>
@@ -23,11 +24,11 @@ function checkBlank(challengename){
 			<div class=subtitle_text>challenge name
 				<span style="color:red;">*</span>
 			</div>
-			<Inputxt bind:value={challengename} maxlength=20 size=20/>
+			<Inputxt bind:value={challengename} maxlength=20 size=20 placeholder=''/>
 			
 			<div class=subtitle_text>Description</div>
 
-			<Inputxt bind:value={Description} size=80/>
+			<Inputxt bind:value={Description} size=80 placeholder=''/>
 		</div>
 		<hr align=left class=hr />
 		<div class=Sub_content>
@@ -70,13 +71,12 @@ function checkBlank(challengename){
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		justify-content: center;
 		padding: 1rem;
+		padding-top: 6rem;
 	}
 
 	.Content{
-		weight: auto;
-		height: auto;
+		width: auto;
 	}
 
 	.Sub_content{
@@ -88,6 +88,7 @@ function checkBlank(challengename){
 		display: flex;
 		flex-direction: row;
 		margin-bottom: 0.5rem;
+		align-items: center;
 	}
 
 	.Image{
