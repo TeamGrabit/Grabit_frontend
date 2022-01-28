@@ -1,7 +1,7 @@
 <script>
-	import {link, push} from 'svelte-spa-router'
+	import { link, push } from 'svelte-spa-router'
+	import { user } from '../store/user.js';
 	let name = "Grabit";
-	let profile = "K"
 </script>
 
 <div class="header">
@@ -13,7 +13,7 @@
 			</div>
 		</div>
 		<div class="header_profile">
-			<div class="profile_text">{profile}</div>
+			<div class="profile_text">{$user}</div>
 		</div>
 	</div>
 </div>

@@ -2,6 +2,7 @@
 	export let width;
 	export let height;
 	export let backgroundColor;
+	export let onClick;
 </script>
 
 <!-- TODO: Onclick연결 -->
@@ -10,6 +11,7 @@
 	style="--width: {width};
 	--height: {height};
 	--backgroundColor: {backgroundColor}"
+	on:click={onClick}
 >
 	<slot />
 </button>
@@ -21,12 +23,14 @@
 		border-radius: 6px;
 		cursor: pointer;
 		background-color: var(--backgroundColor);
+
+		transition: all 0.2s;
 	}
 	.Button:hover {
-		filter: brightness(0.9);
+		filter: brightness(0.95);
 	}
 	.Button:active {
 		background-color: var(--backgroundColor);
-		filter: brightness(0.8);
+		filter: brightness(0.85);
 	}
 </style>
