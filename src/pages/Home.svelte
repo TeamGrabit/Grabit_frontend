@@ -1,6 +1,6 @@
 <script>
 	import {link, push} from 'svelte-spa-router'
-	import Gnb from '../components/GNB.svelte';
+	import Gnb from '../components/Global_Navigation_Bar.svelte';
 	import Container from '../components/Container.svelte';
 	import Profile from '../components/Profile.svelte';
 	import Grass from '../components/Grass.svelte';
@@ -19,43 +19,34 @@
 
 </script>
 
-<div class="home">
+<Container>
 	<Gnb />
-	<Container>
-		<div class="overview">
-			<Profile />
-			<div class="content">
-				<div class="pinned">
-					<div class="content_title">즐겨찾는 챌린지</div>
-					<div class="box_container">
-						{#each challenge_list as c}
-							<div class="challenge_box">
-								<div class="box_title">{c.name}</div>
-								<div class="box_intro">{c.intro}</div>
-							</div>
-						{/each}
-					</div>
-				</div>
-				<div class="grass">
-					<div class=content_title>나의 잔디</div>
-					<Grass grass_list={grass_list} />
+	<div class="overview">
+		<Profile />
+		<div class="content">
+			<div class="pinned">
+				<div class="content_title">즐겨찾는 챌린지</div>
+				<div class="box_container">
+					{#each challenge_list as c}
+						<div class="challenge_box">
+							<div class="box_title" on:click={()=>{push(`/challenge/${c.num}`)}}>{c.name}</div>
+							<div class="box_intro">{c.intro}</div>
+						</div>
+					{/each}
 				</div>
 			</div>
+			<div class="grass">
+				<div class=content_title>나의 잔디</div>
+				<Grass grass_list={grass_list} />
+			</div>
 		</div>
-	</Container>
-</div>
+	</div>
+</Container>
 
 <style>
-	.home{
-		z-index: 2;
-		min-width: 100%;
-		padding-bottom: 5%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
 	.overview{
 		padding-top: 4%;
+		padding-bottom: 4%;
 		width: 100%;
 		display: flex;
 		flex-direction: row;
