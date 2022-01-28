@@ -9,9 +9,9 @@
 	import ChallengeDetail from './pages/ChallengeDetail.svelte';
 
 	const routes = {
-		'/home': Home,
+		'/': Home,
 		'/test' : Test,
-		'/' : Login,
+		'/login' : Login,
 		'/challenge/:id' : ChallengeDetail,
 	}
 </script>

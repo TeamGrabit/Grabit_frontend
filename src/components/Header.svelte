@@ -6,7 +6,7 @@
 
 <div class="header">
 	<div class="header_inner">
-		<div class="header_logo" on:click={()=>{push('/home')}}>
+		<div class="header_logo" on:click={()=>{push('/')}}>
 			<img class="logo_img" src="images/grabit_logo.png" alt="logo" />
 			<div class="header_title">
 				{name}
