@@ -1,9 +1,10 @@
 <script>
-	import {link, push} from 'svelte-spa-router'
-	import Gnb from '../components/GNB.svelte';
-	import Container from '../components/Container.svelte';
+	import { link, push } from 'svelte-spa-router';
+	import { beforeUpdate } from 'svelte';
+	import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
 	import Profile from '../components/Profile.svelte';
 	import Grass from '../components/Grass.svelte';
+	import { user } from '../store/user.js';
 
 	let challenge_list = [
 		{num: 1, name: "CS 1일 1커밋 방", intro: "하루에 한 번씩 커밋하기!"},
@@ -17,45 +18,40 @@
 		grass_list[i] = i % 2;
 	};
 
+	// TODO: 유저별로 home을 만들지 자기 home만 보이게 할 것인지 회의 필요
+	beforeUpdate(() => {
+		if (!$user){
+			push('/login');
+		}
+	});
 </script>
 
-<div class="home">
-	<Gnb />
-	<Container>
-		<div class="overview">
-			<Profile />
-			<div class="content">
-				<div class="pinned">
-					<div class="content_title">즐겨찾는 챌린지</div>
-					<div class="box_container">
-						{#each challenge_list as c}
-							<div class="challenge_box">
-								<div class="box_title">{c.name}</div>
-								<div class="box_intro">{c.intro}</div>
-							</div>
-						{/each}
+<GlobalNavigationBar />
+<div class="overview">
+	<Profile />
+	<div class="content">
+		<div class="pinned">
+			<div class="content_title">즐겨찾는 챌린지</div>
+			<div class="box_container">
+				{#each challenge_list as c}
+					<div class="challenge_box">
+						<div class="box_title" on:click={()=>{push(`/challenge/${c.num}`)}}>{c.name}</div>
+						<div class="box_intro">{c.intro}</div>
 					</div>
-				</div>
-				<div class="grass">
-					<div class=content_title>나의 잔디</div>
-					<Grass grass_list={grass_list} />
-				</div>
+				{/each}
 			</div>
 		</div>
-	</Container>
+		<div class="grass">
+			<div class=content_title>나의 잔디</div>
+			<Grass grass_list={grass_list} />
+		</div>
+	</div>
 </div>
 
 <style>
-	.home{
-		z-index: 2;
-		min-width: 100%;
-		padding-bottom: 5%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
 	.overview{
 		padding-top: 4%;
+		padding-bottom: 4%;
 		width: 100%;
 		display: flex;
 		flex-direction: row;

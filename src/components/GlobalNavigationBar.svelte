@@ -18,7 +18,7 @@
 		height: 5rem;
 		width: 75rem;
 		min-width: 100%;
-		border-bottom: #DDDDDD solid 2px;
+		border-bottom: #DDDDDD solid 1px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
