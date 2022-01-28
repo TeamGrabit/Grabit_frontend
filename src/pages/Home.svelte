@@ -1,9 +1,10 @@
 <script>
-	import {link, push} from 'svelte-spa-router'
+	import {link, push} from 'svelte-spa-router';
+	import { beforeUpdate } from 'svelte';
 	import Gnb from '../components/GlobalNavigationBar.svelte';
-	import Container from '../components/Container.svelte';
 	import Profile from '../components/Profile.svelte';
 	import Grass from '../components/Grass.svelte';
+	import { user } from '../store/user.js';
 
 	let challenge_list = [
 		{num: 1, name: "CS 1일 1커밋 방", intro: "하루에 한 번씩 커밋하기!"},
@@ -16,7 +17,13 @@
 	for (let i=0; i<365; i+=1){
 		grass_list[i] = i % 2;
 	};
-
+	
+	// TODO: 유저별로 home을 만들지 자기 home만 보이게 할 것인지 회의 필요
+	beforeUpdate(() => {
+		if (!$user){
+			push('/login');
+		}
+	});
 </script>
 
 <Gnb />
