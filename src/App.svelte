@@ -1,6 +1,7 @@
 <script>
 	import Header from './components/Header.svelte';
 	import Footer from './components/Footer.svelte';
+	import Container from './components/Container.svelte';
 	import Router  from 'svelte-spa-router';
 	import routes from './pages';
 </script>
@@ -8,7 +9,9 @@
 <main style="height:100%">
 	<Header />
 	<div class="body">
-		<Router {routes} />
+		<Container>
+			<Router {routes} />
+		</Container>
 	</div>
 	<Footer />
 </main>
