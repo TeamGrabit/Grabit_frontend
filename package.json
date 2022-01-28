@@ -5,12 +5,16 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public --no-clear"
+    "start": "sirv public --no-clear",
+    "start:goorm": "HOST=0.0.0.0 sirv public --no-clear"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
+    "autoprefixer": "^10.4.2",
+    "forever": "^4.0.2",
     "node-sass": "^7.0.1",
+    "postcss": "^8.4.5",
     "rollup": "^2.3.4",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.0",
@@ -22,5 +26,9 @@
   "dependencies": {
     "sirv-cli": "^1.0.0",
     "svelte-spa-router": "^3.2.0"
-  }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
 }
