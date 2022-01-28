@@ -4,7 +4,7 @@
 	import Button from '../components/Button.svelte';
 	
 	function onClick() {
-		push('/');
+		push('/')
 		login();
 	}
 </script>
