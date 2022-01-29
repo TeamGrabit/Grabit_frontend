@@ -1,58 +1,92 @@
 <script>
 	import { link, push } from 'svelte-spa-router'
-	import { user } from '../store/user.js';
+	import { user, logout } from '../store/user.js';
 	import { GIT_URL } from '../common/Variable.js';
+	import { Dropdown, DropdownItem } from '../storybook';
 
 	const name = "Grabit";
 	const src = `${GIT_URL}/${$user}.png`;
+	let isOpenDropdown = false;
+
+	const onClickProfile = () => {
+		isOpenDropdown = !isOpenDropdown;
+	}
 </script>
 
 <div class="header">
-	<div class="header_inner">
-		<div class="header_logo" on:click={()=>{push('/')}}>
-			<img class="logo_img" src="images/grabit_logo.png" alt="logo" />
-			<div class="header_title">
+	<div class="header__container">
+		<div class="header__logo" on:click={()=>{push('/')}}>
+			<img class="header__logo__img" src="images/grabit_logo.png" alt="logo" />
+			<div class="header__title">
 				{name}
 			</div>
 		</div>
-		<img {src} alt='user_profile' class="header_profile" />
+		{#if $user}
+			<span class="header__profile">
+				<img 
+					{src}
+					alt='userProfile'
+					class="header__profile__img"
+					on:click={onClickProfile}
+				/>
+				<Dropdown open={isOpenDropdown} right>
+					<DropdownItem>내정보</DropdownItem>
+					<DropdownItem onClick={logout}>로그아웃</DropdownItem>
+				</Dropdown>
+			</span>
+		{:else}
+			<span>guest</span>
+		{/if}
 	</div>
 </div>
-<style>
+
+<style lang="scss">
 	.header{
 		height: 3.75rem;
-		/*width: 87.5rem;*/
 		min-width: 100%;
 		border-bottom: #96E6B3 solid 2px;
-	}
-	.header_inner{
-		padding-top: 0.625rem;
-		padding-left: 1.25rem;
-		padding-right: 1.25rem;
-		height: 2.5rem;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-between;
-	}
-	.header_logo{
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		cursor: pointer;
-	}
-	.logo_img{
-		height: 2.5rem;
-	}
-	.header_title {
-		color: #568259;
-		font-family: 'Noto Sans KR', 'Roboto';
-		font-size: 1.4rem;
-		font-weight: bold;
-	}
-	.header_profile{
-		height: 2rem;
-		width: 2rem;
-		border-radius: 50%;
+
+		&__container{
+			padding-top: 0.625rem;
+			padding-left: 1.25rem;
+			padding-right: 1.25rem;
+			height: 2.5rem;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		&__logo{
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			cursor: pointer;
+
+			&__img{
+				height: 2.5rem;
+			}
+		}
+
+		&__title {
+			color: #568259;
+			font-family: 'Noto Sans KR', 'Roboto';
+			font-size: 1.4rem;
+			font-weight: bold;
+		}
+
+		&__profile{
+			position: relative; // for dropdown
+
+			&__img{
+				height: 2rem;
+				width: 2rem;
+				border-radius: 50%;
+
+				&:hover {
+					cursor: pointer;
+				}
+			}
+		}
 	}
 </style>

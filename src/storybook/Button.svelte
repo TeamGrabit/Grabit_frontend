@@ -5,7 +5,6 @@
 	export let onClick;
 </script>
 
-<!-- TODO: Onclick연결 -->
 <button
 	class="Button"
 	style="
