@@ -1,12 +1,17 @@
 <script>
+	import { beforeUpdate, afterUpdate } from 'svelte';
 	import { link, push } from 'svelte-spa-router'
 	import { user, logout } from '../store/user.js';
 	import { GIT_URL } from '../common/Variable.js';
 	import { Dropdown, DropdownItem } from '../storybook';
 
 	const name = "Grabit";
-	const src = `${GIT_URL}/${$user}.png`;
+	let src = '';
 	let isOpenDropdown = false;
+
+	const unsubscribe = user.subscribe(value => {
+		src = `${GIT_URL}/${value}.png`;;
+	});
 
 	const onClickProfile = () => {
 		isOpenDropdown = !isOpenDropdown;
