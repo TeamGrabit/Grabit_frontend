@@ -16,6 +16,9 @@
 		}
 	}
 	document.addEventListener('click', onClickOutside);
+	window.onhashchange = function() {
+    	onClickOut();
+	}
 </script>
 
 {#if open}
