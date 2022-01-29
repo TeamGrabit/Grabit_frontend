@@ -45,7 +45,6 @@
 	}
 	.header_title {
 		color: #568259;
-		font-family: 'Noto Sans KR', 'Roboto';
 		font-size: 1.4rem;
 		font-weight: bold;
 	}

@@ -46,7 +46,6 @@
 	.footer_title{
 		font-weight: 600;
 		font-size: 0.9rem;
-		font-family: 'Noto Sans KR', 'Roboto';
 	}
 	.footer_menu{
 		display: flex;
@@ -56,7 +55,6 @@
 	.menu_text{
 		padding-left: 1.875rem;
 		font-size: 0.8rem;
-		font-family: 'Noto Sans KR', 'Roboto';
 		color: #777777;
 	}
 </style>
