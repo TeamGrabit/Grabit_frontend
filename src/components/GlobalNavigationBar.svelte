@@ -33,7 +33,6 @@
 	}
 	.gnb_menu{
 		padding-left: 2.5rem;
-		font-family: 'Noto Sans KR', 'Roboto';
 		font-size: 1rem;
 		font-weight: bold;
 	}

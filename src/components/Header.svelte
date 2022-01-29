@@ -53,7 +53,7 @@
 		height: 3.75rem;
 		min-width: 100%;
 		border-bottom: #96E6B3 solid 2px;
-
+    
 		&__container{
 			padding-top: 0.625rem;
 			padding-left: 1.25rem;
@@ -78,7 +78,6 @@
 
 		&__title {
 			color: #568259;
-			font-family: 'Noto Sans KR', 'Roboto';
 			font-size: 1.4rem;
 			font-weight: bold;
 		}

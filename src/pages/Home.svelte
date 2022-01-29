@@ -62,7 +62,6 @@
 		padding: 1.875rem 0.625rem 0 0.625rem;
 	}
 	.content_title{
-		font-family: 'Noto Sans KR', 'Roboto';
 		font-size: 1rem;
 		font-weight: bold;
 		padding-bottom: 0.625rem;
@@ -83,13 +82,11 @@
 	.box_title{
 		padding: 0.9375rem 0 0 0.9375rem;
 		color: #336CFF;
-		font-family: 'Noto Sans KR', 'Roboto';
 		font-size: 0.9rem;
 		font-weight: bold;
 	}
 	.box_intro{
 		padding: 0.3125rem 0 0 0.9375rem;
-		font-family: 'Noto Sans KR', 'Roboto';
 		font-size: 0.85rem;
 	}
 </style>
