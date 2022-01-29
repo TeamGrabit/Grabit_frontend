@@ -34,7 +34,6 @@
 		background-color: #FBFBFB;
 		border: #AAAAAA solid 2px;
 		border-radius: 0.625rem;
-		font-family: 'Noto Sans KR', 'Roboto';
 		font-size: 0.9rem;
 		font-weight: bold;
 	}
