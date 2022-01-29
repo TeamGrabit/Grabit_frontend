@@ -1,7 +1,10 @@
 <script>
 	import { link, push } from 'svelte-spa-router'
 	import { user } from '../store/user.js';
-	let name = "Grabit";
+	import { GIT_URL } from '../common/Variable.js';
+
+	const name = "Grabit";
+	const src = `${GIT_URL}/${$user}.png`;
 </script>
 
 <div class="header">
@@ -12,9 +15,7 @@
 				{name}
 			</div>
 		</div>
-		<div class="header_profile">
-			<div class="profile_text">{$user}</div>
-		</div>
+		<img {src} alt='user_profile' class="header_profile" />
 	</div>
 </div>
 <style>
@@ -50,14 +51,8 @@
 		font-weight: bold;
 	}
 	.header_profile{
-		height: 1.875rem;
-		width: 1.875rem;
-		display: flex;
-		align-items: center;
-		border: 1px solid black;
-		border-radius: 0.9375rem;
-	}
-	.profile_text{
-		padding: 0.625rem;
+		height: 2rem;
+		width: 2rem;
+		border-radius: 50%;
 	}
 </style>
