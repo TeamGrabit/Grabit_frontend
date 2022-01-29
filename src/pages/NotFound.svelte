@@ -1,6 +1,6 @@
 <script>
 	import { push } from 'svelte-spa-router';
-	import Button from '../components/Button.svelte';
+	import Button from '../storybook/Button.svelte';
 
 	function onClick() {
 		push('/');
