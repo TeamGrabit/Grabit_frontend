@@ -1,10 +1,21 @@
 <script>
+	import { onDestroy } from 'svelte';
+	export let onClickOut;
 	export let open;
 	export let right;
 
 	let rightCss;
-
 	if(right) rightCss = 'Dropdown--right';
+
+	function onClickOutside(e) {
+		if(open){
+			if(!e.target.closest('.Dropdown')) {
+				if(!e.target.closest('.header__profile'))
+					onClickOut();
+			}
+		}
+	}
+	document.addEventListener('click', onClickOutside);
 </script>
 
 {#if open}

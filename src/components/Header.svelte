@@ -16,6 +16,9 @@
 	const onClickProfile = () => {
 		isOpenDropdown = !isOpenDropdown;
 	}
+	const onClickOut = () => {
+		isOpenDropdown = false;
+	}
 </script>
 
 <div class="header">
@@ -34,8 +37,8 @@
 					class="header__profile__img"
 					on:click={onClickProfile}
 				/>
-				<Dropdown open={isOpenDropdown} right>
-					<DropdownItem>내정보</DropdownItem>
+				<Dropdown open={isOpenDropdown} {onClickOut} right>
+					<DropdownItem onClick=''>내정보</DropdownItem>
 					<DropdownItem onClick={logout}>로그아웃</DropdownItem>
 				</Dropdown>
 			</span>
