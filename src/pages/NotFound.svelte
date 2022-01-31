@@ -28,7 +28,7 @@
 
 		&__sub {
 			text-align: center;
-			padding-bottom: 1.5rem;
+			padding: 1.5rem 0;
 		}
 	}
 </style>

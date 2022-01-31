@@ -14,6 +14,7 @@
 		color: var(--color);
 		overflow: hidden;
 		border-radius: 50%;
+		margin: 1rem;
 
 		transform: translateZ(0);
 		animation: load6 1.7s infinite ease, round 1.7s infinite ease;
