@@ -1,5 +1,9 @@
 <script>
+	import { onMount, onDestroy } from 'svelte';
 	import { push } from 'svelte-spa-router'
+	import { changeTab } from '../store/page';
+
+	import { index } from '../const/tab';
 
 	import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
 	import Profile from '../components/Profile.svelte';
@@ -9,6 +13,10 @@
 	function onClick() {
 		alert('new Challenge!');
 	}
+
+	onMount(() => {
+		changeTab(index.MYCHALLENGE);
+	})
 </script>
 
 <GlobalNavigationBar />

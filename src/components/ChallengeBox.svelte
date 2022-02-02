@@ -62,7 +62,7 @@
 			margin-bottom: 0.6rem;
 
 			&__title {
-				color: var(--challenge-box-header-color);
+				color: var(--dark-green-color);
 				font-weight: bold;
 
 				&:hover {

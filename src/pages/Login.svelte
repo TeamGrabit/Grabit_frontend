@@ -1,10 +1,8 @@
 <script>
-	import { push } from 'svelte-spa-router'
 	import { login } from '../store/user';
 	import Button from '../storybook/Button.svelte';
 	
 	function onClick() {
-		push('/');
 		login();
 	}
 </script>
