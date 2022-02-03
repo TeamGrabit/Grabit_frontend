@@ -1,6 +1,6 @@
 <script>
 	import { push } from 'svelte-spa-router';
-	import Button from '../storybook/Button.svelte';
+	import { Button } from '../storybook';
 
 	function onClick() {
 		push('/');
@@ -28,7 +28,7 @@
 
 		&__sub {
 			text-align: center;
-			padding-bottom: 1.5rem;
+			padding: 1.5rem 0;
 		}
 	}
 </style>
