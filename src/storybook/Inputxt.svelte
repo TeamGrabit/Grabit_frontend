@@ -1,6 +1,6 @@
 <script>
 export let bindvalue;
-export let size;
+export let size=34;
 export let maxlength;
 export let placeholder;
 </script>
@@ -16,10 +16,10 @@ export let placeholder;
 
 <style lang="scss">
 	input[type=text]{
+			color: var(--line-gray-color);
 			height: 1.9rem;
-			border: solid 1.2px var(--line-gray-color);
+			border: solid 1.2px var(--gray-color);
 			border-radius: 5px;
-			margin-bottom: 0.7rem;
 	}
 	input:focus{
 		outline:none;

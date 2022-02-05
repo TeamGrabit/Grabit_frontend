@@ -1,5 +1,10 @@
 <script>
+	import { push } from 'svelte-spa-router';
 	
+	function moveChallengelist(){
+		push(`/challengelist`);
+	}
+
 </script>
 
 <div class="gnb">
@@ -7,7 +12,7 @@
 		<div class="gnb_menu">
 			My Challenges
 		</div>
-		<div class="gnb_menu">
+		<div class="gnb_menu" on:click={moveChallengelist}>
 			View Other Challenges
 		</div>
 	</div>

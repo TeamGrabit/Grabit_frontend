@@ -1,11 +1,11 @@
 <script>
-import {Button} from '../storybook';
-import {Inputxt} from '../storybook'; 
+import { push, pop } from 'svelte-spa-router';
+import { Button } from '../storybook';
+import { Inputxt } from '../storybook'; 
 import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
-import "../common/colorVariable.css";
 
 let challengename="";
-let Description="";
+let Description="";	//임시 데이터.
 
 
 function Save(){
@@ -13,13 +13,13 @@ function Save(){
 		alert("이름을 입력해주세요.");
 	else {												//store에 생성된 데이터 넘겨주기
 		alert(challengename + "이 생성되었습니다."); 
-		window.location.href = "http://localhost:5000"; //링크 나중에 수정해야 합니다!
+		push('/');
 	}
 }
 
 function Cancel(){
 	alert("취소되었습니다.")
-	window.history.back();
+	pop();
 }
 </script>
 
@@ -126,9 +126,10 @@ function Cancel(){
 		font-weight: bold;
 	}
 	.text{
-		font-size: 1.1rem;
+		font-size: 1.0rem;
 		margin-top:0.7rem;
     	margin-bottom:0.7rem;
+		font-weight: 600;
 	}
 	.small_text{
 		font-size: 0.9rem;
