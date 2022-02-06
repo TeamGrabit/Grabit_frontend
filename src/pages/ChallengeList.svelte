@@ -1,22 +1,21 @@
 <script>
-import ChallengeBox from '../components/ChallengeBox.svelte';
-import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
-import { challengelist } from '../store/totalchallenge.js';
+    import ChallengeBox from '../components/ChallengeBox.svelte';
+    import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
+    import { challengelist } from '../store/totalchallenge.js';
 </script>
 
 <!--챌린지 목록 불러오기-->
 
-
 <GlobalNavigationBar />
 
-<div class='Page'>
+<div class='page'>
     {#each $challengelist as c}
         <ChallengeBox challenge={c} />
     {/each}
 </div>
 
 <style>
-.Page{
+.page{
     display: flex;
     flex-direction: column;
     align-items: center;

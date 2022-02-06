@@ -1,58 +1,55 @@
 <script>
-import { push, pop } from 'svelte-spa-router';
-import { Button } from '../storybook';
-import { Inputxt } from '../storybook'; 
-import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
+	import { push, pop } from 'svelte-spa-router';
+	import { Button } from '../storybook';
+	import { Inputxt } from '../storybook'; 
+	import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
 
-let challengename="";
-let Description="";	//임시 데이터.
+	let challengename="";
+	let description="";	//임시 데이터.
 
-
-function Save(){
-	if(challengename=='')
-		alert("이름을 입력해주세요.");
-	else {												//store에 생성된 데이터 넘겨주기
-		alert(challengename + "이 생성되었습니다."); 
-		push('/');
+	function save(){
+		if(challengename=='')
+			alert("이름을 입력해주세요.");
+		else {												//store에 생성된 데이터 넘겨주기
+			alert(challengename + "이 생성되었습니다."); 
+			push('/');
+		}
 	}
-}
-
-function Cancel(){
-	alert("취소되었습니다.")
-	pop();
-}
+	function cancel(){
+		alert("취소되었습니다.")
+		pop();
+	}
 </script>
 
-
 <GlobalNavigationBar />
-<div class="Page">
-	<div class="Content">
+<div class="page">
+	<div class="content">
 		<div class=title>Create New Challenge</div>
 		<hr align=left class=hr />
-		<div class=Sub_content>
-			<div class=text>challenge name
+		<div class=sub_content>
+			<div class=text>Challenge name
 				<span style="color:red;">*</span>
 			</div>
 			<Inputxt bind:bindvalue={challengename} maxlength=20 size=20 placeholder=''/>
 			
 			<div class=text>Description</div>
 
-			<Inputxt bind:bindvalue={Description} size=80 placeholder=''/>
+			<Inputxt bind:bindvalue={description} size=80 placeholder=''/>
 		</div>
 		<hr align=left class=hr />
-		<div class=Sub_content>
-			<div class=Contain>
+		<div class=sub_content>
+			<div class=contain>
 				<input type="radio" name="secure"checked="check">
-				<img class="Image" src="images/public.png" alt="public_img" />
+				<img class="image" src="images/public.png" alt="public_img" />
 				<div>
 					<div class=small_text>Public</div>
 					<div class=explain_text>Anyone on the internet can see this Challenge!</div>
 				</div>
 			</div>
 
-			<div class=Contain>
+			<div class=contain>
 				<input type="radio" name="secure" align="middle">
-				<img class="Image" src="images/private.png" alt="private_img" />
+				<img class="image" src="images/private.png" alt="private_img" />
 				<div>
 					<div class=small_text>Private</div>
 					<div class=explain_text>You choose who can see and join to this Challenge!</div>
@@ -60,12 +57,12 @@ function Cancel(){
 			</div>
 		</div>
 		<hr align=left class=hr />
-		<div class=Sub_content>
+		<div class=sub_content>
 			<Button 
 				width='7rem'
 				height='2.5rem'
 				backgroundColor='var(--main-green-color)'
-				onClick={Save}
+				onClick={save}
 			>	
 				<div class=button_text>Create</div>
 			</Button>
@@ -74,7 +71,7 @@ function Cancel(){
 				width='7rem'
 				height='2.5rem'
 				backgroundColor='#E3E3E3'
-				onClick={Cancel}
+				onClick={cancel}
 			>	
 				<div class=button_text>Cancel</div>
 			</Button>
@@ -82,30 +79,28 @@ function Cancel(){
 	</div>
 </div>
 
-
-
 <style lang="scss">
-	.Page{
+	.page{
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		padding: 1rem;
 		padding-top: 6rem;
 	}
-	.Content{
+	.content{
 		width: auto;
 	}
-	.Sub_content{
+	.sub_content{
 		margin-top:0.1rem;
 	}
-	.Contain{
+	.contain{
 		height: 2.5rem;
 		display: flex;
 		flex-direction: row;
 		margin-bottom: 0.5rem;
 		align-items: center;
 	}
-	.Image{
+	.image{
 		height: 100%;
 		margin-left:0.5rem;
 		margin-right:0.5rem;
@@ -138,6 +133,6 @@ function Cancel(){
 	}
 	.explain_text{
     	font-size: 0.6rem;
-    	color:#8F8F8F;
+    	color:var(--gray-color);
 	}
 </style>

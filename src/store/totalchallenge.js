@@ -12,7 +12,8 @@ const challenge = [
         intro: '',
         host: 'user1',
         numpeople: 2
-    },{
+    },
+    {
         name: '챌린지3',
         intro: '남의 챌린지입니다',
         host: 'user2',
@@ -21,6 +22,3 @@ const challenge = [
 ];
 
 export const challengelist = writable(challenge);
-
-
-

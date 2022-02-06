@@ -1,10 +1,9 @@
 <script>
-export let bindvalue;
-export let size=34;
-export let maxlength;
-export let placeholder;
+	export let bindvalue;
+	export let size=34;
+	export let maxlength;
+	export let placeholder;
 </script>
-
 
 <input type="text"
 	bind:value={bindvalue}
@@ -12,7 +11,6 @@ export let placeholder;
 	maxlength={maxlength}
 	placeholder={placeholder}
 >
-
 
 <style lang="scss">
 	input[type=text]{
