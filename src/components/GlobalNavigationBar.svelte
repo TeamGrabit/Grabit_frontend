@@ -12,7 +12,7 @@
 		</div>
 	</div>
 </div>
-<style>
+<style lang="scss">
 	.gnb{
 		position: absolute;
 		height: 5rem;
@@ -22,18 +22,20 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-	}
-	.gnb_inner{
-		padding-top: 1.875rem;
-		padding-right: 1.25rem;
-		height: 2.5rem;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-	}
-	.gnb_menu{
-		padding-left: 2.5rem;
-		font-size: 1rem;
-		font-weight: bold;
+
+		.gnb_inner{
+			padding-top: 1.875rem;
+			padding-right: 1.25rem;
+			height: 2.5rem;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			
+			.gnb_menu{
+				padding-left: 2.5rem;
+				font-size: 1rem;
+				font-weight: bold;
+			}
+		}
 	}
 </style>
