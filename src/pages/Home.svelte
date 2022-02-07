@@ -1,10 +1,11 @@
 <script>
 	import { link, push } from 'svelte-spa-router';
-	import { beforeUpdate } from 'svelte';
+	import { onMount, beforeUpdate } from 'svelte';
 	import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
 	import Profile from '../components/Profile.svelte';
 	import Grass from '../components/Grass.svelte';
 	import { user } from '../store/user.js';
+	import { changeTab } from '../store/page';
 
 	let challenge_list = [
 		{num: 1, name: "CS 1일 1커밋 방", intro: "하루에 한 번씩 커밋하기!"},
@@ -24,6 +25,10 @@
 			push('/login');
 		}
 	});
+
+	onMount(() => {
+		changeTab(0)
+	})
 </script>
 
 <GlobalNavigationBar />
