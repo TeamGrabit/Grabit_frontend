@@ -1,0 +1,21 @@
+<script>
+</script>
+
+<div class="SubNavigation">
+	<slot />
+</div>
+
+<style lang="scss">
+	.SubNavigation {
+		display: flex;
+		position: absolute;
+		flex-direction: column;
+		align-items: center;
+		left: 4rem;
+		top: 30%;
+		width: 15rem;
+		border: 1px solid var(--line-gray-color);
+		border-radius: 5px;
+		background: var(--main-white-color);
+	}
+</style>
