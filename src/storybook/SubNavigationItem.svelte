@@ -1,7 +1,8 @@
 <script>
+	export let onClick;
 </script>
 
-<div class="SubNavigationItem">
+<div class="SubNavigationItem" on:click={onClick}>
 	<slot />
 </div>
 
