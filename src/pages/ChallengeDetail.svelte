@@ -1,6 +1,7 @@
 <script>
 	import { link, push } from 'svelte-spa-router'
 	import Grass from '../components/Grass.svelte';
+	import Button from '../storybook/Button.svelte';
 	
 	let challenge = {num: 1, name: "CS 1일 1커밋 방", intro: "하루에 한 번씩 커밋하기!"};
 
@@ -11,6 +12,12 @@
 		grass_list[i] = i % 2;
 		grass_team[i] = i % 5;
 	};
+
+	let req_list = [
+		{num: 1, requester: "user", desc: "CS 1일 1커밋 방"},
+		{num: 2, requester: "grabit_123", desc: "CS 1일 1커밋 방"},
+		{num: 3, requester: "||JTO||", desc: "CS 1일 1커밋 방"},
+	];
 
 </script>
 
@@ -33,10 +40,15 @@
 			{/each}
 		</div>
 		<div class="admit_req">
-			<div class="req_box">
-				<div>내용</div>
-				<div>승인</div>
-				<div>반려</div>
+			<div class="title">현재 올라온 요청</div>
+			<div class="admit_req_box">
+				{#each req_list as req}
+					<div class="req_box">
+						<div>{req.desc}</div>
+						<Button>승인</Button>
+						<Button>반려</Button>
+					</div>
+				{/each}
 			</div>
 		</div>
 	</div>
@@ -63,10 +75,10 @@
 		margin: 2rem 0 2rem 0;
 		
 		.title{
-			padding-bottom: 0.25rem;
+			margin-bottom: 0.25rem;
 		}
 		.team_grass{
-			padding-bottom: 2rem;
+			margin-bottom: 2rem;
 			
 			.team_title{
 				font-weight: bold;
@@ -82,14 +94,24 @@
 				width: 67%;
 
 				.personal_grass{
-				padding-bottom: 1.5rem;
+				margin-bottom: 1.5rem;
 			}
 			}
 			.admit_req{
-				width: 33%;
-				border: solid 2px #DDDDDD;
-				border-radius: 3%;
-				margin: 1rem;
+				width: 30%;
+				margin-left: 3%;
+				&_box{
+					height: 30rem;
+					border: solid 2px #AAAAAA;
+					border-radius: 0.625rem;
+
+					.req_box{
+						height: 7.5rem;
+						border: solid 2px #AAAAAA;
+						border-radius: 0.625rem;
+						margin: 0.5rem;
+					}
+				}
 			}
 		}
 	}
