@@ -40,11 +40,11 @@
 		}
 
 		&:first-child:not(:last-child) {
-			border-radius: 5px 5px 0 0;
+			border-radius: 1rem 1rem 0 0;
 		}
 
 		&:last-child:not(:first-child) {
-			border-radius: 0 0 5px 5px;
+			border-radius: 0 0 1rem 1rem;
 		}
 		&__active {
 			width: 0.4rem;

@@ -15,7 +15,7 @@
 		top: 30%;
 		width: 15rem;
 		border: 1px solid var(--line-gray-color);
-		border-radius: 5px;
+		border-radius: 1rem;
 		background: var(--main-white-color);
 	}
 </style>
