@@ -23,13 +23,22 @@
 		<div class="title team_title">Team의 잔디</div>
 		<Grass isBig grass_list={grass_team} />
 	</div>
-	<div class="personal">
-		{#each group as member}
-			<div class="personal_grass">
-				<div class="title">{member}의 잔디</div>
-				<Grass grass_list={grass_list} />
+	<div class="personal_admit">
+		<div class="personal">
+			{#each group as member}
+				<div class="personal_grass">
+					<div class="title">{member}의 잔디</div>
+					<Grass grass_list={grass_list} />
+				</div>
+			{/each}
+		</div>
+		<div class="admit_req">
+			<div class="req_box">
+				<div>내용</div>
+				<div>승인</div>
+				<div>반려</div>
 			</div>
-		{/each}
+		</div>
 	</div>
 </div>
 
@@ -52,20 +61,36 @@
 	.content{
 		width: 100%;
 		margin: 2rem 0 2rem 0;
-
-		.team_grass{
-			padding-bottom: 2rem;
-		}
-		.personal_grass{
-			width: 67%;
-			padding-bottom: 1.5rem;
-		}
+		
 		.title{
 			padding-bottom: 0.25rem;
 		}
-		.team_title{
-			font-weight: bold;
-			font-size: 1.1rem;
+		.team_grass{
+			padding-bottom: 2rem;
+			
+			.team_title{
+				font-weight: bold;
+				font-size: 1.1rem;
+			}
+		}
+		.personal_admit{
+			display: flex;
+			flex-direction: row;
+			width: 100%;
+
+			.personal{
+				width: 67%;
+
+				.personal_grass{
+				padding-bottom: 1.5rem;
+			}
+			}
+			.admit_req{
+				width: 33%;
+				border: solid 2px #DDDDDD;
+				border-radius: 3%;
+				margin: 1rem;
+			}
 		}
 	}
 </style>
