@@ -13,7 +13,7 @@
 		align-items: center;
 		left: 4rem;
 		top: 30%;
-		width: 15rem;
+		width: 16rem;
 		border: 1px solid var(--line-gray-color);
 		border-radius: 1rem;
 		background: var(--main-white-color);

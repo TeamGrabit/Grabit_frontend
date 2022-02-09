@@ -20,7 +20,7 @@
 <style lang="scss">
 	.SubNavigationItem {
 		box-sizing: border-box;
-		padding: 1rem;
+		padding: 1rem 1.5rem;
 		width: 100%;
 		text-align: center;
 		background: inherit;
@@ -35,16 +35,13 @@
 			filter: brightness(0.95);
 		}
 
-		&:first-child {
-			border-radius: inherit;
-		}
 
 		&:first-child:not(:last-child) {
-			border-radius: 1rem 1rem 0 0;
+			margin-top: 1rem;
 		}
 
 		&:last-child:not(:first-child) {
-			border-radius: 0 0 1rem 1rem;
+			margin-bottom: 1rem;
 		}
 		&__active {
 			width: 0.4rem;
