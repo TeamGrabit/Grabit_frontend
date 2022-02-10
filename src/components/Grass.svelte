@@ -1,14 +1,15 @@
 <script>
 	export let grass_list;
 	export let isBig;
+	export let group_num;
 </script>
 
 <div class="box {isBig ? "big_box" : "grass_box"}">
 	{#each grass_list as grass}
-		{#if grass < 5}
-			<div class="grass grass_{grass}" />
+		{#if isBig}
+			<div class="grass grass_{Math.ceil(grass / (group_num/4))}" />
 		{:else}
-			<div class="grass grass_4" />
+			<div class="grass grass_{grass}" />
 		{/if}
 	{/each}
 </div>

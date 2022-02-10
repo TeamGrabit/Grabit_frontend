@@ -35,7 +35,7 @@
 				font-size: 1.1rem;
 			"
 		>Team의 잔디</p>
-		<Grass isBig grass_list={grass_team} />
+		<Grass isBig grass_list={grass_team} group_num={group.length}/>
 	</div>
 	<div class="personal_admit">
 		<div class="personal">
