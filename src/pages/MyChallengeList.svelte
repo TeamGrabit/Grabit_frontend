@@ -2,7 +2,8 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { push } from 'svelte-spa-router'
 	import { changeTab } from '../store/page';
-
+  	import { challengelist } from '../store/totalchallenge.js';
+	
 	import { index } from '../const/tab';
 
 	import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
@@ -13,7 +14,7 @@
 	function onClick() {
 		alert('new Challenge!');
 	}
-
+	
 	onMount(() => {
 		changeTab(index.MYCHALLENGE);
 	})
@@ -23,7 +24,9 @@
 <div class="MyChallengeList">
 	<Profile />
 	<div class="MyChallengeList__content">
-		<ChallengeBox title="CS 1일 1커밋의 방" description="hi" />
+	    {#each $challengelist as c}
+        	<ChallengeBox challenge={c} />
+    	{/each}
 	</div>
 </div>
 

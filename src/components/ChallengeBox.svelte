@@ -1,43 +1,53 @@
 <script>
-	export let title;
-	export let description;
-	export let count;
-	export let leader;
-	export let isLeader;
-	export let isStarred;
+	import { push } from 'svelte-spa-router';
 
-	export let onClickTitle;
-	export let onClickStar;
-	export let onClickSetting;
+	export let challenge;
+	export let isLeader;
+	export let isStarred;	
+
+	function onClickTitle(){
+		// if(isMember)
+		//	 push('/challengeDetail')
+		// else
+		// 	push('/signinChallenge?')
+	}
+	function onClickStar(){
+		isStarred=!isStarred;
+	}
+	function onClickSetting(){
+		//push('/setting:id');
+	}
 </script>
 
 <div class="Box">
 	<div>
 		<div class="Box__header">
-			<span class="Box__header__title">{title}</span>
+			<span class="Box__header__title">{challenge.title}</span>
 			<div class="Box__header__group">
 				<span>
+					{#if isLeader}
+						<img class="Box__icon" src="images/setting.svg" alt="setting" />
+					{/if}
 					{#if isStarred}
-						<img class="Box__icon" src="images/star.svg" alt="star" />
+						<img class="Box__icon" src="images/star.svg" alt="star" on:click={onClickStar}/>
 					{:else}
-						<img class="Box__icon" src="images/staroutline.svg" alt="star" />
+						<img class="Box__icon" src="images/staroutline.svg" alt="star_outline" on:click={onClickStar}/>
 					{/if}
 				</span>
-				<img class="Box__icon" src="images/setting.svg" alt="setting" />
 			</div>
 		</div>
 		<div class="Box__content">
-			{description || ''}
+			{challenge.description || ''}
 		</div>
 	</div>
 	<div class="Box__footer">
 		<div class="Box__footer__group">
 			<img class="Box__icon" src="images/human.svg" alt="human" />
-			{count || 0}
+			{challenge.count || 0}
 		</div>
 		<div class="Box__footer__group">
 			<img class="Box__icon" src="images/crown.svg" alt="crown" />
-			{leader || ''}
+			{challenge.leader || ''}
 		</div>
 	</div>
 </div>
@@ -49,11 +59,13 @@
 		justify-content: space-between;
 		height: 5rem;
 		padding: 1.5rem;
-		border: 1px solid var(--border-color);
-		border-radius: 10px;
+		margin: 1rem 0rem;
+		border: 2px solid var(--border-color);
+		border-radius: 20px;
 
 		&__icon {
-			height: 1.1rem;
+			height: 1.2rem;
+			margin-right: 0.3rem;
 		}
 
 		&__header {

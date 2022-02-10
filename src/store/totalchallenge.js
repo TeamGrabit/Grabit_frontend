@@ -2,22 +2,22 @@ import { writable } from 'svelte/store';
 
 const challenge = [
     {
-        name: '챌린지1 입니다.',
-        intro: '내 챌린지입니다',
-        host: 'llJTOll',
-        numpeople: 3
+        title: '챌린지1 입니다.',
+        description: '내 챌린지입니다',
+        leader: 'llJTOll',
+        count: 3
     },
     {
-        name: '이 챌린지는 소개글이 없습니다',
-        intro: '',
-        host: 'user1',
-        numpeople: 2
+        title: '이 챌린지는 소개글이 없습니다',
+        description: '',
+        leader: 'user1',
+        count: 2
     },
     {
-        name: '챌린지3',
-        intro: '남의 챌린지입니다',
-        host: 'user2',
-        numpeople: 1
+        title: '챌린지3',
+        description: '남의 챌린지입니다',
+        leader: 'user2',
+        count: 1
     }, //임시입니다. DB에서 목록 받아오기
 ];
 
