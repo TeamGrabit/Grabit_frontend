@@ -30,11 +30,11 @@
 			<div class=text>Challenge name
 				<span style="color:red;">*</span>
 			</div>
-			<Inputxt bind:bindvalue={challengename} maxlength=20 size=20 placeholder=''/>
+			<Inputxt bind:bindvalue={challengename} maxlength=20 size=20/>
 			
 			<div class=text>Description</div>
 
-			<Inputxt bind:bindvalue={description} size=80 placeholder=''/>
+			<Inputxt bind:bindvalue={description} size=80/>
 		</div>
 		<hr align=left class=hr />
 		<div class=sub_content>
@@ -109,7 +109,7 @@
 		border:none;
 		height: 1px;
 		width: 40rem;
-		background: var(--line-gray-color);
+		background: var(--border-color);
 		margin-top: 2rem;
 		margin-bottom: 2rem;
 		flex: 0 0 100%;
