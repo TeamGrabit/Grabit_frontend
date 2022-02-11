@@ -9,7 +9,7 @@
 		{#if isBig}
 			<div class="grass grass_{Math.ceil(grass / (group_num/4))}" />
 		{:else}
-			<div class="grass grass_{grass}" />
+			<div class="grass grass_{Math.ceil(grass / 2)}" />
 		{/if}
 	{/each}
 </div>

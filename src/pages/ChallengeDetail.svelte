@@ -8,7 +8,7 @@
 	let grass_list = new Array(365);
 	let grass_team = new Array(365);
 	for (let i=0; i<365; i+=1){
-		grass_list[i] = i % 2;
+		grass_list[i] = i % 9;
 		grass_team[i] = i % 5;
 	};
 
