@@ -1,6 +1,4 @@
 <script>
-	let name = "Grabit";
-	let profile = "K"
 </script>
 
 <div class="footer">
@@ -17,44 +15,47 @@
 		</div>
 	</div>
 </div>
-<style>
+<style lang="scss">
 	.footer{
 		height: 3.75rem;
-		/*width: 87.5rem;*/
 		min-width: 100%;
 		background-color: #F7F7F7;
 		bottom: 0;
-	}
-	.footer_inner{
-		padding-top: 0.625rem;
-		padding-right: 20%;
-		padding-left: 20%;
-		height: 2.5rem;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-between;
-	}
-	.footer_logo{
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-	}
-	.logo_img{
-		height: 2.5rem;
-	}
-	.footer_title{
-		font-weight: 600;
-		font-size: 0.9rem;
-	}
-	.footer_menu{
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-	}
-	.menu_text{
-		padding-left: 1.875rem;
-		font-size: 0.8rem;
-		color: #777777;
+
+		.footer_inner{
+			padding-top: 0.625rem;
+			padding-right: 20%;
+			padding-left: 20%;
+			height: 2.5rem;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+			
+			.footer_logo{
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+
+				.logo_img{
+					height: 2.5rem;
+				}
+				.footer_title{
+					font-weight: 600;
+					font-size: 0.9rem;
+				}
+			}
+			.footer_menu{
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+
+				.menu_text{
+					padding-left: 1.875rem;
+					font-size: 0.8rem;
+					color: #777777;
+				}
+			}
+		}
 	}
 </style>

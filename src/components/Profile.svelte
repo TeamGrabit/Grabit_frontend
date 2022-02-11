@@ -8,33 +8,33 @@
 	<div class="edit_btn">Edit profile</div>
 </div>
 
-<style>
+<style lang="scss">
 	.profile{
 		position: relative;
-		/*width: 25rem;*/
 		width: 33%;
-	}
-	.profile_img{
-		border: #AAAAAA solid 2px;
-		background-color: #FAE5E5;
-		border-radius: 50%;
-		width: 90%;
-		padding-bottom: 90%;
-	}
-	.profile_id{
-		padding: 0.625rem 0 0.625rem 0;
-		font-size: 1.2rem;
-		color: #666666;
-	}
-	.edit_btn{
-		width: 90%;
-		height: 1.875rem;
-		padding-top: 0.46875rem;
-		text-align: center;
-		background-color: #FBFBFB;
-		border: #AAAAAA solid 2px;
-		border-radius: 0.625rem;
-		font-size: 0.9rem;
-		font-weight: bold;
+
+		.profile_img{
+			border: #AAAAAA solid 2px;
+			background-color: #FAE5E5;
+			border-radius: 50%;
+			width: 90%;
+			padding-bottom: 90%;
+		}
+		.profile_id{
+			padding: 0.625rem 0 0.625rem 0;
+			font-size: 1.2rem;
+			color: #666666;
+		}
+		.edit_btn{
+			width: 90%;
+			height: 1.875rem;
+			padding-top: 0.46875rem;
+			text-align: center;
+			background-color: #FBFBFB;
+			border: #AAAAAA solid 2px;
+			border-radius: 0.625rem;
+			font-size: 0.9rem;
+			font-weight: bold;
+		}
 	}
 </style>
