@@ -1,8 +1,11 @@
 <script>
 	import Grass from '../components/Grass.svelte';
 	import CommitRequest from '../components/CommitRequest.svelte';
-	
-	let challenge = {num: 1, name: "CS 1일 1커밋 방", intro: "하루에 한 번씩 커밋하기!"};
+	import { getChallenge } from '../store/challenge.js';
+
+	//let challenge = {num: 132, name: "CS 1일 1커밋 방", intro: "하루에 한 번씩 커밋하기!"};
+	let challenge = getChallenge(132);
+	console.log(challenge);
 
 	let group = ["user", "grabit123", "||JTO||", "guest"];
 	let grass_list = new Array(365);
@@ -24,7 +27,8 @@
 
 <div class="upper">
 	<div class="upper_title">{challenge.name}</div>
-	<div class="upper_description">{challenge.intro}</div>
+	<!--<div class="upper_description">{challenge.intro}</div>-->
+	<div class="upper_description">하루 한번 씩</div>
 </div>
 <div class="content">
 	<div class="team_grass">

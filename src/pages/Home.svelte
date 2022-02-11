@@ -8,7 +8,7 @@
 	import { changeTab } from '../store/page';
 
 	let challenge_list = [
-		{num: 1, name: "CS 1일 1커밋 방", intro: "하루에 한 번씩 커밋하기!"},
+		{num: 132, name: "CS 1일 1커밋 방", intro: "하루에 한 번씩 커밋하기!"},
 		{num: 2, name: "My Private Challenge", intro: "이 챌린지는 내가 관리하는 챌린지다!!"},
 		{num: 3, name: "No.3", intro: "누가 넘바 쓰리래, 나 넘바 투야!"},
 	]
