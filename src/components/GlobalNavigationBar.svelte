@@ -27,7 +27,7 @@
 		<div class="bar" />
 	</div>
 </div>
-<style>
+<style lang="scss">
 	.gnb{
 		position: absolute;
 		height: 5rem;
