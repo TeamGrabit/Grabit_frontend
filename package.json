@@ -6,13 +6,12 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear",
-    "start:goorm": "HOST=0.0.0.0 sirv public --no-clear"
+	"release": "git subtree push --prefix public origin gh-pages"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
     "autoprefixer": "^10.4.2",
-    "gh-pages": "^3.2.3",
     "node-sass": "^7.0.1",
     "postcss": "^8.4.6",
     "rollup": "^2.66.1",
@@ -21,7 +20,7 @@
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
     "svelte": "^3.46.3",
-    "svelte-preprocess": "^4.10.2"
+    "svelte-preprocess": "^4.10.3"
   },
   "dependencies": {
     "sirv-cli": "^1.0.0",
