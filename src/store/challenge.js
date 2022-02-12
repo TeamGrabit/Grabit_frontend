@@ -1,4 +1,5 @@
 import { writable, get } from 'svelte/store';
+import { fetchGet } from '../common/fetch';
 
 const initialState = [
     {
@@ -28,16 +29,11 @@ const initialState = [
 export const challengeList = writable(initialState);
 
 export async function getChallenge( id ) {
-	const res = await fetch(`https://grabit.duckdns.org/api/challenges/${id}`,{
-		method: 'GET',	
-		credentials: 'include'
-	});
-	const challenge = await res;
-	console.log(challenge);
-	return challenge;
+	const res = await fetchGet(`challenges/${id}`)
+	return res;
 }
 
 export async function getAllChallenge() {
-	const res = await fetch(`https://grabit.duckdns.org/api/challenges`);
+	const res = await fetchGet(`challenges`);
 	return res;
 }

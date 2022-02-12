@@ -5,7 +5,6 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import sveltePreprocess from 'svelte-preprocess';
-import dev from 'rollup-plugin-dev'
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -39,10 +38,6 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
-		//dev({
-		//	 proxy: [{ from: '/grabit.duckdns.org/api/', to: 'http://localhost:5000' }],
-		//	 port: 8080
-		//}),
 		svelte({
 			compilerOptions: {
 				// enable run-time checks when not in production

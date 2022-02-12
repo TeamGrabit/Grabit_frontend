@@ -1,11 +1,17 @@
 <script>
+	import { onMount } from 'svelte';
 	import Grass from '../components/Grass.svelte';
 	import CommitRequest from '../components/CommitRequest.svelte';
 	import { getChallenge } from '../store/challenge.js';
-
+	
+	export let params = {}
 	//let challenge = {num: 132, name: "CS 1일 1커밋 방", intro: "하루에 한 번씩 커밋하기!"};
-	let challenge = getChallenge(132);
-	console.log(challenge);
+	let challenge = [];
+
+	onMount(async () => {
+		challenge = await getChallenge(params.id);
+		console.log(challenge)
+	});
 
 	let group = ["user", "grabit123", "||JTO||", "guest"];
 	let grass_list = new Array(365);
@@ -26,7 +32,9 @@
 </script>
 
 <div class="upper">
-	<div class="upper_title">{challenge.name}</div>
+	{#if challenge.name != null}
+		<div class="upper_title">{challenge.name}</div>
+	{/if}
 	<!--<div class="upper_description">{challenge.intro}</div>-->
 	<div class="upper_description">하루 한번 씩</div>
 </div>
