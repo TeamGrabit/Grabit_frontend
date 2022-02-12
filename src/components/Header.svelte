@@ -51,9 +51,11 @@
 <style lang="scss">
 	.header{
 		height: 3.75rem;
+		width: 75rem;
 		min-width: 100%;
 		border-bottom: #96E6B3 solid 2px;
-    
+		box-sizing: border-box;
+
 		&__container{
 			padding-top: 0.625rem;
 			padding-left: 1.25rem;
