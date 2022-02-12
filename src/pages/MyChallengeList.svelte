@@ -2,7 +2,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { push } from 'svelte-spa-router'
 	import { changeTab } from '../store/page';
-  	import { challengelist } from '../store/totalchallenge.js';
+  	import { challengeList } from '../store/challenge.js';
 	
 	import { index } from '../const/tab';
 
@@ -24,7 +24,7 @@
 <div class="MyChallengeList">
 	<Profile />
 	<div class="MyChallengeList__content">
-	    {#each $challengelist as c}
+	    {#each $challengeList as c}
         	<ChallengeBox challenge={c} />
     	{/each}
 	</div>

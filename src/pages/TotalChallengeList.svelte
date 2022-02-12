@@ -1,5 +1,5 @@
 <script>
-    import { challengelist } from '../store/totalchallenge.js';
+    import { challengeList } from '../store/challenge.js';
     
     import Profile from '../components/Profile.svelte';
     import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
@@ -23,7 +23,7 @@
             <div class='Page__sort__font'> DESCRIPTION </div>
             <div class='Page__sort__font'> LEADER </div>
         </div>
-        {#each $challengelist as c}
+        {#each $challengeList as c}
             <ChallengeBox challenge={c} />
         {/each}
     </div>

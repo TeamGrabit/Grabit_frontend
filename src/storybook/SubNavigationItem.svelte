@@ -27,7 +27,8 @@
 		position: relative;
 
 		&--active {
-			color: #568259; // TODO: green-dark컬러로 바꾸기
+			color: var(--dark-green-color);
+			font-weight: 550;
 		}
 
 		&:hover {
@@ -46,7 +47,7 @@
 		&__active {
 			width: 0.4rem;
 			height: 2rem;
-			background-color: #568259; // TODO: green-dark컬러로 바꾸기;
+			background-color: var(--dark-green-color);
 			position: absolute;
 			top: 0.5rem;
 		}
