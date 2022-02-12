@@ -2,8 +2,9 @@
 	import { login } from '../store/user';
 	import { Button } from '../storybook';
 	
-	function onClick() {
-		login();
+	async function onClick() {
+		const a = await login();
+		console.log(a);
 	}
 </script>
 

@@ -1,7 +1,7 @@
 const API_URL = 'https://grabit.duckdns.org/api';
 
 /* 사용법
-  fetchPost("/hi", {
+  fetchPost("hi", {
 	title: "Test",
 	body: "I am testing!",
 	userId: 1,
@@ -9,6 +9,13 @@ const API_URL = 'https://grabit.duckdns.org/api';
 	.then((data) => console.log(data))
 	// .catch((error) => console.log(error));
 */
+
+export function getQueryUri(params = {}) {
+	const query = Object.keys(params)
+				.map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+				.join('&');
+	return query;
+}
 
 export async function fetchGet(path, options = {}) {
 	const url = `${API_URL}/${path}`;
