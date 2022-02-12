@@ -14,7 +14,7 @@
 		left: 4rem;
 		top: 30%;
 		width: 16rem;
-		border: 1px solid var(--line-gray-color);
+		border: 1px solid var(--border-color);
 		border-radius: 1rem;
 		background: var(--main-white-color);
 	}

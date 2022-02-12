@@ -1,37 +1,37 @@
 <script>
 	import { push } from 'svelte-spa-router';
+	import { user } from '../store/user';
 
 	export let challenge;
-	export let isLeader;
-	export let isStarred;	
+
+	const isLeader = $user === challenge.leader;
+	let isStarred = challenge.isStarred;
 
 	function onClickTitle(){
-		// if(isMember)
-		//	 push('/challengeDetail')
-		// else
-		// 	push('/signinChallenge?')
+		push(`/challenge/${challenge.id}`)
 	}
 	function onClickStar(){
+		// TODO: debounce같은 거 걸어서 api 요청하기
 		isStarred=!isStarred;
 	}
 	function onClickSetting(){
-		//push('/setting:id');
+		push(`/setting/${challenge.id}`);
 	}
 </script>
 
 <div class="Box">
 	<div>
 		<div class="Box__header">
-			<span class="Box__header__title">{challenge.title}</span>
+			<span class="Box__header__title" on:click={onClickTitle}>{challenge.title}</span>
 			<div class="Box__header__group">
 				<span>
 					{#if isLeader}
-						<img class="Box__icon" src="images/setting.svg" alt="setting" />
+						<img class="Box__icon" src="images/setting.svg" alt="setting" on:click={onClickSetting} />
 					{/if}
 					{#if isStarred}
-						<img class="Box__icon" src="images/star.svg" alt="star" on:click={onClickStar}/>
+						<img class="Box__icon Box__icon--yellow" src="images/star.svg" alt="star" on:click={onClickStar}/>
 					{:else}
-						<img class="Box__icon" src="images/staroutline.svg" alt="star_outline" on:click={onClickStar}/>
+						<img class="Box__icon" src="images/star-line.svg" alt="star_outline" on:click={onClickStar}/>
 					{/if}
 				</span>
 			</div>
@@ -66,6 +66,14 @@
 		&__icon {
 			height: 1.2rem;
 			margin-right: 0.3rem;
+
+			&--yellow {
+				filter: invert(79%) sepia(99%) saturate(4174%) hue-rotate(334deg) brightness(98%) contrast(105%);
+			}
+
+			&:hover {
+				cursor: pointer;
+			}
 		}
 
 		&__header {
