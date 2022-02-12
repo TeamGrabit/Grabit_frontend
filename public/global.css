@@ -87,14 +87,13 @@ button:focus {
 	border-color: #666;
 }
 ::-webkit-scrollbar{
-	width: 1rem;
 	background-color: transparent;
 }
 ::-webkit-scrollbar-thumb{
 	background-color: #CCCCCC;
 	border-radius: 1rem;
 	background-clip: padding-box;
-	border: 0.15rem solid transparent;
+	border: 0.25vw solid transparent;
 }
 ::-webkit-scrollbar-track{
 	background-color: transparent;

@@ -18,6 +18,7 @@
 <style lang="scss">
 	.footer{
 		height: 3.75rem;
+		width: 75rem;
 		min-width: 100%;
 		background-color: #F7F7F7;
 		bottom: 0;

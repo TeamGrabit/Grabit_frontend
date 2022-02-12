@@ -50,6 +50,12 @@
 			border: solid 1.5px #BCBCBC;
 			border-radius: 0.625rem;
 			overflow-y: overlay;
+			&::-webkit-scrollbar{
+				width: 1rem;
+			}
+			&::-webkit-scrollbar-thumb{
+				border: 0.2rem solid transparent;
+			}
 			
 			.req_box{
 				border: solid 1.5px #BCBCBC;
