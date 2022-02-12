@@ -66,10 +66,10 @@
 			margin-top: 2%;
 			padding: 1.875rem 0.625rem 0 0.625rem;
 
-			.content_title{
+			&_title{
 				font-size: 1rem;
 				font-weight: bold;
-				padding-bottom: 0.625rem;
+				margin-bottom: 0.625rem;
 			}
 			.box_container{
 				display: grid;
@@ -95,9 +95,6 @@
 						font-size: 0.85rem;
 					}
 				}
-			}
-			.grass{
-				height: 7.5rem;
 			}
 		}
 	}

@@ -6,7 +6,7 @@
 	import routes from './pages';
 </script>
 
-<main style="height:100%">
+<main style="height: 100%">
 	<Header />
 	<div class="body">
 		<Container>
@@ -18,7 +18,9 @@
 
 <style>
 	.body {
-		min-height: calc(100% - 7.6rem);
+		width: 75rem;
+		min-width: 100%;
+		min-height: calc(100% - 7.5rem);
 		background-color: var(--main-background-color);
 	}
 </style>

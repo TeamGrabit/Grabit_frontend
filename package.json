@@ -6,7 +6,7 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear",
-    "release": "git subtree push --prefix public/ origin gh-pages"
+	"release": "git push origin `git subtree split --prefix public/ main`:gh-pages --force"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
