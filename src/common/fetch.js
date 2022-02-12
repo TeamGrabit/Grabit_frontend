@@ -27,6 +27,14 @@ export async function fetchGet(path, options = {}) {
 
 }
 
+export async function fetchGetRedirectUrl(path, options = {}) {
+	const url = `${API_URL}/${path}`;
+
+	const res = await fetch(url, options)
+
+	window.location.href = res.url;
+}
+
 export async function fetchPost(path, body, headers = {}) {
 	const url = `${API_URL}/${path}`;
 

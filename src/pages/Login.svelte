@@ -1,11 +1,6 @@
 <script>
 	import { login } from '../store/user';
 	import { Button } from '../storybook';
-	
-	async function onClick() {
-		const a = await login();
-		console.log(a);
-	}
 </script>
 
 <div class="Login">
@@ -14,7 +9,7 @@
 		width='15rem'
 		height='2.5rem'
 		backgroundColor='var(--main-white-color)'
-		{onClick}
+		onClick={login}
 	>
 		<span class="Login__slot">
 			<img class="Login__icon" src="images/github.png" alt="gitIcon" />
