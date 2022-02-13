@@ -24,16 +24,14 @@
 		<div class="Box__header">
 			<span class="Box__header__title" on:click={onClickTitle}>{challenge.title}</span>
 			<div class="Box__header__group">
-				<span>
 					{#if isLeader}
-						<img class="Box__icon" src="images/setting.svg" alt="setting" on:click={onClickSetting} />
+						<img class="Box__icon Box__icon--left" src="images/setting.svg" alt="setting" on:click={onClickSetting} />
 					{/if}
 					{#if isStarred}
 						<img class="Box__icon Box__icon--yellow" src="images/star.svg" alt="star" on:click={onClickStar}/>
 					{:else}
 						<img class="Box__icon" src="images/star-line.svg" alt="star_outline" on:click={onClickStar}/>
 					{/if}
-				</span>
 			</div>
 		</div>
 		<div class="Box__content">
@@ -71,6 +69,12 @@
 				filter: invert(79%) sepia(99%) saturate(4174%) hue-rotate(334deg) brightness(98%) contrast(105%);
 			}
 
+			&--left {
+				position: absolute;
+				right: 2rem;
+    			top: 0.5px;
+			}
+
 			&:hover {
 				cursor: pointer;
 			}
@@ -89,6 +93,11 @@
 					filter: brightness(0.55);
 					cursor: pointer;
 				}
+			}
+
+			&__group {
+				position: relative;
+
 			}
 		}
 
