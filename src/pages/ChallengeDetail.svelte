@@ -5,8 +5,7 @@
 	import { getChallenge } from '../store/challenge.js';
 	
 	export let params = {}
-	//let challenge = {num: 132, name: "CS 1일 1커밋 방", intro: "하루에 한 번씩 커밋하기!"};
-	let challenge = [];
+	let challenge = null;
 
 	onMount(async () => {
 		challenge = await getChallenge(params.id);
@@ -32,10 +31,9 @@
 </script>
 
 <div class="upper">
-	{#if challenge.name != null}
-		<div class="upper_title">{challenge.name}</div>
-	{/if}
-	<!--<div class="upper_description">{challenge.intro}</div>-->
+	<!--<div class="upper_title">{challenge.title}</div>-->
+	<!--<div class="upper_description">{challenge.desc}</div>-->
+	<div class="upper_title">챌린지 이름</div>
 	<div class="upper_description">하루 한번 씩</div>
 </div>
 <div class="content">
