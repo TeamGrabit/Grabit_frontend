@@ -5,7 +5,10 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import sveltePreprocess from 'svelte-preprocess';
+import replace from '@rollup/plugin-replace';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const production = !process.env.ROLLUP_WATCH;
 
 function serve() {
@@ -38,6 +41,11 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
+		replace({
+			ENV_API_URL: JSON.stringify(process.env.API_URL),
+			ENV_CALLBACK_URL: production? JSON.stringify(process.env.CALLBACK_URL) : JSON.stringify(process.env.CALLBACK_URL_LOCAL),
+			ENV_GIT_URL: JSON.stringify(process.env.GIT_URL)
+		}),
 		svelte({
 			compilerOptions: {
 				// enable run-time checks when not in production
