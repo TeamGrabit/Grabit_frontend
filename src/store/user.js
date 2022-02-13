@@ -3,7 +3,6 @@ import { ACCESS_TOKEN } from '../common/Variable';
 import { fetchGet, fetchGetRedirectUrl, getQueryUri } from '../common/fetch';
 
 export const user = writable(null);
-export const token = writable(null);
 
 export async function login() {
 	await fetchGetRedirectUrl(`oauth2/authorization/github?${getQueryUri({ 'redirect_uri' : 'http://localhost:5000/#/redirect'})}`, {redirect: 'manual'})
@@ -21,8 +20,6 @@ export function setUserToken() {
 	if(!token) window.location.href = '/#/login';
 	localStorage.setItem(ACCESS_TOKEN, token);
 	window.location.href = '/';
-	token.setItem(token)
-	user.setItem('tnghd5761');
 }
 
 export async function getUser() {
