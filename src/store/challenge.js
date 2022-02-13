@@ -1,4 +1,5 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
+import { fetchGet } from '../common/fetch';
 
 const initialState = [
     {
@@ -70,3 +71,13 @@ const initialState = [
 ];
 
 export const challengeList = writable(initialState);
+
+export async function getChallenge( id ) {
+	const res = await fetchGet(`challenges/${id}`)
+	return res;
+}
+
+export async function getAllChallenge() {
+	const res = await fetchGet(`challenges`);
+	return res;
+}

@@ -6,13 +6,8 @@
 	import Grass from '../components/Grass.svelte';
 	import { user, getUser } from '../store/user.js';
 	import { changeTab } from '../store/page';
+	import { challengeList } from '../store/challenge.js';
 
-	let challenge_list = [
-		{num: 1, name: "CS 1일 1커밋 방", intro: "하루에 한 번씩 커밋하기!"},
-		{num: 2, name: "My Private Challenge", intro: "이 챌린지는 내가 관리하는 챌린지다!!"},
-		{num: 3, name: "No.3", intro: "누가 넘바 쓰리래, 나 넘바 투야!"},
-	]
-	
 	let grass_list = new Array(365);
 	
 	for (let i=0; i<365; i+=1){
@@ -39,10 +34,10 @@
 		<div class="pinned">
 			<div class="content_title">즐겨찾는 챌린지</div>
 			<div class="box_container">
-				{#each challenge_list as c}
+				{#each $challengeList as challenge}
 					<div class="challenge_box">
-						<div class="box_title" on:click={()=>{push(`/challenge/${c.num}`)}}>{c.name}</div>
-						<div class="box_intro">{c.intro}</div>
+						<div class="box_title" on:click={()=>{push(`/challenge/${challenge.id}`)}}>{challenge.title}</div>
+						<div class="box_intro">{challenge.description}</div>
 					</div>
 				{/each}
 			</div>
@@ -90,6 +85,7 @@
 						color: #336CFF;
 						font-size: 0.9rem;
 						font-weight: bold;
+						cursor: pointer;
 					}
 					.box_intro{
 						padding: 0.3125rem 0 0 0.9375rem;
