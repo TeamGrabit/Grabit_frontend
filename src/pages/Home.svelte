@@ -4,7 +4,7 @@
 	import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
 	import Profile from '../components/Profile.svelte';
 	import Grass from '../components/Grass.svelte';
-	import { user } from '../store/user.js';
+	import { user, getUser } from '../store/user.js';
 	import { changeTab } from '../store/page';
 
 	let challenge_list = [
@@ -22,7 +22,8 @@
 	// TODO: 유저별로 home을 만들지 자기 home만 보이게 할 것인지 회의 필요
 	beforeUpdate(() => {
 		if (!$user){
-			push('/login');
+			if(localStorage.getItem('accessToken')) getUser();
+			else push('/login');
 		}
 	});
 
