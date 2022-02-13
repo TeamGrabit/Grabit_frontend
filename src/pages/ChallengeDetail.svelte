@@ -9,7 +9,6 @@
 
 	onMount(async () => {
 		challenge = await getChallenge(params.id);
-		console.log(challenge)
 	});
 
 	let group = ["user", "grabit123", "||JTO||", "guest"];
