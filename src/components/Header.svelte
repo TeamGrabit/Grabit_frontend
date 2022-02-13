@@ -9,10 +9,6 @@
 	let src = '';
 	let isOpenDropdown = false;
 
-	const unsubscribe = user.subscribe(value => {
-		src = `${GIT_URL}/${value}.png`;;
-	});
-
 	const onClickProfile = () => {
 		isOpenDropdown = !isOpenDropdown;
 	}
@@ -32,7 +28,7 @@
 		{#if $user}
 			<span class="header__profile">
 				<img 
-					{src}
+					src='{GIT_URL}/{$user.githubId}.png'
 					alt='userProfile'
 					class="header__profile__img"
 					on:click={onClickProfile}
