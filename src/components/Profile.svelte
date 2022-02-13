@@ -4,7 +4,7 @@
 
 <div class="profile">
 	<div class="profile_img" />
-	<div class="profile_id">{$user}</div>
+	<div class="profile_id">{$user?.githubId}</div>
 	<div class="edit_btn">Edit profile</div>
 </div>
 

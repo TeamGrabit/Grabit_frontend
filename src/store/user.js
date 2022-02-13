@@ -13,16 +13,23 @@ export function logout() {
 	localStorage.removeItem(ACCESS_TOKEN);
 }
 
+function failLogin() {
+	window.location.href = '/#/login'
+}
+
 export function setUserToken() {
 	const url = location.href;
 	const token = url.split('?')[1].split('=')[1].split('#')[0];
 
-	if(!token) window.location.href = '/#/login';
+	// TODO: 로그인 실패시 토스트 알럿 띄우기
+	if(!token) failLogin();
 	localStorage.setItem(ACCESS_TOKEN, token);
 	window.location.href = '/';
 }
 
 export async function getUser() {
-	const a = await fetchGet('users')
-	user.set(a);
+	// TODO: 로그인 실패시 토스트 알럿 띄우기
+	const userData = await fetchGet('users');
+	if(userData.error) failLogin();
+	else user.set(userData);
 }
