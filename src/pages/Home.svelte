@@ -7,6 +7,7 @@
 	import { user, getUser } from '../store/user.js';
 	import { changeTab } from '../store/page';
 	import { challengeList } from '../store/challenge.js';
+	import { ACCESS_TOKEN } from '../common/Variable';
 
 	let grass_list = new Array(365);
 	
@@ -17,7 +18,7 @@
 	// TODO: 유저별로 home을 만들지 자기 home만 보이게 할 것인지 회의 필요
 	beforeUpdate(() => {
 		if (!$user){
-			if(localStorage.getItem('accessToken')) getUser();
+			if(localStorage.getItem(ACCESS_TOKEN)) getUser();
 			else push('/login');
 		}
 	});

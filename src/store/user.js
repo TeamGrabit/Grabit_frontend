@@ -1,11 +1,11 @@
 import { writable } from 'svelte/store';
-import { ACCESS_TOKEN } from '../common/Variable';
+import { ACCESS_TOKEN, CALLBACK_URL } from '../common/Variable';
 import { fetchGet, fetchGetRedirectUrl, getQueryUri } from '../common/fetch';
 
 export const user = writable(null);
 
 export async function login() {
-	await fetchGetRedirectUrl(`oauth2/authorization/github?${getQueryUri({ 'redirect_uri' : 'http://localhost:5000/#/redirect'})}`, {redirect: 'manual'})
+	await fetchGetRedirectUrl(`oauth2/authorization/github?${getQueryUri({ 'redirect_uri' : CALLBACK_URL+'#/redirect'})}`, {redirect: 'manual'})
 }
 
 export function logout() {
