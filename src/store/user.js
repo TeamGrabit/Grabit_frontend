@@ -24,7 +24,8 @@ export function setUserToken() {
 	// TODO: 로그인 실패시 토스트 알럿 띄우기
 	if(!token) failLogin();
 	localStorage.setItem(ACCESS_TOKEN, token);
-	window.location.href = '/';
+
+	window.location.href = url.split('?')[0];
 }
 
 export async function getUser() {
