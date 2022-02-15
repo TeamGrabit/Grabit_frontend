@@ -1,8 +1,15 @@
 <script>
+	import { onMount } from 'svelte';
 	import Grass from '../components/Grass.svelte';
 	import CommitRequest from '../components/CommitRequest.svelte';
+	import { getChallenge } from '../store/challenge.js';
 	
-	let challenge = {num: 1, name: "CS 1일 1커밋 방", intro: "하루에 한 번씩 커밋하기!"};
+	export let params = {}
+	let challenge = null;
+
+	onMount(async () => {
+		challenge = await getChallenge(params.id);
+	});
 
 	let group = ["user", "grabit123", "||JTO||", "guest"];
 	let grass_list = new Array(365);
@@ -23,8 +30,10 @@
 </script>
 
 <div class="upper">
-	<div class="upper_title">{challenge.name}</div>
-	<div class="upper_description">{challenge.intro}</div>
+	<!--<div class="upper_title">{challenge.title}</div>-->
+	<!--<div class="upper_description">{challenge.desc}</div>-->
+	<div class="upper_title">챌린지 이름</div>
+	<div class="upper_description">하루 한번 씩</div>
 </div>
 <div class="content">
 	<div class="team_grass">

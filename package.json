@@ -6,12 +6,14 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear",
-	"release": "git push origin `git subtree split --prefix public/ main`:gh-pages --force"
+    "release": "git push origin `git subtree split --prefix public/ main`:gh-pages --force"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
+    "@rollup/plugin-replace": "^3.1.0",
     "autoprefixer": "^10.4.2",
+    "dotenv": "^16.0.0",
     "node-sass": "^7.0.1",
     "postcss": "^8.4.6",
     "rollup": "^2.67.0",

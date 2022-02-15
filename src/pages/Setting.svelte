@@ -5,7 +5,6 @@
 	let activeItem = -1;
 	function onClickItem(i) {
 		activeItem = i;
-		console.log(activeItem)
 	}
 	function setActive(i) {
 		if(i === activeItem) return true;

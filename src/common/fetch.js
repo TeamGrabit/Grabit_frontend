@@ -1,36 +1,60 @@
-const API_URL = 'https://grabit.duckdns.org/api';
+import { API_URL, ACCESS_TOKEN } from "./Variable";
 
-/* 사용법
-  fetchPost("/hi", {
-	title: "Test",
-	body: "I am testing!",
-	userId: 1,
-  })
-	.then((data) => console.log(data))
-	// .catch((error) => console.log(error));
-*/
+function getHeader() {
+	const bearer = 'Bearer ' + window.localStorage.getItem(ACCESS_TOKEN);
+	return { 'Authorization': bearer };
+}
 
-export async function fetchGet(path, options = {}) {
+const bearer = getHeader();
+
+export function getQueryUri(params = {}) {
+	const query = Object.keys(params)
+				.map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+				.join('&');
+	return query;
+}
+
+export async function fetchGet(path, otherOptions = {}, headers = {}) {
 	const url = `${API_URL}/${path}`;
 
-	const res = await fetch(url, options)
+	const options = {
+		method: 'GET',
+		headers: {
+			...bearer,
+			...headers,
+		},
+		...otherOptions
+	}
+
+	const res = await fetch(url, options);
 	const data = await res.json();
 
 	return data;
 
 }
 
-export async function fetchPost(path, body, headers = {}) {
+export async function fetchGetRedirectUrl(path, options = {}) {
+	const url = `${API_URL}/${path}`;
+
+	const res = await fetch(url, options)
+
+	window.location.href = res.url;
+}
+
+export async function fetchPost(path, body, otherOptions = {}, headers = {}) {
 	const url = `${API_URL}/${path}`;
 
 	const options = {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			...bearer,
 			...headers,
 		},
 		body: JSON.stringify(body),
+		...otherOptions
 	};
+
 	const res = await fetch(url, options);
 	const data = await res.json();
 
@@ -45,16 +69,18 @@ export async function fetchPost(path, body, headers = {}) {
 	return data;
 }
 
-export async function fetchPut(path, body, headers = {}) {
+export async function fetchPut(path, body, otherOptions = {}, headers = {}) {
 	const url = `${API_URL}/${path}`;
 
 	const options = {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json",
+			...bearer,
 			...headers,
 		},
 		body: JSON.stringify(body),
+		...otherOptions
 	};
 
 	const res = await fetch(url, options)
@@ -63,11 +89,16 @@ export async function fetchPut(path, body, headers = {}) {
 	return data;
 }
 
-export async function fetchDelete(path) {
+export async function fetchDelete(path, otherOptions = {}, headers = {}) {
 	const url = `${API_URL}/${path}`;
 
 	const options = {
-		method: "DELETE"
+		method: "DELETE",
+		headers: {
+			...bearer,
+			...headers
+		},
+		...otherOptions
 	};
 
 	const res = await fetch(url, options)
