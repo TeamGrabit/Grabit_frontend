@@ -1,29 +1,47 @@
 <script>
 	import { onMount } from 'svelte';
 	import { location } from 'svelte-spa-router';
-	
+	import { challengeList } from '../store/challenge.js';
+
 	let challenge_code = null;
+	let chat_on = false;
 	let isClicked = false;
+
 	function onClick() {
 		isClicked = !isClicked;
 	}
-	onMount(() => {
-		if ($location.split('/')[1] == "challenge"){
-			challenge_code = $location.split('/')[2];
-		};
-	})
+	function chatOn(id) {
+		chat_on = true;
+		challenge_code = id;
+	}
+	function chatOff() {
+		chat_on = false;
+		challenge_code = null;
+	}
+	//페이지 url에 따른 채팅창 open : 추후 구현
+	//onMount(() => {
+	//	if ($location.split('/')[1] == "challenge"){
+	//		challenge_code = $location.split('/')[2];
+	//	};
+	//})
 </script>
 
 {#if isClicked}
 	<div class="chat">
 		<div class="chat_upper">
+			<div class="chat_upper_home" on:click={chatOff}>←</div>
 			<div class="close" on:click={onClick} />
 		</div>
 		<div>location : {$location}</div>
-		{#if challenge_code}
+		{#if chat_on}
 			<div>{challenge_code} 번의 채팅방</div>
+			<div>{$challengeList[challenge_code].title}</div>
 		{:else}
-			<div>채팅 메인	</div>
+			<div class="chat_main">
+				{#each $challengeList as challenge}
+					<div on:click={chatOn(challenge.id)}>{challenge.title}</div>
+				{/each}
+			</div>
 		{/if}
 		<div>{console.log($location.split('/'))}</div>
 	</div>
@@ -45,16 +63,19 @@
 		background-color: white;
 		border: 0.15rem solid #DDDDDD;
 		border-radius: 1rem;
-
-		.close{
-			float: right;
-			margin-right: 0.5rem;
-			&:after {
-				display: inline-block;
-				content: "\00d7";
-				font-size: 2.5rem;
+		&_upper{
+			display: flex;
+			flex-direction: row;
+			font-size: 2.5rem;
+			padding-left: 80%;
+			&_home{
 				cursor: pointer;
 			}
+		}
+		.close:after {
+			display: inline-block;
+			content: "\00d7";
+			cursor: pointer;
 		}
 	}
 	.chat_btn{
