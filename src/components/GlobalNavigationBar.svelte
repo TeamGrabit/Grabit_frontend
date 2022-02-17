@@ -9,6 +9,9 @@
 	function onClickMy() {
 		push('/mychallenge')
 	}
+	function onClickTotal(){
+		push('/totalchallenge')
+	}
 
 	beforeUpdate(() => {
 		classNames = ['', ''];
@@ -22,7 +25,7 @@
 		My Challenges
 		<div class="bar" />
 	</div>
-	<div class="gnb_menu {classNames[1]}">
+	<div class="gnb_menu {classNames[1]}" on:click={onClickTotal}>
 		View Other Challenges
 		<div class="bar" />
 	</div>
