@@ -12,7 +12,7 @@
 	}
 	function chatOn(id) {
 		chat_on = true;
-		challenge_code = id;
+		challenge_code = id-1;
 	}
 	function chatOff() {
 		chat_on = false;
@@ -32,18 +32,17 @@
 			<div class="chat_upper_home" on:click={chatOff}>←</div>
 			<div class="close" on:click={onClick} />
 		</div>
-		<div>location : {$location}</div>
 		{#if chat_on}
 			<div>{challenge_code} 번의 채팅방</div>
 			<div>{$challengeList[challenge_code].title}</div>
 		{:else}
 			<div class="chat_main">
 				{#each $challengeList as challenge}
-					<div on:click={chatOn(challenge.id)}>{challenge.title}</div>
+					<div class="chat_main_room" on:click={chatOn(challenge.id)}>{challenge.title}</div>
 				{/each}
 			</div>
 		{/if}
-		<div>{console.log($location.split('/'))}</div>
+		<div></div>
 	</div>
 {:else}
 	<div class="chat_btn" on:click={onClick}>
@@ -52,10 +51,12 @@
 {/if}
 
 <style lang="scss">
-	.chat{
+	.chat, .chat_btn{
 		position: fixed;
 		right: 5vw;
 		bottom: 10vh;
+	}
+	.chat{
 		width: 25rem;
 		height: 35rem;
 		max-width: 85vw;
@@ -67,7 +68,8 @@
 			display: flex;
 			flex-direction: row;
 			font-size: 2.5rem;
-			padding-left: 80%;
+			justify-content: right;
+			padding-right: 0.5rem;
 			&_home{
 				cursor: pointer;
 			}
@@ -77,16 +79,22 @@
 			content: "\00d7";
 			cursor: pointer;
 		}
+		&_main{
+			margin-top: 1rem;
+			height: 30rem;
+			overflow-y: overlay;
+			&_room{
+				height: 4rem;
+				border-bottom: 1px solid #DDDDDD;
+			}
+		}
 	}
 	.chat_btn{
-		position: fixed;
-		right: 5vw;
-		bottom: 10vh;
 		background-color: aquamarine;
-		max-width: 10vw;
-		max-height: 10vw;
 		width: 5rem;
 		height: 5rem;
+		max-width: 10vw;
+		max-height: 10vw;
 		border-radius: 2.5rem;
 		cursor: pointer;
 	}
