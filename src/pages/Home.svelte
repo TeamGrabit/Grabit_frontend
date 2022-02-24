@@ -1,6 +1,6 @@
 <script>
 	import { link, push } from 'svelte-spa-router';
-	import { onMount, beforeUpdate } from 'svelte';
+	import { onMount, beforeUpdate, afterUpdate } from 'svelte';
 	import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
 	import Profile from '../components/Profile.svelte';
 	import Grass from '../components/Grass.svelte';
@@ -8,12 +8,9 @@
 	import { changeTab } from '../store/page';
 	import { challengeList } from '../store/challenge.js';
 	import { ACCESS_TOKEN } from '../common/Variable';
+	import { getGrass } from '../store/grass';
 
-	let grass_list = new Array(365);
-	
-	for (let i=0; i<365; i+=1){
-		grass_list[i] = i % 2;
-	};
+	let grass_list = null
 
 	// TODO: 유저별로 home을 만들지 자기 home만 보이게 할 것인지 회의 필요
 	beforeUpdate(() => {
@@ -22,7 +19,9 @@
 			else push('/login');
 		}
 	});
-
+	afterUpdate(async () => {
+		grass_list = await getGrass($user?.githubId)
+	});
 	onMount(() => {
 		changeTab(0)
 	})

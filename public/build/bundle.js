@@ -3798,7 +3798,7 @@ var app = (function () {
     			img = element("img");
     			if (!src_url_equal(img.src, img_src_value = "" + (GIT_URL + "/" + /*$user*/ ctx[0].githubId + ".png"))) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "userProfile");
-    			attr_dev(img, "class", "profile_img svelte-188htwl");
+    			attr_dev(img, "class", "profile_img svelte-1a7yerl");
     			add_location(img, file$d, 7, 2, 156);
     		},
     		m: function mount(target, anchor) {
@@ -3833,6 +3833,7 @@ var app = (function () {
     	let t1;
     	let t2;
     	let div1;
+    	let p;
     	let if_block = /*$user*/ ctx[0] && create_if_block$2(ctx);
 
     	const block = {
@@ -3844,12 +3845,14 @@ var app = (function () {
     			t1 = text(t1_value);
     			t2 = space();
     			div1 = element("div");
-    			div1.textContent = "Edit profile";
-    			attr_dev(div0, "class", "profile_id svelte-188htwl");
+    			p = element("p");
+    			p.textContent = "Edit profile";
+    			attr_dev(div0, "class", "profile_id svelte-1a7yerl");
     			add_location(div0, file$d, 9, 1, 249);
-    			attr_dev(div1, "class", "edit_btn svelte-188htwl");
+    			add_location(p, file$d, 11, 2, 325);
+    			attr_dev(div1, "class", "edit_btn svelte-1a7yerl");
     			add_location(div1, file$d, 10, 1, 299);
-    			attr_dev(div2, "class", "profile svelte-188htwl");
+    			attr_dev(div2, "class", "profile svelte-1a7yerl");
     			add_location(div2, file$d, 5, 0, 117);
     		},
     		l: function claim(nodes) {
@@ -3863,6 +3866,7 @@ var app = (function () {
     			append_dev(div0, t1);
     			append_dev(div2, t2);
     			append_dev(div2, div1);
+    			append_dev(div1, p);
     		},
     		p: function update(ctx, [dirty]) {
     			if (/*$user*/ ctx[0]) {
@@ -3939,13 +3943,270 @@ var app = (function () {
     	return child_ctx;
     }
 
+    // (24:0) {:else}
+    function create_else_block_2(ctx) {
+    	let p;
+
+    	const block = {
+    		c: function create() {
+    			p = element("p");
+    			p.textContent = "불러오는 중입니다.";
+    			add_location(p, file$c, 24, 1, 590);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, p, anchor);
+    		},
+    		p: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(p);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block_2.name,
+    		type: "else",
+    		source: "(24:0) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (7:0) {#if grass_list}
+    function create_if_block$1(ctx) {
+    	let div;
+    	let div_class_value;
+    	let each_value = /*grass_list*/ ctx[0];
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block$6(get_each_context$6(ctx, each_value, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			attr_dev(div, "class", div_class_value = "box " + (/*isBig*/ ctx[1] ? "big_box" : "grass_box") + " svelte-2jzcz");
+    			add_location(div, file$c, 7, 0, 131);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(div, null);
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*Math, grass_list, color_level, group_num, isBig*/ 15) {
+    				each_value = /*grass_list*/ ctx[0];
+    				validate_each_argument(each_value);
+    				let i;
+
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context$6(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block$6(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(div, null);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value.length;
+    			}
+
+    			if (dirty & /*isBig*/ 2 && div_class_value !== (div_class_value = "box " + (/*isBig*/ ctx[1] ? "big_box" : "grass_box") + " svelte-2jzcz")) {
+    				attr_dev(div, "class", div_class_value);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_each(each_blocks, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$1.name,
+    		type: "if",
+    		source: "(7:0) {#if grass_list}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
     // (13:2) {:else}
     function create_else_block$1(ctx) {
     	let if_block_anchor;
 
-    	function select_block_type_1(ctx, dirty) {
-    		if (/*commit_count*/ ctx[4] < 9) return create_if_block_1$1;
+    	function select_block_type_2(ctx, dirty) {
+    		if (/*grass*/ ctx[4].count < 9) return create_if_block_2;
     		return create_else_block_1;
+    	}
+
+    	let current_block_type = select_block_type_2(ctx);
+    	let if_block = current_block_type(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (current_block_type === (current_block_type = select_block_type_2(ctx)) && if_block) {
+    				if_block.p(ctx, dirty);
+    			} else {
+    				if_block.d(1);
+    				if_block = current_block_type(ctx);
+
+    				if (if_block) {
+    					if_block.c();
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if_block.d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block$1.name,
+    		type: "else",
+    		source: "(13:2) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (10:2) {#if isBig}
+    function create_if_block_1$1(ctx) {
+    	let div;
+    	let div_class_value;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			attr_dev(div, "class", div_class_value = "grass grass_" + Math.ceil(/*grass*/ ctx[4].count * /*color_level*/ ctx[3] / /*group_num*/ ctx[2]) + " svelte-2jzcz");
+    			add_location(div, file$c, 11, 3, 253);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*grass_list, group_num*/ 5 && div_class_value !== (div_class_value = "grass grass_" + Math.ceil(/*grass*/ ctx[4].count * /*color_level*/ ctx[3] / /*group_num*/ ctx[2]) + " svelte-2jzcz")) {
+    				attr_dev(div, "class", div_class_value);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1$1.name,
+    		type: "if",
+    		source: "(10:2) {#if isBig}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (17:3) {:else}
+    function create_else_block_1(ctx) {
+    	let div;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			attr_dev(div, "class", "grass grass_4 svelte-2jzcz");
+    			add_location(div, file$c, 18, 4, 512);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    		},
+    		p: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block_1.name,
+    		type: "else",
+    		source: "(17:3) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (15:3) {#if grass.count < 9}
+    function create_if_block_2(ctx) {
+    	let div;
+    	let div_class_value;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			attr_dev(div, "class", div_class_value = "grass grass_" + Math.ceil(/*grass*/ ctx[4].count / 2) + " svelte-2jzcz");
+    			add_location(div, file$c, 15, 4, 396);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*grass_list*/ 1 && div_class_value !== (div_class_value = "grass grass_" + Math.ceil(/*grass*/ ctx[4].count / 2) + " svelte-2jzcz")) {
+    				attr_dev(div, "class", div_class_value);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2.name,
+    		type: "if",
+    		source: "(15:3) {#if grass.count < 9}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (9:1) {#each grass_list as grass}
+    function create_each_block$6(ctx) {
+    	let if_block_anchor;
+
+    	function select_block_type_1(ctx, dirty) {
+    		if (/*isBig*/ ctx[1]) return create_if_block_1$1;
+    		return create_else_block$1;
     	}
 
     	let current_block_type = select_block_type_1(ctx);
@@ -3981,122 +4242,21 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_else_block$1.name,
-    		type: "else",
-    		source: "(13:2) {:else}",
+    		id: create_each_block$6.name,
+    		type: "each",
+    		source: "(9:1) {#each grass_list as grass}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (10:2) {#if isBig}
-    function create_if_block$1(ctx) {
-    	let div;
-    	let div_class_value;
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			attr_dev(div, "class", div_class_value = "grass grass_" + Math.ceil(/*commit_count*/ ctx[4] * /*color_level*/ ctx[3] / /*group_num*/ ctx[2]) + " svelte-2jzcz");
-    			add_location(div, file$c, 11, 3, 244);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*grass_list, group_num*/ 5 && div_class_value !== (div_class_value = "grass grass_" + Math.ceil(/*commit_count*/ ctx[4] * /*color_level*/ ctx[3] / /*group_num*/ ctx[2]) + " svelte-2jzcz")) {
-    				attr_dev(div, "class", div_class_value);
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block$1.name,
-    		type: "if",
-    		source: "(10:2) {#if isBig}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (17:3) {:else}
-    function create_else_block_1(ctx) {
-    	let div;
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			attr_dev(div, "class", "grass grass_4 svelte-2jzcz");
-    			add_location(div, file$c, 18, 4, 506);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    		},
-    		p: noop,
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_else_block_1.name,
-    		type: "else",
-    		source: "(17:3) {:else}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (15:3) {#if commit_count < 9}
-    function create_if_block_1$1(ctx) {
-    	let div;
-    	let div_class_value;
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			attr_dev(div, "class", div_class_value = "grass grass_" + Math.ceil(/*commit_count*/ ctx[4] / 2) + " svelte-2jzcz");
-    			add_location(div, file$c, 15, 4, 389);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*grass_list*/ 1 && div_class_value !== (div_class_value = "grass grass_" + Math.ceil(/*commit_count*/ ctx[4] / 2) + " svelte-2jzcz")) {
-    				attr_dev(div, "class", div_class_value);
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_1$1.name,
-    		type: "if",
-    		source: "(15:3) {#if commit_count < 9}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (9:1) {#each grass_list as commit_count}
-    function create_each_block$6(ctx) {
+    function create_fragment$c(ctx) {
     	let if_block_anchor;
 
     	function select_block_type(ctx, dirty) {
-    		if (/*isBig*/ ctx[1]) return create_if_block$1;
-    		return create_else_block$1;
+    		if (/*grass_list*/ ctx[0]) return create_if_block$1;
+    		return create_else_block_2;
     	}
 
     	let current_block_type = select_block_type(ctx);
@@ -4107,11 +4267,14 @@ var app = (function () {
     			if_block.c();
     			if_block_anchor = empty();
     		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
     		m: function mount(target, anchor) {
     			if_block.m(target, anchor);
     			insert_dev(target, if_block_anchor, anchor);
     		},
-    		p: function update(ctx, dirty) {
+    		p: function update(ctx, [dirty]) {
     			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
     				if_block.p(ctx, dirty);
     			} else {
@@ -4124,89 +4287,11 @@ var app = (function () {
     				}
     			}
     		},
-    		d: function destroy(detaching) {
-    			if_block.d(detaching);
-    			if (detaching) detach_dev(if_block_anchor);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_each_block$6.name,
-    		type: "each",
-    		source: "(9:1) {#each grass_list as commit_count}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function create_fragment$c(ctx) {
-    	let div;
-    	let div_class_value;
-    	let each_value = /*grass_list*/ ctx[0];
-    	validate_each_argument(each_value);
-    	let each_blocks = [];
-
-    	for (let i = 0; i < each_value.length; i += 1) {
-    		each_blocks[i] = create_each_block$6(get_each_context$6(ctx, each_value, i));
-    	}
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].c();
-    			}
-
-    			attr_dev(div, "class", div_class_value = "box " + (/*isBig*/ ctx[1] ? "big_box" : "grass_box") + " svelte-2jzcz");
-    			add_location(div, file$c, 7, 0, 115);
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(div, null);
-    			}
-    		},
-    		p: function update(ctx, [dirty]) {
-    			if (dirty & /*Math, grass_list, color_level, group_num, isBig*/ 15) {
-    				each_value = /*grass_list*/ ctx[0];
-    				validate_each_argument(each_value);
-    				let i;
-
-    				for (i = 0; i < each_value.length; i += 1) {
-    					const child_ctx = get_each_context$6(ctx, each_value, i);
-
-    					if (each_blocks[i]) {
-    						each_blocks[i].p(child_ctx, dirty);
-    					} else {
-    						each_blocks[i] = create_each_block$6(child_ctx);
-    						each_blocks[i].c();
-    						each_blocks[i].m(div, null);
-    					}
-    				}
-
-    				for (; i < each_blocks.length; i += 1) {
-    					each_blocks[i].d(1);
-    				}
-
-    				each_blocks.length = each_value.length;
-    			}
-
-    			if (dirty & /*isBig*/ 2 && div_class_value !== (div_class_value = "box " + (/*isBig*/ ctx[1] ? "big_box" : "grass_box") + " svelte-2jzcz")) {
-    				attr_dev(div, "class", div_class_value);
-    			}
-    		},
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			destroy_each(each_blocks, detaching);
+    			if_block.d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
     		}
     	};
 
@@ -4390,31 +4475,41 @@ var app = (function () {
     	return res;
     }
 
+    async function getGrass( id ) {
+    	const url = `https://2hefmq4b0a.execute-api.ap-northeast-2.amazonaws.com/crawlingGithub?${id}`;
+    	const options = {
+    		method: 'GET',
+    	};
+    	const res = await fetch(url, options);
+    	const data = await res.json();
+    	return data;
+    }
+
     /* src\pages\Home.svelte generated by Svelte v3.46.3 */
     const file$b = "src\\pages\\Home.svelte";
 
     function get_each_context$5(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[4] = list[i];
+    	child_ctx[5] = list[i];
     	return child_ctx;
     }
 
-    // (38:4) {#each $challengeList as challenge}
+    // (39:4) {#each $challengeList as challenge}
     function create_each_block$5(ctx) {
     	let div2;
     	let div0;
-    	let t0_value = /*challenge*/ ctx[4].title + "";
+    	let t0_value = /*challenge*/ ctx[5].title + "";
     	let t0;
     	let t1;
     	let div1;
-    	let t2_value = /*challenge*/ ctx[4].description + "";
+    	let t2_value = /*challenge*/ ctx[5].description + "";
     	let t2;
     	let t3;
     	let mounted;
     	let dispose;
 
     	function click_handler() {
-    		return /*click_handler*/ ctx[2](/*challenge*/ ctx[4]);
+    		return /*click_handler*/ ctx[2](/*challenge*/ ctx[5]);
     	}
 
     	const block = {
@@ -4427,11 +4522,11 @@ var app = (function () {
     			t2 = text(t2_value);
     			t3 = space();
     			attr_dev(div0, "class", "box_title svelte-xvo8yi");
-    			add_location(div0, file$b, 39, 6, 1106);
+    			add_location(div0, file$b, 40, 6, 1201);
     			attr_dev(div1, "class", "box_intro svelte-xvo8yi");
-    			add_location(div1, file$b, 40, 6, 1212);
+    			add_location(div1, file$b, 41, 6, 1307);
     			attr_dev(div2, "class", "challenge_box svelte-xvo8yi");
-    			add_location(div2, file$b, 38, 5, 1071);
+    			add_location(div2, file$b, 39, 5, 1166);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -4449,8 +4544,8 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*$challengeList*/ 2 && t0_value !== (t0_value = /*challenge*/ ctx[4].title + "")) set_data_dev(t0, t0_value);
-    			if (dirty & /*$challengeList*/ 2 && t2_value !== (t2_value = /*challenge*/ ctx[4].description + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*$challengeList*/ 2 && t0_value !== (t0_value = /*challenge*/ ctx[5].title + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*$challengeList*/ 2 && t2_value !== (t2_value = /*challenge*/ ctx[5].description + "")) set_data_dev(t2, t2_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div2);
@@ -4463,7 +4558,7 @@ var app = (function () {
     		block,
     		id: create_each_block$5.name,
     		type: "each",
-    		source: "(38:4) {#each $challengeList as challenge}",
+    		source: "(39:4) {#each $challengeList as challenge}",
     		ctx
     	});
 
@@ -4527,19 +4622,19 @@ var app = (function () {
     			t6 = space();
     			create_component(grass.$$.fragment);
     			attr_dev(div0, "class", "content_title svelte-xvo8yi");
-    			add_location(div0, file$b, 35, 3, 950);
+    			add_location(div0, file$b, 36, 3, 1045);
     			attr_dev(div1, "class", "box_container svelte-xvo8yi");
-    			add_location(div1, file$b, 36, 3, 996);
+    			add_location(div1, file$b, 37, 3, 1091);
     			attr_dev(div2, "class", "pinned");
-    			add_location(div2, file$b, 34, 2, 925);
+    			add_location(div2, file$b, 35, 2, 1020);
     			attr_dev(div3, "class", "content_title svelte-xvo8yi");
-    			add_location(div3, file$b, 46, 3, 1339);
+    			add_location(div3, file$b, 47, 3, 1434);
     			attr_dev(div4, "class", "grass");
-    			add_location(div4, file$b, 45, 2, 1315);
+    			add_location(div4, file$b, 46, 2, 1410);
     			attr_dev(div5, "class", "content svelte-xvo8yi");
-    			add_location(div5, file$b, 33, 1, 900);
+    			add_location(div5, file$b, 34, 1, 995);
     			attr_dev(div6, "class", "overview svelte-xvo8yi");
-    			add_location(div6, file$b, 31, 0, 861);
+    			add_location(div6, file$b, 32, 0, 956);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4639,17 +4734,18 @@ var app = (function () {
     	component_subscribe($$self, challengeList, $$value => $$invalidate(1, $challengeList = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Home', slots, []);
-    	let grass_list = new Array(365);
-
-    	for (let i = 0; i < 365; i += 1) {
-    		grass_list[i] = i % 2;
-    	}
+    	let temp_id = 'tnghd5761';
+    	let grass_list = null;
 
     	// TODO: 유저별로 home을 만들지 자기 home만 보이게 할 것인지 회의 필요
     	beforeUpdate(() => {
     		if (!$user) {
     			if (localStorage.getItem(ACCESS_TOKEN)) getUser(); else push('/login');
     		}
+    	});
+
+    	afterUpdate(async () => {
+    		$$invalidate(0, grass_list = await getGrass($user?.githubId));
     	});
 
     	onMount(() => {
@@ -4671,6 +4767,7 @@ var app = (function () {
     		push,
     		onMount,
     		beforeUpdate,
+    		afterUpdate,
     		GlobalNavigationBar,
     		Profile,
     		Grass,
@@ -4679,12 +4776,15 @@ var app = (function () {
     		changeTab,
     		challengeList,
     		ACCESS_TOKEN,
+    		getGrass,
+    		temp_id,
     		grass_list,
     		$user,
     		$challengeList
     	});
 
     	$$self.$inject_state = $$props => {
+    		if ('temp_id' in $$props) temp_id = $$props.temp_id;
     		if ('grass_list' in $$props) $$invalidate(0, grass_list = $$props.grass_list);
     	};
 
@@ -5639,12 +5739,12 @@ var app = (function () {
     			create_component(grass.$$.fragment);
     			t4 = space();
     			set_style(p0, "font-weight", "bold");
-    			add_location(p0, file$7, 53, 6, 1702);
-    			add_location(p1, file$7, 54, 6, 1752);
+    			add_location(p0, file$7, 53, 6, 1738);
+    			add_location(p1, file$7, 54, 6, 1788);
     			attr_dev(div0, "class", "grass_title svelte-18za3pg");
-    			add_location(div0, file$7, 52, 5, 1669);
+    			add_location(div0, file$7, 52, 5, 1705);
     			attr_dev(div1, "class", "personal_grass svelte-18za3pg");
-    			add_location(div1, file$7, 51, 4, 1634);
+    			add_location(div1, file$7, 51, 4, 1670);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -5709,8 +5809,8 @@ var app = (function () {
 
     	grass = new Grass({
     			props: {
-    				isBig: true,
     				grass_list: /*grass_team*/ ctx[1],
+    				isBig: true,
     				group_num: /*group*/ ctx[2].length
     			},
     			$$inline: true
@@ -5762,23 +5862,23 @@ var app = (function () {
     			t7 = space();
     			create_component(commitrequest.$$.fragment);
     			attr_dev(div0, "class", "upper_title svelte-18za3pg");
-    			add_location(div0, file$7, 34, 1, 1212);
+    			add_location(div0, file$7, 34, 1, 1248);
     			attr_dev(div1, "class", "upper_description svelte-18za3pg");
-    			add_location(div1, file$7, 35, 1, 1252);
+    			add_location(div1, file$7, 35, 1, 1288);
     			attr_dev(div2, "class", "upper svelte-18za3pg");
-    			add_location(div2, file$7, 31, 0, 1069);
+    			add_location(div2, file$7, 31, 0, 1105);
     			attr_dev(p, "class", "grass_title svelte-18za3pg");
     			set_style(p, "font-weight", "bold");
     			set_style(p, "font-size", "1.1rem");
-    			add_location(p, file$7, 39, 2, 1358);
+    			add_location(p, file$7, 39, 2, 1394);
     			attr_dev(div3, "class", "team_grass svelte-18za3pg");
-    			add_location(div3, file$7, 38, 1, 1330);
+    			add_location(div3, file$7, 38, 1, 1366);
     			attr_dev(div4, "class", "personal svelte-18za3pg");
-    			add_location(div4, file$7, 49, 2, 1578);
+    			add_location(div4, file$7, 49, 2, 1614);
     			attr_dev(div5, "class", "personal_admit svelte-18za3pg");
-    			add_location(div5, file$7, 48, 1, 1546);
+    			add_location(div5, file$7, 48, 1, 1582);
     			attr_dev(div6, "class", "content svelte-18za3pg");
-    			add_location(div6, file$7, 37, 0, 1306);
+    			add_location(div6, file$7, 37, 0, 1342);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5897,8 +5997,8 @@ var app = (function () {
     	let grass_team = new Array(365);
 
     	for (let i = 0; i < 365; i += 1) {
-    		grass_list[i] = i % 9;
-    		grass_team[i] = i % 5;
+    		grass_list[i] = { date: '', count: i % 9 };
+    		grass_team[i] = { date: '', count: i % 5 };
     	}
 
     	let req_list = [

@@ -8,7 +8,9 @@
 		<img src='{GIT_URL}/{$user.githubId}.png' alt='userProfile' class="profile_img" />
 	{/if}
 	<div class="profile_id">{$user?.githubId}</div>
-	<div class="edit_btn">Edit profile</div>
+	<div class="edit_btn">
+		<p>Edit profile</p>
+	</div>
 </div>
 
 <style lang="scss">
@@ -24,6 +26,7 @@
 			border-radius: 50%;
 			width: 22.5rem;
 			height: 22.5rem;
+			box-sizing: border-box;
 		}
 		.profile_id{
 			width: 22.5rem;
@@ -34,11 +37,14 @@
 		.edit_btn{
 			width: 22.5rem;
 			height: 1.875rem;
-			padding-top: 0.46875rem;
-			text-align: center;
 			background-color: #FBFBFB;
 			border: #AAAAAA solid 2px;
 			border-radius: 0.625rem;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
 			font-size: 0.9rem;
 			font-weight: bold;
 		}
