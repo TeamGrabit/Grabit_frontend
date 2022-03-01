@@ -1813,21 +1813,20 @@ var app = (function () {
 
     function create_fragment$n(ctx) {
     	let button;
+    	let button_style_value;
     	let current;
     	let mounted;
     	let dispose;
-    	const default_slot_template = /*#slots*/ ctx[5].default;
-    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[4], null);
+    	const default_slot_template = /*#slots*/ ctx[6].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[5], null);
 
     	const block = {
     		c: function create() {
     			button = element("button");
     			if (default_slot) default_slot.c();
     			attr_dev(button, "class", "Button svelte-g6wdwl");
-    			set_style(button, "--width", /*width*/ ctx[0] || 'fit-content');
-    			set_style(button, "--height", /*height*/ ctx[1] || 'fit-content');
-    			set_style(button, "--backgroundColor", /*backgroundColor*/ ctx[2] || 'white');
-    			add_location(button, file$n, 7, 0, 116);
+    			attr_dev(button, "style", button_style_value = "--width: " + (/*width*/ ctx[0] || 'fit-content') + "; --height: " + (/*height*/ ctx[1] || 'fit-content') + "; --backgroundColor: " + (/*backgroundColor*/ ctx[2] || 'white') + "; " + /*style*/ ctx[3] + "");
+    			add_location(button, file$n, 8, 0, 136);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1846,7 +1845,7 @@ var app = (function () {
     					button,
     					"click",
     					function () {
-    						if (is_function(/*onClick*/ ctx[3])) /*onClick*/ ctx[3].apply(this, arguments);
+    						if (is_function(/*onClick*/ ctx[4])) /*onClick*/ ctx[4].apply(this, arguments);
     					},
     					false,
     					false,
@@ -1860,30 +1859,22 @@ var app = (function () {
     			ctx = new_ctx;
 
     			if (default_slot) {
-    				if (default_slot.p && (!current || dirty & /*$$scope*/ 16)) {
+    				if (default_slot.p && (!current || dirty & /*$$scope*/ 32)) {
     					update_slot_base(
     						default_slot,
     						default_slot_template,
     						ctx,
-    						/*$$scope*/ ctx[4],
+    						/*$$scope*/ ctx[5],
     						!current
-    						? get_all_dirty_from_scope(/*$$scope*/ ctx[4])
-    						: get_slot_changes(default_slot_template, /*$$scope*/ ctx[4], dirty, null),
+    						? get_all_dirty_from_scope(/*$$scope*/ ctx[5])
+    						: get_slot_changes(default_slot_template, /*$$scope*/ ctx[5], dirty, null),
     						null
     					);
     				}
     			}
 
-    			if (!current || dirty & /*width*/ 1) {
-    				set_style(button, "--width", /*width*/ ctx[0] || 'fit-content');
-    			}
-
-    			if (!current || dirty & /*height*/ 2) {
-    				set_style(button, "--height", /*height*/ ctx[1] || 'fit-content');
-    			}
-
-    			if (!current || dirty & /*backgroundColor*/ 4) {
-    				set_style(button, "--backgroundColor", /*backgroundColor*/ ctx[2] || 'white');
+    			if (!current || dirty & /*width, height, backgroundColor, style*/ 15 && button_style_value !== (button_style_value = "--width: " + (/*width*/ ctx[0] || 'fit-content') + "; --height: " + (/*height*/ ctx[1] || 'fit-content') + "; --backgroundColor: " + (/*backgroundColor*/ ctx[2] || 'white') + "; " + /*style*/ ctx[3] + "")) {
+    				attr_dev(button, "style", button_style_value);
     			}
     		},
     		i: function intro(local) {
@@ -1920,8 +1911,9 @@ var app = (function () {
     	let { width } = $$props;
     	let { height } = $$props;
     	let { backgroundColor } = $$props;
+    	let { style } = $$props;
     	let { onClick } = $$props;
-    	const writable_props = ['width', 'height', 'backgroundColor', 'onClick'];
+    	const writable_props = ['width', 'height', 'backgroundColor', 'style', 'onClick'];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Button> was created with unknown prop '${key}'`);
@@ -1931,24 +1923,32 @@ var app = (function () {
     		if ('width' in $$props) $$invalidate(0, width = $$props.width);
     		if ('height' in $$props) $$invalidate(1, height = $$props.height);
     		if ('backgroundColor' in $$props) $$invalidate(2, backgroundColor = $$props.backgroundColor);
-    		if ('onClick' in $$props) $$invalidate(3, onClick = $$props.onClick);
-    		if ('$$scope' in $$props) $$invalidate(4, $$scope = $$props.$$scope);
+    		if ('style' in $$props) $$invalidate(3, style = $$props.style);
+    		if ('onClick' in $$props) $$invalidate(4, onClick = $$props.onClick);
+    		if ('$$scope' in $$props) $$invalidate(5, $$scope = $$props.$$scope);
     	};
 
-    	$$self.$capture_state = () => ({ width, height, backgroundColor, onClick });
+    	$$self.$capture_state = () => ({
+    		width,
+    		height,
+    		backgroundColor,
+    		style,
+    		onClick
+    	});
 
     	$$self.$inject_state = $$props => {
     		if ('width' in $$props) $$invalidate(0, width = $$props.width);
     		if ('height' in $$props) $$invalidate(1, height = $$props.height);
     		if ('backgroundColor' in $$props) $$invalidate(2, backgroundColor = $$props.backgroundColor);
-    		if ('onClick' in $$props) $$invalidate(3, onClick = $$props.onClick);
+    		if ('style' in $$props) $$invalidate(3, style = $$props.style);
+    		if ('onClick' in $$props) $$invalidate(4, onClick = $$props.onClick);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [width, height, backgroundColor, onClick, $$scope, slots];
+    	return [width, height, backgroundColor, style, onClick, $$scope, slots];
     }
 
     class Button extends SvelteComponentDev {
@@ -1959,7 +1959,8 @@ var app = (function () {
     			width: 0,
     			height: 1,
     			backgroundColor: 2,
-    			onClick: 3
+    			style: 3,
+    			onClick: 4
     		});
 
     		dispatch_dev("SvelteRegisterComponent", {
@@ -1984,7 +1985,11 @@ var app = (function () {
     			console.warn("<Button> was created without expected prop 'backgroundColor'");
     		}
 
-    		if (/*onClick*/ ctx[3] === undefined && !('onClick' in props)) {
+    		if (/*style*/ ctx[3] === undefined && !('style' in props)) {
+    			console.warn("<Button> was created without expected prop 'style'");
+    		}
+
+    		if (/*onClick*/ ctx[4] === undefined && !('onClick' in props)) {
     			console.warn("<Button> was created without expected prop 'onClick'");
     		}
     	}
@@ -2010,6 +2015,14 @@ var app = (function () {
     	}
 
     	set backgroundColor(value) {
+    		throw new Error("<Button>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get style() {
+    		throw new Error("<Button>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set style(value) {
     		throw new Error("<Button>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
@@ -2424,9 +2437,9 @@ var app = (function () {
     	}
     }
 
-    /* src\storybook\Inputxt.svelte generated by Svelte v3.46.3 */
+    /* src\storybook\Input.svelte generated by Svelte v3.46.3 */
 
-    const file$k = "src\\storybook\\Inputxt.svelte";
+    const file$k = "src\\storybook\\Input.svelte";
 
     function create_fragment$k(ctx) {
     	let input;
@@ -2496,7 +2509,7 @@ var app = (function () {
 
     function instance$k($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
-    	validate_slots('Inputxt', slots, []);
+    	validate_slots('Input', slots, []);
     	let { bindvalue } = $$props;
     	let { size } = $$props;
     	let { maxlength } = $$props;
@@ -2504,7 +2517,7 @@ var app = (function () {
     	const writable_props = ['bindvalue', 'size', 'maxlength', 'placeholder'];
 
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Inputxt> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Input> was created with unknown prop '${key}'`);
     	});
 
     	function input_input_handler() {
@@ -2535,7 +2548,7 @@ var app = (function () {
     	return [bindvalue, size, maxlength, placeholder, input_input_handler];
     }
 
-    class Inputxt extends SvelteComponentDev {
+    class Input extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
 
@@ -2548,7 +2561,7 @@ var app = (function () {
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
-    			tagName: "Inputxt",
+    			tagName: "Input",
     			options,
     			id: create_fragment$k.name
     		});
@@ -2557,52 +2570,52 @@ var app = (function () {
     		const props = options.props || {};
 
     		if (/*bindvalue*/ ctx[0] === undefined && !('bindvalue' in props)) {
-    			console.warn("<Inputxt> was created without expected prop 'bindvalue'");
+    			console.warn("<Input> was created without expected prop 'bindvalue'");
     		}
 
     		if (/*size*/ ctx[1] === undefined && !('size' in props)) {
-    			console.warn("<Inputxt> was created without expected prop 'size'");
+    			console.warn("<Input> was created without expected prop 'size'");
     		}
 
     		if (/*maxlength*/ ctx[2] === undefined && !('maxlength' in props)) {
-    			console.warn("<Inputxt> was created without expected prop 'maxlength'");
+    			console.warn("<Input> was created without expected prop 'maxlength'");
     		}
 
     		if (/*placeholder*/ ctx[3] === undefined && !('placeholder' in props)) {
-    			console.warn("<Inputxt> was created without expected prop 'placeholder'");
+    			console.warn("<Input> was created without expected prop 'placeholder'");
     		}
     	}
 
     	get bindvalue() {
-    		throw new Error("<Inputxt>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<Input>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	set bindvalue(value) {
-    		throw new Error("<Inputxt>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	get size() {
-    		throw new Error("<Inputxt>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<Input>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	set size(value) {
-    		throw new Error("<Inputxt>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	get maxlength() {
-    		throw new Error("<Inputxt>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<Input>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	set maxlength(value) {
-    		throw new Error("<Inputxt>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	get placeholder() {
-    		throw new Error("<Inputxt>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<Input>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	set placeholder(value) {
-    		throw new Error("<Inputxt>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
 
@@ -2985,7 +2998,7 @@ var app = (function () {
     				open: /*isOpenDropdown*/ ctx[0],
     				onClickOut: /*onClickOut*/ ctx[3],
     				right: true,
-    				$$slots: { default: [create_default_slot$6] },
+    				$$slots: { default: [create_default_slot$7] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -3113,7 +3126,7 @@ var app = (function () {
     }
 
     // (36:4) <Dropdown open={isOpenDropdown} {onClickOut} right>
-    function create_default_slot$6(ctx) {
+    function create_default_slot$7(ctx) {
     	let dropdownitem0;
     	let t;
     	let dropdownitem1;
@@ -3185,7 +3198,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot$6.name,
+    		id: create_default_slot$7.name,
     		type: "slot",
     		source: "(36:4) <Dropdown open={isOpenDropdown} {onClickOut} right>",
     		ctx
@@ -4490,26 +4503,26 @@ var app = (function () {
 
     function get_each_context$5(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[5] = list[i];
+    	child_ctx[4] = list[i];
     	return child_ctx;
     }
 
-    // (39:4) {#each $challengeList as challenge}
+    // (37:4) {#each $challengeList as challenge}
     function create_each_block$5(ctx) {
     	let div2;
     	let div0;
-    	let t0_value = /*challenge*/ ctx[5].title + "";
+    	let t0_value = /*challenge*/ ctx[4].title + "";
     	let t0;
     	let t1;
     	let div1;
-    	let t2_value = /*challenge*/ ctx[5].description + "";
+    	let t2_value = /*challenge*/ ctx[4].description + "";
     	let t2;
     	let t3;
     	let mounted;
     	let dispose;
 
     	function click_handler() {
-    		return /*click_handler*/ ctx[2](/*challenge*/ ctx[5]);
+    		return /*click_handler*/ ctx[2](/*challenge*/ ctx[4]);
     	}
 
     	const block = {
@@ -4522,11 +4535,11 @@ var app = (function () {
     			t2 = text(t2_value);
     			t3 = space();
     			attr_dev(div0, "class", "box_title svelte-xvo8yi");
-    			add_location(div0, file$b, 40, 6, 1201);
+    			add_location(div0, file$b, 38, 6, 1169);
     			attr_dev(div1, "class", "box_intro svelte-xvo8yi");
-    			add_location(div1, file$b, 41, 6, 1307);
+    			add_location(div1, file$b, 39, 6, 1275);
     			attr_dev(div2, "class", "challenge_box svelte-xvo8yi");
-    			add_location(div2, file$b, 39, 5, 1166);
+    			add_location(div2, file$b, 37, 5, 1134);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -4544,8 +4557,8 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*$challengeList*/ 2 && t0_value !== (t0_value = /*challenge*/ ctx[5].title + "")) set_data_dev(t0, t0_value);
-    			if (dirty & /*$challengeList*/ 2 && t2_value !== (t2_value = /*challenge*/ ctx[5].description + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*$challengeList*/ 2 && t0_value !== (t0_value = /*challenge*/ ctx[4].title + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*$challengeList*/ 2 && t2_value !== (t2_value = /*challenge*/ ctx[4].description + "")) set_data_dev(t2, t2_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div2);
@@ -4558,7 +4571,7 @@ var app = (function () {
     		block,
     		id: create_each_block$5.name,
     		type: "each",
-    		source: "(39:4) {#each $challengeList as challenge}",
+    		source: "(37:4) {#each $challengeList as challenge}",
     		ctx
     	});
 
@@ -4622,19 +4635,19 @@ var app = (function () {
     			t6 = space();
     			create_component(grass.$$.fragment);
     			attr_dev(div0, "class", "content_title svelte-xvo8yi");
-    			add_location(div0, file$b, 36, 3, 1045);
+    			add_location(div0, file$b, 34, 3, 1013);
     			attr_dev(div1, "class", "box_container svelte-xvo8yi");
-    			add_location(div1, file$b, 37, 3, 1091);
+    			add_location(div1, file$b, 35, 3, 1059);
     			attr_dev(div2, "class", "pinned");
-    			add_location(div2, file$b, 35, 2, 1020);
+    			add_location(div2, file$b, 33, 2, 988);
     			attr_dev(div3, "class", "content_title svelte-xvo8yi");
-    			add_location(div3, file$b, 47, 3, 1434);
+    			add_location(div3, file$b, 45, 3, 1402);
     			attr_dev(div4, "class", "grass");
-    			add_location(div4, file$b, 46, 2, 1410);
+    			add_location(div4, file$b, 44, 2, 1378);
     			attr_dev(div5, "class", "content svelte-xvo8yi");
-    			add_location(div5, file$b, 34, 1, 995);
+    			add_location(div5, file$b, 32, 1, 963);
     			attr_dev(div6, "class", "overview svelte-xvo8yi");
-    			add_location(div6, file$b, 32, 0, 956);
+    			add_location(div6, file$b, 30, 0, 924);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4734,7 +4747,6 @@ var app = (function () {
     	component_subscribe($$self, challengeList, $$value => $$invalidate(1, $challengeList = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Home', slots, []);
-    	let temp_id = 'tnghd5761';
     	let grass_list = null;
 
     	// TODO: 유저별로 home을 만들지 자기 home만 보이게 할 것인지 회의 필요
@@ -4777,14 +4789,12 @@ var app = (function () {
     		challengeList,
     		ACCESS_TOKEN,
     		getGrass,
-    		temp_id,
     		grass_list,
     		$user,
     		$challengeList
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ('temp_id' in $$props) temp_id = $$props.temp_id;
     		if ('grass_list' in $$props) $$invalidate(0, grass_list = $$props.grass_list);
     	};
 
@@ -4813,7 +4823,7 @@ var app = (function () {
     const file$a = "src\\pages\\Login.svelte";
 
     // (8:1) <Button    width='15rem'    height='2.5rem'    backgroundColor='var(--main-white-color)'    onClick={login}   >
-    function create_default_slot$5(ctx) {
+    function create_default_slot$6(ctx) {
     	let span1;
     	let img;
     	let img_src_value;
@@ -4848,7 +4858,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot$5.name,
+    		id: create_default_slot$6.name,
     		type: "slot",
     		source: "(8:1) <Button    width='15rem'    height='2.5rem'    backgroundColor='var(--main-white-color)'    onClick={login}   >",
     		ctx
@@ -4871,7 +4881,7 @@ var app = (function () {
     				height: "2.5rem",
     				backgroundColor: "var(--main-white-color)",
     				onClick: login,
-    				$$slots: { default: [create_default_slot$5] },
+    				$$slots: { default: [create_default_slot$6] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -5065,7 +5075,7 @@ var app = (function () {
     }
 
     // (15:1) <SubNav>
-    function create_default_slot$4(ctx) {
+    function create_default_slot$5(ctx) {
     	let each_1_anchor;
     	let current;
     	let each_value = /*tabItem*/ ctx[1];
@@ -5151,7 +5161,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot$4.name,
+    		id: create_default_slot$5.name,
     		type: "slot",
     		source: "(15:1) <SubNav>",
     		ctx
@@ -5168,7 +5178,7 @@ var app = (function () {
 
     	subnav = new SubNavigation({
     			props: {
-    				$$slots: { default: [create_default_slot$4] },
+    				$$slots: { default: [create_default_slot$5] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -5322,7 +5332,7 @@ var app = (function () {
     }
 
     // (25:6) <Button         width='5rem'         height='2rem'         backgroundColor='#FFB8B4'        >
-    function create_default_slot$3(ctx) {
+    function create_default_slot$4(ctx) {
     	let div;
 
     	const block = {
@@ -5342,7 +5352,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot$3.name,
+    		id: create_default_slot$4.name,
     		type: "slot",
     		source: "(25:6) <Button         width='5rem'         height='2rem'         backgroundColor='#FFB8B4'        >",
     		ctx
@@ -5396,7 +5406,7 @@ var app = (function () {
     				width: "5rem",
     				height: "2rem",
     				backgroundColor: "#FFB8B4",
-    				$$slots: { default: [create_default_slot$3] },
+    				$$slots: { default: [create_default_slot$4] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -6098,7 +6108,7 @@ var app = (function () {
     /* src\pages\CreateChallenge.svelte generated by Svelte v3.46.3 */
     const file$6 = "src\\pages\\CreateChallenge.svelte";
 
-    // (61:3) <Button       width='7rem'      height='2.5rem'      backgroundColor='var(--main-green-color)'      onClick={save}     >
+    // (60:3) <Button       width='7rem'      height='2.5rem'      backgroundColor='var(--main-green-color)'      onClick={save}     >
     function create_default_slot_1(ctx) {
     	let div;
 
@@ -6107,7 +6117,7 @@ var app = (function () {
     			div = element("div");
     			div.textContent = "Create";
     			attr_dev(div, "class", "button_text");
-    			add_location(div, file$6, 66, 4, 1834);
+    			add_location(div, file$6, 65, 4, 1795);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -6121,15 +6131,15 @@ var app = (function () {
     		block,
     		id: create_default_slot_1.name,
     		type: "slot",
-    		source: "(61:3) <Button       width='7rem'      height='2.5rem'      backgroundColor='var(--main-green-color)'      onClick={save}     >",
+    		source: "(60:3) <Button       width='7rem'      height='2.5rem'      backgroundColor='var(--main-green-color)'      onClick={save}     >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (70:3) <Button       width='7rem'      height='2.5rem'      backgroundColor='#E3E3E3'      onClick={cancel}     >
-    function create_default_slot$2(ctx) {
+    // (69:3) <Button       width='7rem'      height='2.5rem'      backgroundColor='#E3E3E3'      onClick={cancel}     >
+    function create_default_slot$3(ctx) {
     	let div;
 
     	const block = {
@@ -6137,7 +6147,7 @@ var app = (function () {
     			div = element("div");
     			div.textContent = "Cancel";
     			attr_dev(div, "class", "button_text");
-    			add_location(div, file$6, 75, 4, 2003);
+    			add_location(div, file$6, 74, 4, 1964);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -6149,9 +6159,9 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot$2.name,
+    		id: create_default_slot$3.name,
     		type: "slot",
-    		source: "(70:3) <Button       width='7rem'      height='2.5rem'      backgroundColor='#E3E3E3'      onClick={cancel}     >",
+    		source: "(69:3) <Button       width='7rem'      height='2.5rem'      backgroundColor='#E3E3E3'      onClick={cancel}     >",
     		ctx
     	});
 
@@ -6172,19 +6182,19 @@ var app = (function () {
     	let t4;
     	let span;
     	let t6;
-    	let inputxt0;
+    	let input0;
     	let updating_bindvalue;
     	let t7;
     	let div2;
     	let t9;
-    	let inputxt1;
+    	let input1;
     	let updating_bindvalue_1;
     	let t10;
     	let hr1;
     	let t11;
     	let div12;
     	let div7;
-    	let input0;
+    	let input2;
     	let t12;
     	let img0;
     	let img0_src_value;
@@ -6195,7 +6205,7 @@ var app = (function () {
     	let div5;
     	let t17;
     	let div11;
-    	let input1;
+    	let input3;
     	let t18;
     	let img1;
     	let img1_src_value;
@@ -6214,31 +6224,31 @@ var app = (function () {
     	let current;
     	globalnavigationbar = new GlobalNavigationBar({ $$inline: true });
 
-    	function inputxt0_bindvalue_binding(value) {
-    		/*inputxt0_bindvalue_binding*/ ctx[4](value);
+    	function input0_bindvalue_binding(value) {
+    		/*input0_bindvalue_binding*/ ctx[4](value);
     	}
 
-    	let inputxt0_props = { maxlength: "20", size: "20" };
+    	let input0_props = { maxlength: "20", size: "20" };
 
     	if (/*challengename*/ ctx[0] !== void 0) {
-    		inputxt0_props.bindvalue = /*challengename*/ ctx[0];
+    		input0_props.bindvalue = /*challengename*/ ctx[0];
     	}
 
-    	inputxt0 = new Inputxt({ props: inputxt0_props, $$inline: true });
-    	binding_callbacks.push(() => bind(inputxt0, 'bindvalue', inputxt0_bindvalue_binding));
+    	input0 = new Input({ props: input0_props, $$inline: true });
+    	binding_callbacks.push(() => bind(input0, 'bindvalue', input0_bindvalue_binding));
 
-    	function inputxt1_bindvalue_binding(value) {
-    		/*inputxt1_bindvalue_binding*/ ctx[5](value);
+    	function input1_bindvalue_binding(value) {
+    		/*input1_bindvalue_binding*/ ctx[5](value);
     	}
 
-    	let inputxt1_props = { size: "80" };
+    	let input1_props = { size: "80" };
 
     	if (/*description*/ ctx[1] !== void 0) {
-    		inputxt1_props.bindvalue = /*description*/ ctx[1];
+    		input1_props.bindvalue = /*description*/ ctx[1];
     	}
 
-    	inputxt1 = new Inputxt({ props: inputxt1_props, $$inline: true });
-    	binding_callbacks.push(() => bind(inputxt1, 'bindvalue', inputxt1_bindvalue_binding));
+    	input1 = new Input({ props: input1_props, $$inline: true });
+    	binding_callbacks.push(() => bind(input1, 'bindvalue', input1_bindvalue_binding));
 
     	button0 = new Button({
     			props: {
@@ -6258,7 +6268,7 @@ var app = (function () {
     				height: "2.5rem",
     				backgroundColor: "#E3E3E3",
     				onClick: /*cancel*/ ctx[3],
-    				$$slots: { default: [create_default_slot$2] },
+    				$$slots: { default: [create_default_slot$3] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -6281,18 +6291,18 @@ var app = (function () {
     			span = element("span");
     			span.textContent = "*";
     			t6 = space();
-    			create_component(inputxt0.$$.fragment);
+    			create_component(input0.$$.fragment);
     			t7 = space();
     			div2 = element("div");
     			div2.textContent = "Description";
     			t9 = space();
-    			create_component(inputxt1.$$.fragment);
+    			create_component(input1.$$.fragment);
     			t10 = space();
     			hr1 = element("hr");
     			t11 = space();
     			div12 = element("div");
     			div7 = element("div");
-    			input0 = element("input");
+    			input2 = element("input");
     			t12 = space();
     			img0 = element("img");
     			t13 = space();
@@ -6304,7 +6314,7 @@ var app = (function () {
     			div5.textContent = "Anyone on the internet can see this Challenge!";
     			t17 = space();
     			div11 = element("div");
-    			input1 = element("input");
+    			input3 = element("input");
     			t18 = space();
     			img1 = element("img");
     			t19 = space();
@@ -6322,62 +6332,62 @@ var app = (function () {
     			t25 = space();
     			create_component(button1.$$.fragment);
     			attr_dev(div0, "class", "title svelte-1lsqura");
-    			add_location(div0, file$6, 26, 2, 600);
+    			add_location(div0, file$6, 25, 2, 565);
     			attr_dev(hr0, "align", "left");
     			attr_dev(hr0, "class", "hr svelte-1lsqura");
-    			add_location(hr0, file$6, 27, 2, 647);
+    			add_location(hr0, file$6, 26, 2, 612);
     			set_style(span, "color", "red");
-    			add_location(span, file$6, 30, 4, 741);
+    			add_location(span, file$6, 29, 4, 706);
     			attr_dev(div1, "class", "text svelte-1lsqura");
-    			add_location(div1, file$6, 29, 3, 705);
+    			add_location(div1, file$6, 28, 3, 670);
     			attr_dev(div2, "class", "text svelte-1lsqura");
-    			add_location(div2, file$6, 34, 3, 862);
+    			add_location(div2, file$6, 33, 3, 825);
     			attr_dev(div3, "class", "sub_content svelte-1lsqura");
-    			add_location(div3, file$6, 28, 2, 677);
+    			add_location(div3, file$6, 27, 2, 642);
     			attr_dev(hr1, "align", "left");
     			attr_dev(hr1, "class", "hr svelte-1lsqura");
-    			add_location(hr1, file$6, 38, 2, 963);
-    			attr_dev(input0, "type", "radio");
-    			attr_dev(input0, "name", "secure");
-    			input0.checked = "check";
-    			add_location(input0, file$6, 41, 4, 1046);
+    			add_location(hr1, file$6, 37, 2, 924);
+    			attr_dev(input2, "type", "radio");
+    			attr_dev(input2, "name", "secure");
+    			input2.checked = "check";
+    			add_location(input2, file$6, 40, 4, 1007);
     			attr_dev(img0, "class", "image svelte-1lsqura");
     			if (!src_url_equal(img0.src, img0_src_value = "images/public.png")) attr_dev(img0, "src", img0_src_value);
     			attr_dev(img0, "alt", "public_img");
-    			add_location(img0, file$6, 42, 4, 1101);
+    			add_location(img0, file$6, 41, 4, 1062);
     			attr_dev(div4, "class", "small_text svelte-1lsqura");
-    			add_location(div4, file$6, 44, 5, 1181);
+    			add_location(div4, file$6, 43, 5, 1142);
     			attr_dev(div5, "class", "explain_text svelte-1lsqura");
-    			add_location(div5, file$6, 45, 5, 1222);
-    			add_location(div6, file$6, 43, 4, 1169);
+    			add_location(div5, file$6, 44, 5, 1183);
+    			add_location(div6, file$6, 42, 4, 1130);
     			attr_dev(div7, "class", "contain svelte-1lsqura");
-    			add_location(div7, file$6, 40, 3, 1021);
-    			attr_dev(input1, "type", "radio");
-    			attr_dev(input1, "name", "secure");
-    			attr_dev(input1, "align", "middle");
-    			add_location(input1, file$6, 50, 4, 1353);
+    			add_location(div7, file$6, 39, 3, 982);
+    			attr_dev(input3, "type", "radio");
+    			attr_dev(input3, "name", "secure");
+    			attr_dev(input3, "align", "middle");
+    			add_location(input3, file$6, 49, 4, 1314);
     			attr_dev(img1, "class", "image svelte-1lsqura");
     			if (!src_url_equal(img1.src, img1_src_value = "images/private.png")) attr_dev(img1, "src", img1_src_value);
     			attr_dev(img1, "alt", "private_img");
-    			add_location(img1, file$6, 51, 4, 1408);
+    			add_location(img1, file$6, 50, 4, 1369);
     			attr_dev(div8, "class", "small_text svelte-1lsqura");
-    			add_location(div8, file$6, 53, 5, 1490);
+    			add_location(div8, file$6, 52, 5, 1451);
     			attr_dev(div9, "class", "explain_text svelte-1lsqura");
-    			add_location(div9, file$6, 54, 5, 1532);
-    			add_location(div10, file$6, 52, 4, 1478);
+    			add_location(div9, file$6, 53, 5, 1493);
+    			add_location(div10, file$6, 51, 4, 1439);
     			attr_dev(div11, "class", "contain svelte-1lsqura");
-    			add_location(div11, file$6, 49, 3, 1328);
+    			add_location(div11, file$6, 48, 3, 1289);
     			attr_dev(div12, "class", "sub_content svelte-1lsqura");
-    			add_location(div12, file$6, 39, 2, 993);
+    			add_location(div12, file$6, 38, 2, 954);
     			attr_dev(hr2, "align", "left");
     			attr_dev(hr2, "class", "hr svelte-1lsqura");
-    			add_location(hr2, file$6, 58, 2, 1649);
+    			add_location(hr2, file$6, 57, 2, 1610);
     			attr_dev(div13, "class", "sub_content svelte-1lsqura");
-    			add_location(div13, file$6, 59, 2, 1679);
+    			add_location(div13, file$6, 58, 2, 1640);
     			attr_dev(div14, "class", "content svelte-1lsqura");
-    			add_location(div14, file$6, 25, 1, 575);
+    			add_location(div14, file$6, 24, 1, 540);
     			attr_dev(div15, "class", "page svelte-1lsqura");
-    			add_location(div15, file$6, 24, 0, 554);
+    			add_location(div15, file$6, 23, 0, 519);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6396,17 +6406,17 @@ var app = (function () {
     			append_dev(div1, t4);
     			append_dev(div1, span);
     			append_dev(div3, t6);
-    			mount_component(inputxt0, div3, null);
+    			mount_component(input0, div3, null);
     			append_dev(div3, t7);
     			append_dev(div3, div2);
     			append_dev(div3, t9);
-    			mount_component(inputxt1, div3, null);
+    			mount_component(input1, div3, null);
     			append_dev(div14, t10);
     			append_dev(div14, hr1);
     			append_dev(div14, t11);
     			append_dev(div14, div12);
     			append_dev(div12, div7);
-    			append_dev(div7, input0);
+    			append_dev(div7, input2);
     			append_dev(div7, t12);
     			append_dev(div7, img0);
     			append_dev(div7, t13);
@@ -6416,7 +6426,7 @@ var app = (function () {
     			append_dev(div6, div5);
     			append_dev(div12, t17);
     			append_dev(div12, div11);
-    			append_dev(div11, input1);
+    			append_dev(div11, input3);
     			append_dev(div11, t18);
     			append_dev(div11, img1);
     			append_dev(div11, t19);
@@ -6434,24 +6444,24 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
-    			const inputxt0_changes = {};
+    			const input0_changes = {};
 
     			if (!updating_bindvalue && dirty & /*challengename*/ 1) {
     				updating_bindvalue = true;
-    				inputxt0_changes.bindvalue = /*challengename*/ ctx[0];
+    				input0_changes.bindvalue = /*challengename*/ ctx[0];
     				add_flush_callback(() => updating_bindvalue = false);
     			}
 
-    			inputxt0.$set(inputxt0_changes);
-    			const inputxt1_changes = {};
+    			input0.$set(input0_changes);
+    			const input1_changes = {};
 
     			if (!updating_bindvalue_1 && dirty & /*description*/ 2) {
     				updating_bindvalue_1 = true;
-    				inputxt1_changes.bindvalue = /*description*/ ctx[1];
+    				input1_changes.bindvalue = /*description*/ ctx[1];
     				add_flush_callback(() => updating_bindvalue_1 = false);
     			}
 
-    			inputxt1.$set(inputxt1_changes);
+    			input1.$set(input1_changes);
     			const button0_changes = {};
 
     			if (dirty & /*$$scope*/ 64) {
@@ -6470,16 +6480,16 @@ var app = (function () {
     		i: function intro(local) {
     			if (current) return;
     			transition_in(globalnavigationbar.$$.fragment, local);
-    			transition_in(inputxt0.$$.fragment, local);
-    			transition_in(inputxt1.$$.fragment, local);
+    			transition_in(input0.$$.fragment, local);
+    			transition_in(input1.$$.fragment, local);
     			transition_in(button0.$$.fragment, local);
     			transition_in(button1.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
     			transition_out(globalnavigationbar.$$.fragment, local);
-    			transition_out(inputxt0.$$.fragment, local);
-    			transition_out(inputxt1.$$.fragment, local);
+    			transition_out(input0.$$.fragment, local);
+    			transition_out(input1.$$.fragment, local);
     			transition_out(button0.$$.fragment, local);
     			transition_out(button1.$$.fragment, local);
     			current = false;
@@ -6488,8 +6498,8 @@ var app = (function () {
     			destroy_component(globalnavigationbar, detaching);
     			if (detaching) detach_dev(t0);
     			if (detaching) detach_dev(div15);
-    			destroy_component(inputxt0);
-    			destroy_component(inputxt1);
+    			destroy_component(input0);
+    			destroy_component(input1);
     			destroy_component(button0);
     			destroy_component(button1);
     		}
@@ -6532,12 +6542,12 @@ var app = (function () {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<CreateChallenge> was created with unknown prop '${key}'`);
     	});
 
-    	function inputxt0_bindvalue_binding(value) {
+    	function input0_bindvalue_binding(value) {
     		challengename = value;
     		$$invalidate(0, challengename);
     	}
 
-    	function inputxt1_bindvalue_binding(value) {
+    	function input1_bindvalue_binding(value) {
     		description = value;
     		$$invalidate(1, description);
     	}
@@ -6546,7 +6556,7 @@ var app = (function () {
     		push,
     		pop,
     		Button,
-    		Inputxt,
+    		Input,
     		GlobalNavigationBar,
     		challengename,
     		description,
@@ -6568,8 +6578,8 @@ var app = (function () {
     		description,
     		save,
     		cancel,
-    		inputxt0_bindvalue_binding,
-    		inputxt1_bindvalue_binding
+    		input0_bindvalue_binding,
+    		input1_bindvalue_binding
     	];
     }
 
@@ -6976,17 +6986,44 @@ var app = (function () {
 
     function get_each_context$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[1] = list[i];
+    	child_ctx[2] = list[i];
     	return child_ctx;
     }
 
-    // (27:5) {#each $challengeList as c}
+    // (32:3) <Button {onClick} width="4rem" height="1.9rem" backgroundColor="#50CE92" style="border: none; color: white;">
+    function create_default_slot$2(ctx) {
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text("New");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_default_slot$2.name,
+    		type: "slot",
+    		source: "(32:3) <Button {onClick} width=\\\"4rem\\\" height=\\\"1.9rem\\\" backgroundColor=\\\"#50CE92\\\" style=\\\"border: none; color: white;\\\">",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (34:5) {#each $challengeList as c}
     function create_each_block$1(ctx) {
     	let challengebox;
     	let current;
 
     	challengebox = new ChallengeBox({
-    			props: { challenge: /*c*/ ctx[1] },
+    			props: { challenge: /*c*/ ctx[2] },
     			$$inline: true
     		});
 
@@ -7000,7 +7037,7 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			const challengebox_changes = {};
-    			if (dirty & /*$challengeList*/ 1) challengebox_changes.challenge = /*c*/ ctx[1];
+    			if (dirty & /*$challengeList*/ 1) challengebox_changes.challenge = /*c*/ ctx[2];
     			challengebox.$set(challengebox_changes);
     		},
     		i: function intro(local) {
@@ -7021,7 +7058,7 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(27:5) {#each $challengeList as c}",
+    		source: "(34:5) {#each $challengeList as c}",
     		ctx
     	});
 
@@ -7031,13 +7068,33 @@ var app = (function () {
     function create_fragment$4(ctx) {
     	let globalnavigationbar;
     	let t0;
-    	let div1;
+    	let div2;
     	let profile;
     	let t1;
+    	let div1;
     	let div0;
+    	let input;
+    	let t2;
+    	let button;
+    	let t3;
     	let current;
     	globalnavigationbar = new GlobalNavigationBar({ $$inline: true });
     	profile = new Profile({ $$inline: true });
+    	input = new Input({ $$inline: true });
+
+    	button = new Button({
+    			props: {
+    				onClick: /*onClick*/ ctx[1],
+    				width: "4rem",
+    				height: "1.9rem",
+    				backgroundColor: "#50CE92",
+    				style: "border: none; color: white;",
+    				$$slots: { default: [create_default_slot$2] },
+    				$$scope: { ctx }
+    			},
+    			$$inline: true
+    		});
+
     	let each_value = /*$challengeList*/ ctx[0];
     	validate_each_argument(each_value);
     	let each_blocks = [];
@@ -7054,19 +7111,26 @@ var app = (function () {
     		c: function create() {
     			create_component(globalnavigationbar.$$.fragment);
     			t0 = space();
-    			div1 = element("div");
+    			div2 = element("div");
     			create_component(profile.$$.fragment);
     			t1 = space();
+    			div1 = element("div");
     			div0 = element("div");
+    			create_component(input.$$.fragment);
+    			t2 = space();
+    			create_component(button.$$.fragment);
+    			t3 = space();
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(div0, "class", "MyChallengeList__content svelte-dd2svf");
-    			add_location(div0, file$4, 25, 1, 687);
-    			attr_dev(div1, "class", "MyChallengeList svelte-dd2svf");
-    			add_location(div1, file$4, 23, 0, 641);
+    			attr_dev(div0, "class", "MyChallengeList__input-box svelte-4t9j29");
+    			add_location(div0, file$4, 29, 2, 789);
+    			attr_dev(div1, "class", "MyChallengeList__content svelte-4t9j29");
+    			add_location(div1, file$4, 28, 1, 747);
+    			attr_dev(div2, "class", "MyChallengeList svelte-4t9j29");
+    			add_location(div2, file$4, 26, 0, 701);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -7074,18 +7138,31 @@ var app = (function () {
     		m: function mount(target, anchor) {
     			mount_component(globalnavigationbar, target, anchor);
     			insert_dev(target, t0, anchor);
-    			insert_dev(target, div1, anchor);
-    			mount_component(profile, div1, null);
-    			append_dev(div1, t1);
+    			insert_dev(target, div2, anchor);
+    			mount_component(profile, div2, null);
+    			append_dev(div2, t1);
+    			append_dev(div2, div1);
     			append_dev(div1, div0);
+    			mount_component(input, div0, null);
+    			append_dev(div0, t2);
+    			mount_component(button, div0, null);
+    			append_dev(div1, t3);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(div0, null);
+    				each_blocks[i].m(div1, null);
     			}
 
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
+    			const button_changes = {};
+
+    			if (dirty & /*$$scope*/ 32) {
+    				button_changes.$$scope = { dirty, ctx };
+    			}
+
+    			button.$set(button_changes);
+
     			if (dirty & /*$challengeList*/ 1) {
     				each_value = /*$challengeList*/ ctx[0];
     				validate_each_argument(each_value);
@@ -7101,7 +7178,7 @@ var app = (function () {
     						each_blocks[i] = create_each_block$1(child_ctx);
     						each_blocks[i].c();
     						transition_in(each_blocks[i], 1);
-    						each_blocks[i].m(div0, null);
+    						each_blocks[i].m(div1, null);
     					}
     				}
 
@@ -7118,6 +7195,8 @@ var app = (function () {
     			if (current) return;
     			transition_in(globalnavigationbar.$$.fragment, local);
     			transition_in(profile.$$.fragment, local);
+    			transition_in(input.$$.fragment, local);
+    			transition_in(button.$$.fragment, local);
 
     			for (let i = 0; i < each_value.length; i += 1) {
     				transition_in(each_blocks[i]);
@@ -7128,6 +7207,8 @@ var app = (function () {
     		o: function outro(local) {
     			transition_out(globalnavigationbar.$$.fragment, local);
     			transition_out(profile.$$.fragment, local);
+    			transition_out(input.$$.fragment, local);
+    			transition_out(button.$$.fragment, local);
     			each_blocks = each_blocks.filter(Boolean);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
@@ -7139,8 +7220,10 @@ var app = (function () {
     		d: function destroy(detaching) {
     			destroy_component(globalnavigationbar, detaching);
     			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(div1);
+    			if (detaching) detach_dev(div2);
     			destroy_component(profile);
+    			destroy_component(input);
+    			destroy_component(button);
     			destroy_each(each_blocks, detaching);
     		}
     	};
@@ -7156,10 +7239,6 @@ var app = (function () {
     	return block;
     }
 
-    function onClick() {
-    	alert('new Challenge!');
-    }
-
     function instance$4($$self, $$props, $$invalidate) {
     	let $challengeList;
     	validate_store(challengeList, 'challengeList');
@@ -7167,8 +7246,16 @@ var app = (function () {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('MyChallengeList', slots, []);
 
+    	function onClick() {
+    		push('/createchallenge');
+    	}
+
     	onMount(() => {
     		changeTab(index.MYCHALLENGE);
+    	});
+
+    	onDestroy(() => {
+    		changeTab(index.HOME);
     	});
 
     	const writable_props = [];
@@ -7188,11 +7275,12 @@ var app = (function () {
     		Profile,
     		ChallengeBox,
     		Button,
+    		Input,
     		onClick,
     		$challengeList
     	});
 
-    	return [$challengeList];
+    	return [$challengeList, onClick];
     }
 
     class MyChallengeList extends SvelteComponentDev {
@@ -7274,7 +7362,7 @@ var app = (function () {
     	let t1;
     	let div5;
     	let div0;
-    	let inputxt;
+    	let input;
     	let t2;
     	let div4;
     	let div1;
@@ -7287,7 +7375,7 @@ var app = (function () {
     	globalnavigationbar = new GlobalNavigationBar({ $$inline: true });
     	profile = new Profile({ $$inline: true });
 
-    	inputxt = new Inputxt({
+    	input = new Input({
     			props: { placeholder: "검색할 내용을 입력하세요" },
     			$$inline: true
     		});
@@ -7313,7 +7401,7 @@ var app = (function () {
     			t1 = space();
     			div5 = element("div");
     			div0 = element("div");
-    			create_component(inputxt.$$.fragment);
+    			create_component(input.$$.fragment);
     			t2 = space();
     			div4 = element("div");
     			div1 = element("div");
@@ -7331,19 +7419,19 @@ var app = (function () {
     			}
 
     			attr_dev(div0, "class", "Page__search");
-    			add_location(div0, file$3, 17, 8, 469);
+    			add_location(div0, file$3, 17, 8, 467);
     			attr_dev(div1, "class", "Page__sort__font svelte-yrypzb");
-    			add_location(div1, file$3, 21, 12, 611);
+    			add_location(div1, file$3, 21, 12, 607);
     			attr_dev(div2, "class", "Page__sort__font svelte-yrypzb");
-    			add_location(div2, file$3, 22, 12, 668);
+    			add_location(div2, file$3, 22, 12, 664);
     			attr_dev(div3, "class", "Page__sort__font svelte-yrypzb");
-    			add_location(div3, file$3, 23, 12, 731);
+    			add_location(div3, file$3, 23, 12, 727);
     			attr_dev(div4, "class", "Page__sort svelte-yrypzb");
-    			add_location(div4, file$3, 20, 8, 573);
+    			add_location(div4, file$3, 20, 8, 569);
     			attr_dev(div5, "class", "Page__content svelte-yrypzb");
-    			add_location(div5, file$3, 16, 4, 432);
+    			add_location(div5, file$3, 16, 4, 430);
     			attr_dev(div6, "class", "Page svelte-yrypzb");
-    			add_location(div6, file$3, 14, 0, 391);
+    			add_location(div6, file$3, 14, 0, 389);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -7356,7 +7444,7 @@ var app = (function () {
     			append_dev(div6, t1);
     			append_dev(div6, div5);
     			append_dev(div5, div0);
-    			mount_component(inputxt, div0, null);
+    			mount_component(input, div0, null);
     			append_dev(div5, t2);
     			append_dev(div5, div4);
     			append_dev(div4, div1);
@@ -7405,7 +7493,7 @@ var app = (function () {
     			if (current) return;
     			transition_in(globalnavigationbar.$$.fragment, local);
     			transition_in(profile.$$.fragment, local);
-    			transition_in(inputxt.$$.fragment, local);
+    			transition_in(input.$$.fragment, local);
 
     			for (let i = 0; i < each_value.length; i += 1) {
     				transition_in(each_blocks[i]);
@@ -7416,7 +7504,7 @@ var app = (function () {
     		o: function outro(local) {
     			transition_out(globalnavigationbar.$$.fragment, local);
     			transition_out(profile.$$.fragment, local);
-    			transition_out(inputxt.$$.fragment, local);
+    			transition_out(input.$$.fragment, local);
     			each_blocks = each_blocks.filter(Boolean);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
@@ -7430,7 +7518,7 @@ var app = (function () {
     			if (detaching) detach_dev(t0);
     			if (detaching) detach_dev(div6);
     			destroy_component(profile);
-    			destroy_component(inputxt);
+    			destroy_component(input);
     			destroy_each(each_blocks, detaching);
     		}
     	};
@@ -7463,7 +7551,7 @@ var app = (function () {
     		Profile,
     		GlobalNavigationBar,
     		ChallengeBox,
-    		Inputxt,
+    		Input,
     		$challengeList
     	});
 

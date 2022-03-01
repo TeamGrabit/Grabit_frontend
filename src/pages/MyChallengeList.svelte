@@ -9,21 +9,28 @@
 	import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
 	import Profile from '../components/Profile.svelte';
 	import ChallengeBox from '../components/ChallengeBox.svelte';
-	import { Button } from '../storybook';
+	import { Button, Input } from '../storybook';
 	
 	function onClick() {
-		alert('new Challenge!');
+		push('/createchallenge');
 	}
 	
 	onMount(() => {
 		changeTab(index.MYCHALLENGE);
 	})
+	onDestroy(() => {
+		changeTab(index.HOME);
+	});
 </script>
 
 <GlobalNavigationBar />
 <div class="MyChallengeList">
 	<Profile />
 	<div class="MyChallengeList__content">
+		<div class="MyChallengeList__input-box">
+			<Input />
+			<Button {onClick} width="4rem" height="1.9rem" backgroundColor="#50CE92" style="border: none; color: white;">New</Button>
+		</div>
 	    {#each $challengeList as c}
         	<ChallengeBox challenge={c} />
     	{/each}
@@ -38,10 +45,15 @@
 		display: flex;
 		flex-direction: row;
 
-		&__content{
+		&__content {
 			width: 67%;
 			margin-top: 2%;
 			padding: 1.875rem 0.625rem 0 0.625rem;
+		}
+
+		&__input-box {
+			display: flex;
+			justify-content: space-between;
 		}
 	}
 </style>

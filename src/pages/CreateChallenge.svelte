@@ -1,7 +1,6 @@
 <script>
 	import { push, pop } from 'svelte-spa-router';
-	import { Button } from '../storybook';
-	import { Inputxt } from '../storybook'; 
+	import { Button, Input } from '../storybook'; 
 	import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
 
 	let challengename="";
@@ -30,11 +29,11 @@
 			<div class=text>Challenge name
 				<span style="color:red;">*</span>
 			</div>
-			<Inputxt bind:bindvalue={challengename} maxlength=20 size=20/>
+			<Input bind:bindvalue={challengename} maxlength=20 size=20/>
 			
 			<div class=text>Description</div>
 
-			<Inputxt bind:bindvalue={description} size=80/>
+			<Input bind:bindvalue={description} size=80/>
 		</div>
 		<hr align=left class=hr />
 		<div class=sub_content>
