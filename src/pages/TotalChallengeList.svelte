@@ -9,7 +9,8 @@
     import Profile from '../components/Profile.svelte';
     import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
     import ChallengeBox from '../components/ChallengeBox.svelte';
-    import { Inputxt, Button, SubNavItem, SearchInput } from '../storybook'; 
+
+    import { Input, Button, SubNavItem, SearchInput } from '../storybook'; 
 
     import {notifications} from '../store/notifications.js';
     import Toast from '../components/Toast.svelte';
@@ -18,8 +19,8 @@
 
     let activeItem = 0;
     let searchText="";
-
-	function onClickItem(i) {
+    
+    function onClickItem(i) {
 		activeItem = i;
 
         switch (i) {    //TODO : 정렬된 challengelist 출력

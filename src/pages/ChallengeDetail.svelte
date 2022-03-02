@@ -15,8 +15,8 @@
 	let grass_list = new Array(365);
 	let grass_team = new Array(365);
 	for (let i=0; i<365; i+=1){
-		grass_list[i] = i % 9;
-		grass_team[i] = i % 5;
+		grass_list[i] = {date:'', count: i % 9};
+		grass_team[i] = {date:'', count: i % 5};
 	};
 
 	let req_list = [
@@ -44,7 +44,7 @@
 				font-size: 1.1rem;
 			"
 		>Team의 잔디</p>
-		<Grass isBig grass_list={grass_team} group_num={group.length}/>
+		<Grass grass_list={grass_team} isBig group_num={group.length}/>
 	</div>
 	<div class="personal_admit">
 		<div class="personal">
