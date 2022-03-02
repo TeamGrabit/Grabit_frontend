@@ -11,9 +11,12 @@
     import ChallengeBox from '../components/ChallengeBox.svelte';
     import { Inputxt, Button, SubNavItem, SearchInput } from '../storybook'; 
 
-    const tabItem = ['\0TITLE', '\0DESCRIPTION', '\0LEADER']
+    import {notifications} from '../store/notifications.js';
+    import Toast from '../components/Toast.svelte';
 
-	let activeItem = 0;
+    const tabItem = ['\0TITLE', '\0DESCRIPTION', '\0LEADER'];
+
+    let activeItem = 0;
     let searchText="";
 
 	function onClickItem(i) {
@@ -44,6 +47,7 @@
 
 <!--챌린지 목록 불러오기-->
 
+<Toast/>
 <GlobalNavigationBar />
 
 <div class='Page'>
@@ -56,6 +60,8 @@
                 />
             </div>
             <div class='Page__top__create_btn'>
+                <button on:click={() => notifications.send('Toast test')}>TestBtn!</button>
+                <button on:click={() => notifications.send('Toast test2')}>TextBtn2!</button>
                 <Button 
                     width='7rem'
                     height='2.5rem'
@@ -67,11 +73,11 @@
             </div>
         </div>
         <div class='Page__sort'>
-                {#each tabItem as item, index}
-                    <div class='Page__sort__font'>
-                        <SubNavItem onClick={() => onClickItem(index)} isActive={activeItem === index}>{item}</SubNavItem>
-                    </div >
-                {/each}
+            {#each tabItem as item, index}
+                <div class='Page__sort__font'>
+                    <SubNavItem onClick={() => onClickItem(index)} isActive={activeItem === index}>{item}</SubNavItem>
+                </div >
+            {/each}
         </div>
         {#each $challengeList as c}
             <ChallengeBox challenge={c} />
