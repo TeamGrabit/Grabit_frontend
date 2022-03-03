@@ -2,6 +2,7 @@
 	export let width;
 	export let height;
 	export let backgroundColor;
+	export let style;
 	export let onClick;
 </script>
 
@@ -10,7 +11,8 @@
 	style="
 		--width: {width || 'fit-content'};
 		--height: {height || 'fit-content'};
-		--backgroundColor: {backgroundColor || 'white'}
+		--backgroundColor: {backgroundColor || 'white'};
+		{style}
 	"
 	on:click={onClick}
 >
