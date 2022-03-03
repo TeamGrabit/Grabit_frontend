@@ -4,16 +4,16 @@
 	export let group_num;
 	let color_level = 4;
 </script>
-
+{#if grass_list}
 <div class="box {isBig ? "big_box" : "grass_box"}">
-	{#each grass_list as commit_count}
+	{#each grass_list as grass}
 		{#if isBig}
 			<!-- 팀 Grass -->
-			<div class="grass grass_{Math.ceil(commit_count * color_level / group_num)}" />
+			<div class="grass grass_{Math.ceil(grass.count * color_level / group_num)}" />
 		{:else}
 			<!-- 개인 Grass -->
-			{#if commit_count < 9}
-				<div class="grass grass_{Math.ceil(commit_count / 2)}" />
+			{#if grass.count < 9}
+				<div class="grass grass_{Math.ceil(grass.count / 2)}" />
 			{:else}
 				<!-- 해당 날짜의 커밋 횟수가 8번 이상이면 가장 진함 -->
 				<div class="grass grass_4" />
@@ -21,6 +21,9 @@
 		{/if}
 	{/each}
 </div>
+{:else}
+	<p>불러오는 중입니다.</p>
+{/if}
 
 <style lang="scss">
 	.box{
