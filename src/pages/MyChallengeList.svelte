@@ -9,7 +9,7 @@
 	import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
 	import Profile from '../components/Profile.svelte';
 	import ChallengeBox from '../components/ChallengeBox.svelte';
-	import { Button, Input } from '../storybook';
+	import { Button, SearchInput } from '../storybook';
 	
 	function onClick() {
 		push('/createchallenge');
@@ -21,6 +21,10 @@
 	onDestroy(() => {
 		changeTab(index.HOME);
 	});
+
+	function searchHandler(val) {
+		alert(val + "를 검색하셨습니다.")
+	}
 </script>
 
 <GlobalNavigationBar />
@@ -28,12 +32,14 @@
 	<Profile />
 	<div class="MyChallengeList__content">
 		<div class="MyChallengeList__input-box">
-			<Input />
+			<SearchInput {searchHandler} />
 			<Button {onClick} width="4rem" height="1.9rem" backgroundColor="#50CE92" style="border: none; color: white;">New</Button>
 		</div>
-	    {#each $challengeList as c}
-        	<ChallengeBox challenge={c} />
-    	{/each}
+		<div class="MyChallengeList__list">
+			{#each $challengeList as c}
+				<ChallengeBox challenge={c} />
+			{/each}
+		</div>
 	</div>
 </div>
 
@@ -54,6 +60,11 @@
 		&__input-box {
 			display: flex;
 			justify-content: space-between;
+			margin-top: 1rem; // TotalChallengeList와 맞춰야한다.
+		}
+
+		&__list {
+			margin-top: 2rem;
 		}
 	}
 </style>
