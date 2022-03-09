@@ -13,7 +13,7 @@ const initialState = [
 		id: 2,
         title: '이 챌린지는 소개글이 없습니다',
         description: '',
-        leader: 'user1',
+        leader: 'MOBUMIN',
         count: 2,
 		isStarred: true
     },
