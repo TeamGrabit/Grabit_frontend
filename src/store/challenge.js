@@ -1,5 +1,6 @@
 import { writable, get } from 'svelte/store';
 import { fetchGet } from '../common/fetch';
+import { notifications } from './notifications.js';
 
 const initialState = [
     {
@@ -68,6 +69,20 @@ const initialState = [
         leader: 'user2',
         count: 1
     },
+    {
+		id: 10,
+        title: '챌린지3',
+        description: '남의 챌린지입니다',
+        leader: 'user2',
+        count: 1
+    },
+    {
+		id: 11,
+        title: '챌린지3',
+        description: '남의 챌린지입니다',
+        leader: 'user2',
+        count: 1
+    },
 ];
 
 export const challengeList = writable(initialState);
@@ -79,5 +94,14 @@ export async function getChallenge( id ) {
 
 export async function getAllChallenge() {
 	const res = await fetchGet(`challenges`);
-	return res;
+    
+    if(res.error)
+        failGetChallenge();
+    else
+        challengeList.set(res);
 }
+
+function failGetChallenge(){
+    notifications.send("불러오기 실패!  다시 시도해주세요!");
+}
+

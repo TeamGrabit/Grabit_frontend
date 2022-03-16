@@ -1,22 +1,30 @@
 <script>
 	import { push, pop } from 'svelte-spa-router';
 	import { Button, Input } from '../storybook'; 
+	import { fetchPost } from '../common/fetch';
 	import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
 
 	let challengename="";
-	let description="";	//임시 데이터.
+	let description="";
+	let isPrivate=false;
 
+	async function sendToServer()
+	{
+		const data = await fetchPost('challenges', {'name': challengename, 'description':description, 'isPrivate': isPrivate})
+		return data
+	}
 	function save(){
 		if(challengename=='')
-			alert("이름을 입력해주세요.");
-		else {												//store에 생성된 데이터 넘겨주기
-			alert(challengename + "이 생성되었습니다."); 
-			push('/');
+			alert("이름을 입력해주세요.")
+		else {
+			sendToServer()
+			alert("챌린지 생성 성공!.")
+			push('/')
 		}
 	}
 	function cancel(){
 		alert("취소되었습니다.")
-		pop();
+		pop()
 	}
 </script>
 
@@ -38,16 +46,15 @@
 		<hr align=left class=hr />
 		<div class=sub_content>
 			<div class=contain>
-				<input type="radio" name="secure"checked="check">
+				<input type="radio" name="secure"checked="check" bind:group={isPrivate} value={false}>
 				<img class="image" src="images/public.png" alt="public_img" />
 				<div>
 					<div class=small_text>Public</div>
 					<div class=explain_text>Anyone on the internet can see this Challenge!</div>
 				</div>
 			</div>
-
 			<div class=contain>
-				<input type="radio" name="secure" align="middle">
+				<input type="radio" name="secure" align="middle" bind:group={isPrivate} value={true}>
 				<img class="image" src="images/private.png" alt="private_img" />
 				<div>
 					<div class=small_text>Private</div>
