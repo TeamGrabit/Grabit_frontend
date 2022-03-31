@@ -2,13 +2,14 @@
     import { onMount, onDestroy } from 'svelte';
     import { push } from 'svelte-spa-router'
     import { changeTab } from '../store/page';
-    import { challengeList } from '../store/challenge.js';
+    import { challengeList , getAllChallenge} from '../store/challenge.js';
     
     import { index } from '../const/tab';
 
     import Profile from '../components/Profile.svelte';
     import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
     import ChallengeBox from '../components/ChallengeBox.svelte';
+    import PagingDiv from '../components/PagingDiv.svelte';
 
     import { Input, Button, SubNavItem, SearchInput } from '../storybook'; 
 
@@ -18,7 +19,7 @@
     const tabItem = ['\0TITLE', '\0DESCRIPTION', '\0LEADER'];
 
     let activeItem = 0;
-    
+
     function onClickItem(i) {
 		activeItem = i;
 
@@ -41,15 +42,17 @@
     }
 
 	onMount(() => {
-		changeTab(index.OTHERS);
+        getAllChallenge();
+	    changeTab(index.OTHERS);
+	})
+	onDestroy(() => {
+		changeTab(index.HOME);
 	})
 
 	function searchHandler(val) {
 		alert(val)
 	}
 </script>
-
-<!--챌린지 목록 불러오기-->
 
 <Toast/>
 <GlobalNavigationBar />
@@ -64,16 +67,7 @@
                 />
             </div>
             <div class='Page__top__create_btn'>
-                <button on:click={() => notifications.send('Toast test')}>TestBtn!</button>
-                <button on:click={() => notifications.send('Toast test2')}>TextBtn2!</button>
-                <Button 
-                    width='7rem'
-                    height='2.5rem'
-                    backgroundColor= 'var(--dark-green-color)'
-                    onClick={onClickCreateChallenge}  
-                >
-                    <p>Create</p>
-                </Button>
+                <Button onClick={onClickCreateChallenge} width="4rem" height="1.9rem" backgroundColor="#50CE92" style="border: none; color: white;">New</Button>
             </div>
         </div>
         <div class='Page__sort'>
@@ -86,6 +80,7 @@
         {#each $challengeList as c}
             <ChallengeBox challenge={c} />
         {/each}
+        <PagingDiv/>
     </div>
 </div>
 

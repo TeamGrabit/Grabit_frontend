@@ -94,6 +94,7 @@ export async function getChallenge( id ) {
 
 export async function getAllChallenge() {
 	const res = await fetchGet(`challenges`);
+    //const res = await fetchGet('challenges?page=0&size=5) 형태로  이후 수정
     
     if(res.error)
         failGetChallenge();
