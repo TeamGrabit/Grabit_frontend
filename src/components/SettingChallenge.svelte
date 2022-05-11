@@ -25,13 +25,20 @@
 {#if isActive}
 <div class="page">
 	<div class="content">
-		<div class=title>Create New Challenge</div>
-		<hr align=left class=hr />
+		<div class=title>Settings</div>
 		<div class=sub_content>
-			<div class=text>Challenge name
-				<span style="color:red;">*</span>
-			</div>
-			<Input bind:bindvalue={challengename} maxlength=20 size=20/>
+			<div class=text>Challenge name</div>
+			<span>
+				<Input bind:bindvalue={challengename} maxlength=20 size=20/>
+				<Button 
+					width='8rem'
+					height='2.5rem'
+					backgroundColor='var(--main-green-color)'
+					onClick={save}
+				>	
+					<div class=button_text>Rename</div>
+				</Button>
+			</span>
 			
 			<div class=text>Description</div>
 
@@ -60,21 +67,21 @@
 		<hr align=left class=hr />
 		<div class=sub_content>
 			<Button 
-				width='7rem'
+				width='8rem'
 				height='2.5rem'
 				backgroundColor='var(--main-green-color)'
 				onClick={save}
 			>	
-				<div class=button_text>Create</div>
+				<div class=button_text>Change</div>
 			</Button>
 
 			<Button 
-				width='7rem'
+				width='8rem'
 				height='2.5rem'
-				backgroundColor='#E3E3E3'
+				backgroundColor='#FAE5E5'
 				onClick={cancel}
 			>	
-				<div class=button_text>Cancel</div>
+				<div class=button_text>Delete</div>
 			</Button>
 		</div>
 	</div>

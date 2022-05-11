@@ -3632,7 +3632,7 @@ var app = (function () {
     }
 
     // (37:5) <DropdownItem onClick=''>
-    function create_default_slot_2(ctx) {
+    function create_default_slot_2$1(ctx) {
     	let t;
 
     	const block = {
@@ -3649,7 +3649,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_2.name,
+    		id: create_default_slot_2$1.name,
     		type: "slot",
     		source: "(37:5) <DropdownItem onClick=''>",
     		ctx
@@ -3695,7 +3695,7 @@ var app = (function () {
     	dropdownitem0 = new DropdownItem({
     			props: {
     				onClick: "",
-    				$$slots: { default: [create_default_slot_2] },
+    				$$slots: { default: [create_default_slot_2$1] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -5550,52 +5550,51 @@ var app = (function () {
     	let div14;
     	let div0;
     	let t1;
-    	let hr0;
-    	let t2;
     	let div3;
     	let div1;
     	let t3;
     	let span;
-    	let t5;
     	let input0;
     	let updating_bindvalue;
-    	let t6;
+    	let t4;
+    	let button0;
+    	let t5;
     	let div2;
-    	let t8;
+    	let t7;
     	let input1;
     	let updating_bindvalue_1;
+    	let t8;
+    	let hr0;
     	let t9;
-    	let hr1;
-    	let t10;
     	let div12;
     	let div7;
     	let input2;
-    	let t11;
+    	let t10;
     	let img0;
     	let img0_src_value;
-    	let t12;
+    	let t11;
     	let div6;
     	let div4;
-    	let t14;
+    	let t13;
     	let div5;
-    	let t16;
+    	let t15;
     	let div11;
     	let input3;
-    	let t17;
+    	let t16;
     	let img1;
     	let img1_src_value;
-    	let t18;
+    	let t17;
     	let div10;
     	let div8;
-    	let t20;
+    	let t19;
     	let div9;
+    	let t21;
+    	let hr1;
     	let t22;
-    	let hr2;
-    	let t23;
     	let div13;
-    	let button0;
-    	let t24;
     	let button1;
+    	let t23;
+    	let button2;
     	let current;
 
     	function input0_bindvalue_binding(value) {
@@ -5611,6 +5610,18 @@ var app = (function () {
     	input0 = new Input({ props: input0_props, $$inline: true });
     	binding_callbacks.push(() => bind(input0, 'bindvalue', input0_bindvalue_binding));
 
+    	button0 = new Button({
+    			props: {
+    				width: "8rem",
+    				height: "2.5rem",
+    				backgroundColor: "var(--main-green-color)",
+    				onClick: /*save*/ ctx[3],
+    				$$slots: { default: [create_default_slot_2] },
+    				$$scope: { ctx }
+    			},
+    			$$inline: true
+    		});
+
     	function input1_bindvalue_binding(value) {
     		/*input1_bindvalue_binding*/ ctx[6](value);
     	}
@@ -5624,9 +5635,9 @@ var app = (function () {
     	input1 = new Input({ props: input1_props, $$inline: true });
     	binding_callbacks.push(() => bind(input1, 'bindvalue', input1_bindvalue_binding));
 
-    	button0 = new Button({
+    	button1 = new Button({
     			props: {
-    				width: "7rem",
+    				width: "8rem",
     				height: "2.5rem",
     				backgroundColor: "var(--main-green-color)",
     				onClick: /*save*/ ctx[3],
@@ -5636,11 +5647,11 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	button1 = new Button({
+    	button2 = new Button({
     			props: {
-    				width: "7rem",
+    				width: "8rem",
     				height: "2.5rem",
-    				backgroundColor: "#E3E3E3",
+    				backgroundColor: "#FAE5E5",
     				onClick: /*cancel*/ ctx[4],
     				$$slots: { default: [create_default_slot$7] },
     				$$scope: { ctx }
@@ -5653,161 +5664,155 @@ var app = (function () {
     			div15 = element("div");
     			div14 = element("div");
     			div0 = element("div");
-    			div0.textContent = "Create New Challenge";
+    			div0.textContent = "Settings";
     			t1 = space();
-    			hr0 = element("hr");
-    			t2 = space();
     			div3 = element("div");
     			div1 = element("div");
-    			t3 = text("Challenge name\n\t\t\t\t");
+    			div1.textContent = "Challenge name";
+    			t3 = space();
     			span = element("span");
-    			span.textContent = "*";
-    			t5 = space();
     			create_component(input0.$$.fragment);
-    			t6 = space();
+    			t4 = space();
+    			create_component(button0.$$.fragment);
+    			t5 = space();
     			div2 = element("div");
     			div2.textContent = "Description";
-    			t8 = space();
+    			t7 = space();
     			create_component(input1.$$.fragment);
+    			t8 = space();
+    			hr0 = element("hr");
     			t9 = space();
-    			hr1 = element("hr");
-    			t10 = space();
     			div12 = element("div");
     			div7 = element("div");
     			input2 = element("input");
-    			t11 = space();
+    			t10 = space();
     			img0 = element("img");
-    			t12 = space();
+    			t11 = space();
     			div6 = element("div");
     			div4 = element("div");
     			div4.textContent = "Public";
-    			t14 = space();
+    			t13 = space();
     			div5 = element("div");
     			div5.textContent = "Anyone on the internet can see this Challenge!";
-    			t16 = space();
+    			t15 = space();
     			div11 = element("div");
     			input3 = element("input");
-    			t17 = space();
+    			t16 = space();
     			img1 = element("img");
-    			t18 = space();
+    			t17 = space();
     			div10 = element("div");
     			div8 = element("div");
     			div8.textContent = "Private";
-    			t20 = space();
+    			t19 = space();
     			div9 = element("div");
     			div9.textContent = "You choose who can see and join to this Challenge!";
+    			t21 = space();
+    			hr1 = element("hr");
     			t22 = space();
-    			hr2 = element("hr");
-    			t23 = space();
     			div13 = element("div");
-    			create_component(button0.$$.fragment);
-    			t24 = space();
     			create_component(button1.$$.fragment);
+    			t23 = space();
+    			create_component(button2.$$.fragment);
     			attr_dev(div0, "class", "title svelte-1lsqura");
-    			add_location(div0, file$c, 27, 2, 478);
+    			add_location(div0, file$c, 27, 2, 505);
+    			attr_dev(div1, "class", "text svelte-1lsqura");
+    			add_location(div1, file$c, 29, 3, 568);
+    			add_location(span, file$c, 30, 3, 609);
+    			attr_dev(div2, "class", "text svelte-1lsqura");
+    			add_location(div2, file$c, 42, 3, 892);
+    			attr_dev(div3, "class", "sub_content svelte-1lsqura");
+    			add_location(div3, file$c, 28, 2, 540);
     			attr_dev(hr0, "align", "left");
     			attr_dev(hr0, "class", "hr svelte-1lsqura");
-    			add_location(hr0, file$c, 28, 2, 524);
-    			set_style(span, "color", "red");
-    			add_location(span, file$c, 31, 4, 615);
-    			attr_dev(div1, "class", "text svelte-1lsqura");
-    			add_location(div1, file$c, 30, 3, 580);
-    			attr_dev(div2, "class", "text svelte-1lsqura");
-    			add_location(div2, file$c, 35, 3, 730);
-    			attr_dev(div3, "class", "sub_content svelte-1lsqura");
-    			add_location(div3, file$c, 29, 2, 553);
-    			attr_dev(hr1, "align", "left");
-    			attr_dev(hr1, "class", "hr svelte-1lsqura");
-    			add_location(hr1, file$c, 39, 2, 825);
+    			add_location(hr0, file$c, 46, 2, 991);
     			attr_dev(input2, "type", "radio");
     			attr_dev(input2, "name", "secure");
     			input2.checked = "check";
-    			add_location(input2, file$c, 42, 4, 905);
+    			add_location(input2, file$c, 49, 4, 1074);
     			attr_dev(img0, "class", "image svelte-1lsqura");
     			if (!src_url_equal(img0.src, img0_src_value = "images/public.png")) attr_dev(img0, "src", img0_src_value);
     			attr_dev(img0, "alt", "public_img");
-    			add_location(img0, file$c, 43, 4, 959);
+    			add_location(img0, file$c, 50, 4, 1129);
     			attr_dev(div4, "class", "small_text svelte-1lsqura");
-    			add_location(div4, file$c, 45, 5, 1037);
+    			add_location(div4, file$c, 52, 5, 1209);
     			attr_dev(div5, "class", "explain_text svelte-1lsqura");
-    			add_location(div5, file$c, 46, 5, 1077);
-    			add_location(div6, file$c, 44, 4, 1026);
+    			add_location(div5, file$c, 53, 5, 1250);
+    			add_location(div6, file$c, 51, 4, 1197);
     			attr_dev(div7, "class", "contain svelte-1lsqura");
-    			add_location(div7, file$c, 41, 3, 881);
+    			add_location(div7, file$c, 48, 3, 1049);
     			attr_dev(input3, "type", "radio");
     			attr_dev(input3, "name", "secure");
     			attr_dev(input3, "align", "middle");
-    			add_location(input3, file$c, 51, 4, 1203);
+    			add_location(input3, file$c, 58, 4, 1381);
     			attr_dev(img1, "class", "image svelte-1lsqura");
     			if (!src_url_equal(img1.src, img1_src_value = "images/private.png")) attr_dev(img1, "src", img1_src_value);
     			attr_dev(img1, "alt", "private_img");
-    			add_location(img1, file$c, 52, 4, 1257);
+    			add_location(img1, file$c, 59, 4, 1436);
     			attr_dev(div8, "class", "small_text svelte-1lsqura");
-    			add_location(div8, file$c, 54, 5, 1337);
+    			add_location(div8, file$c, 61, 5, 1518);
     			attr_dev(div9, "class", "explain_text svelte-1lsqura");
-    			add_location(div9, file$c, 55, 5, 1378);
-    			add_location(div10, file$c, 53, 4, 1326);
+    			add_location(div9, file$c, 62, 5, 1560);
+    			add_location(div10, file$c, 60, 4, 1506);
     			attr_dev(div11, "class", "contain svelte-1lsqura");
-    			add_location(div11, file$c, 50, 3, 1179);
+    			add_location(div11, file$c, 57, 3, 1356);
     			attr_dev(div12, "class", "sub_content svelte-1lsqura");
-    			add_location(div12, file$c, 40, 2, 854);
-    			attr_dev(hr2, "align", "left");
-    			attr_dev(hr2, "class", "hr svelte-1lsqura");
-    			add_location(hr2, file$c, 59, 2, 1491);
+    			add_location(div12, file$c, 47, 2, 1021);
+    			attr_dev(hr1, "align", "left");
+    			attr_dev(hr1, "class", "hr svelte-1lsqura");
+    			add_location(hr1, file$c, 66, 2, 1677);
     			attr_dev(div13, "class", "sub_content svelte-1lsqura");
-    			add_location(div13, file$c, 60, 2, 1520);
+    			add_location(div13, file$c, 67, 2, 1707);
     			attr_dev(div14, "class", "content svelte-1lsqura");
-    			add_location(div14, file$c, 26, 1, 454);
+    			add_location(div14, file$c, 26, 1, 480);
     			attr_dev(div15, "class", "page svelte-1lsqura");
-    			add_location(div15, file$c, 25, 0, 434);
+    			add_location(div15, file$c, 25, 0, 459);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div15, anchor);
     			append_dev(div15, div14);
     			append_dev(div14, div0);
     			append_dev(div14, t1);
-    			append_dev(div14, hr0);
-    			append_dev(div14, t2);
     			append_dev(div14, div3);
     			append_dev(div3, div1);
-    			append_dev(div1, t3);
-    			append_dev(div1, span);
+    			append_dev(div3, t3);
+    			append_dev(div3, span);
+    			mount_component(input0, span, null);
+    			append_dev(span, t4);
+    			mount_component(button0, span, null);
     			append_dev(div3, t5);
-    			mount_component(input0, div3, null);
-    			append_dev(div3, t6);
     			append_dev(div3, div2);
-    			append_dev(div3, t8);
+    			append_dev(div3, t7);
     			mount_component(input1, div3, null);
+    			append_dev(div14, t8);
+    			append_dev(div14, hr0);
     			append_dev(div14, t9);
-    			append_dev(div14, hr1);
-    			append_dev(div14, t10);
     			append_dev(div14, div12);
     			append_dev(div12, div7);
     			append_dev(div7, input2);
-    			append_dev(div7, t11);
+    			append_dev(div7, t10);
     			append_dev(div7, img0);
-    			append_dev(div7, t12);
+    			append_dev(div7, t11);
     			append_dev(div7, div6);
     			append_dev(div6, div4);
-    			append_dev(div6, t14);
+    			append_dev(div6, t13);
     			append_dev(div6, div5);
-    			append_dev(div12, t16);
+    			append_dev(div12, t15);
     			append_dev(div12, div11);
     			append_dev(div11, input3);
-    			append_dev(div11, t17);
+    			append_dev(div11, t16);
     			append_dev(div11, img1);
-    			append_dev(div11, t18);
+    			append_dev(div11, t17);
     			append_dev(div11, div10);
     			append_dev(div10, div8);
-    			append_dev(div10, t20);
+    			append_dev(div10, t19);
     			append_dev(div10, div9);
+    			append_dev(div14, t21);
+    			append_dev(div14, hr1);
     			append_dev(div14, t22);
-    			append_dev(div14, hr2);
-    			append_dev(div14, t23);
     			append_dev(div14, div13);
-    			mount_component(button0, div13, null);
-    			append_dev(div13, t24);
     			mount_component(button1, div13, null);
+    			append_dev(div13, t23);
+    			mount_component(button2, div13, null);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
@@ -5820,6 +5825,13 @@ var app = (function () {
     			}
 
     			input0.$set(input0_changes);
+    			const button0_changes = {};
+
+    			if (dirty & /*$$scope*/ 128) {
+    				button0_changes.$$scope = { dirty, ctx };
+    			}
+
+    			button0.$set(button0_changes);
     			const input1_changes = {};
 
     			if (!updating_bindvalue_1 && dirty & /*description*/ 4) {
@@ -5829,13 +5841,6 @@ var app = (function () {
     			}
 
     			input1.$set(input1_changes);
-    			const button0_changes = {};
-
-    			if (dirty & /*$$scope*/ 128) {
-    				button0_changes.$$scope = { dirty, ctx };
-    			}
-
-    			button0.$set(button0_changes);
     			const button1_changes = {};
 
     			if (dirty & /*$$scope*/ 128) {
@@ -5843,28 +5848,38 @@ var app = (function () {
     			}
 
     			button1.$set(button1_changes);
+    			const button2_changes = {};
+
+    			if (dirty & /*$$scope*/ 128) {
+    				button2_changes.$$scope = { dirty, ctx };
+    			}
+
+    			button2.$set(button2_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
     			transition_in(input0.$$.fragment, local);
-    			transition_in(input1.$$.fragment, local);
     			transition_in(button0.$$.fragment, local);
+    			transition_in(input1.$$.fragment, local);
     			transition_in(button1.$$.fragment, local);
+    			transition_in(button2.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
     			transition_out(input0.$$.fragment, local);
-    			transition_out(input1.$$.fragment, local);
     			transition_out(button0.$$.fragment, local);
+    			transition_out(input1.$$.fragment, local);
     			transition_out(button1.$$.fragment, local);
+    			transition_out(button2.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div15);
     			destroy_component(input0);
-    			destroy_component(input1);
     			destroy_component(button0);
+    			destroy_component(input1);
     			destroy_component(button1);
+    			destroy_component(button2);
     		}
     	};
 
@@ -5879,16 +5894,46 @@ var app = (function () {
     	return block;
     }
 
-    // (62:3) <Button      width='7rem'     height='2.5rem'     backgroundColor='var(--main-green-color)'     onClick={save}    >
+    // (33:4) <Button        width='8rem'       height='2.5rem'       backgroundColor='var(--main-green-color)'       onClick={save}      >
+    function create_default_slot_2(ctx) {
+    	let div;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			div.textContent = "Rename";
+    			attr_dev(div, "class", "button_text");
+    			add_location(div, file$c, 38, 5, 820);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_default_slot_2.name,
+    		type: "slot",
+    		source: "(33:4) <Button        width='8rem'       height='2.5rem'       backgroundColor='var(--main-green-color)'       onClick={save}      >",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (69:3) <Button       width='8rem'      height='2.5rem'      backgroundColor='var(--main-green-color)'      onClick={save}     >
     function create_default_slot_1$4(ctx) {
     	let div;
 
     	const block = {
     		c: function create() {
     			div = element("div");
-    			div.textContent = "Create";
+    			div.textContent = "Change";
     			attr_dev(div, "class", "button_text");
-    			add_location(div, file$c, 67, 4, 1668);
+    			add_location(div, file$c, 74, 4, 1862);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5902,23 +5947,23 @@ var app = (function () {
     		block,
     		id: create_default_slot_1$4.name,
     		type: "slot",
-    		source: "(62:3) <Button      width='7rem'     height='2.5rem'     backgroundColor='var(--main-green-color)'     onClick={save}    >",
+    		source: "(69:3) <Button       width='8rem'      height='2.5rem'      backgroundColor='var(--main-green-color)'      onClick={save}     >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (71:3) <Button      width='7rem'     height='2.5rem'     backgroundColor='#E3E3E3'     onClick={cancel}    >
+    // (78:3) <Button       width='8rem'      height='2.5rem'      backgroundColor='#FAE5E5'      onClick={cancel}     >
     function create_default_slot$7(ctx) {
     	let div;
 
     	const block = {
     		c: function create() {
     			div = element("div");
-    			div.textContent = "Cancel";
+    			div.textContent = "Delete";
     			attr_dev(div, "class", "button_text");
-    			add_location(div, file$c, 76, 4, 1828);
+    			add_location(div, file$c, 83, 4, 2031);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5932,7 +5977,7 @@ var app = (function () {
     		block,
     		id: create_default_slot$7.name,
     		type: "slot",
-    		source: "(71:3) <Button      width='7rem'     height='2.5rem'     backgroundColor='#E3E3E3'     onClick={cancel}    >",
+    		source: "(78:3) <Button       width='8rem'      height='2.5rem'      backgroundColor='#FAE5E5'      onClick={cancel}     >",
     		ctx
     	});
 
@@ -6122,7 +6167,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			div.textContent = "ApproveMemeber";
-    			add_location(div, file$b, 5, 0, 56);
+    			add_location(div, file$b, 5, 0, 61);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
