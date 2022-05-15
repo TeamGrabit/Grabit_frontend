@@ -5,6 +5,7 @@
 	import ApproveMember from '../components/ApproveMember.svelte';
 	
 	const tabItem = ['설정', '참여 승인']
+	const settingSubComponent = [SettingChallenge, ApproveMember]
 	let activeItem = 0;
 	function onClickItem(i) {
 		activeItem = i;
@@ -22,8 +23,9 @@
 			<SubNavItem onClick={() => onClickItem(index)} isActive={activeItem === index}>{item}</SubNavItem>
 		{/each}
 	</SubNav>
-	<SettingChallenge isActive={activeItem === 0} />
-	<ApproveMember isActive={activeItem === 1} />
+	{#each settingSubComponent as SubComp, index}
+		<SubComp isActive={activeItem === index} />
+	{/each}
 </div>
 
 <style lang="scss">

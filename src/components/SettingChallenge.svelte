@@ -126,7 +126,7 @@
 	.title{
     	font-size: 1.3rem;
     	margin-top: 1rem;
-    	margin-bottom: 1rem;
+    	margin-bottom: 2rem;
 		font-weight: bold;
 	}
 	.text{
