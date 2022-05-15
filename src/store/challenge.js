@@ -1,5 +1,5 @@
 import { writable, get } from 'svelte/store';
-import { fetchGet } from '../common/fetch';
+import { fetchGet, fetchPatch } from '../common/fetch';
 
 const initialState = [
     {
@@ -79,5 +79,10 @@ export async function getChallenge( id ) {
 
 export async function getAllChallenge() {
 	const res = await fetchGet(`challenges`);
+	return res;
+}
+
+export async function joinChallenge( challenge_id ) {
+	const res = await fetchPatch(`challenges/${challenge_id}/join`);
 	return res;
 }
