@@ -89,6 +89,26 @@ export async function fetchPut(path, body, otherOptions = {}, headers = {}) {
 	return data;
 }
 
+export async function fetchPatch(path, body, otherOptions = {}, headers = {}) {
+	const url = `${API_URL}/${path}`;
+
+	const options = {
+		method: "PATCH",
+		headers: {
+			"Content-Type": "application/json",
+			...bearer,
+			...headers,
+		},
+		body: JSON.stringify(body),
+		...otherOptions
+	};
+
+	const res = await fetch(url, options)
+	const data = await res.json();
+
+	return data;
+}
+
 export async function fetchDelete(path, otherOptions = {}, headers = {}) {
 	const url = `${API_URL}/${path}`;
 

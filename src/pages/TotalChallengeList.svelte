@@ -18,7 +18,6 @@
     const tabItem = ['\0TITLE', '\0DESCRIPTION', '\0LEADER'];
 
     let activeItem = 0;
-    let searchText="";
     
     function onClickItem(i) {
 		activeItem = i;
@@ -44,6 +43,10 @@
 	onMount(() => {
 		changeTab(index.OTHERS);
 	})
+
+	function searchHandler(val) {
+		alert(val)
+	}
 </script>
 
 <!--챌린지 목록 불러오기-->
@@ -57,7 +60,7 @@
         <div class='Page__top'>
             <div class='Page__top__search'>
                 <SearchInput
-                    bindvalue={searchText}
+                   {searchHandler}
                 />
             </div>
             <div class='Page__top__create_btn'>
