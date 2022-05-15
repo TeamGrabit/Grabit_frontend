@@ -32,6 +32,13 @@ jobs:
         
       - name: Build
         run: npm run build
+        uses: actions/upload-artifact@v1
+        with:
+          name: build-folder
+          path: /public/build
         
       - name: Release(Deploy)
+        uses: actions/download-artifact@v1
+        with:
+          name: build-folder
         run: npm run release
