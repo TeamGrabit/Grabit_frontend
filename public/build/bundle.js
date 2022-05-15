@@ -2145,7 +2145,7 @@ var app = (function () {
     }
 
     const GIT_URL = "https://github.com";
-    const API_URL = "https://grabit.duckdns.org/api";
+    const API_URL = "http://grabit-loadbalancer-1950665151.ap-northeast-2.elb.amazonaws.com/api";
     const CALLBACK_URL = "http://localhost:5000/";
     const ACCESS_TOKEN = 'accessToken';
 
@@ -2190,11 +2190,11 @@ var app = (function () {
     	window.location.href = res.url;
     }
 
-    async function fetchPut(path, body, otherOptions = {}, headers = {}) {
+    async function fetchPatch(path, body, otherOptions = {}, headers = {}) {
     	const url = `${API_URL}/${path}`;
 
     	const options = {
-    		method: "PUT",
+    		method: "PATCH",
     		headers: {
     			"Content-Type": "application/json",
     			...bearer,
@@ -5076,7 +5076,7 @@ var app = (function () {
     }
 
     async function joinChallenge( challenge_id ) {
-    	const res = await fetchPut(`challenges/${challenge_id}/join`);
+    	const res = await fetchPatch(`challenges/${challenge_id}/join`);
     	return res;
     }
 
@@ -5099,7 +5099,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (37:4) {#each $challengeList as challenge}
+    // (33:4) {#each $challengeList as challenge}
     function create_each_block$6(ctx) {
     	let div2;
     	let div0;
@@ -5127,11 +5127,11 @@ var app = (function () {
     			t2 = text(t2_value);
     			t3 = space();
     			attr_dev(div0, "class", "box_title svelte-xvo8yi");
-    			add_location(div0, file$c, 38, 6, 1169);
+    			add_location(div0, file$c, 34, 6, 1117);
     			attr_dev(div1, "class", "box_intro svelte-xvo8yi");
-    			add_location(div1, file$c, 39, 6, 1275);
+    			add_location(div1, file$c, 35, 6, 1223);
     			attr_dev(div2, "class", "challenge_box svelte-xvo8yi");
-    			add_location(div2, file$c, 37, 5, 1134);
+    			add_location(div2, file$c, 33, 5, 1082);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -5163,7 +5163,7 @@ var app = (function () {
     		block,
     		id: create_each_block$6.name,
     		type: "each",
-    		source: "(37:4) {#each $challengeList as challenge}",
+    		source: "(33:4) {#each $challengeList as challenge}",
     		ctx
     	});
 
@@ -5227,19 +5227,19 @@ var app = (function () {
     			t6 = space();
     			create_component(grass.$$.fragment);
     			attr_dev(div0, "class", "content_title svelte-xvo8yi");
-    			add_location(div0, file$c, 34, 3, 1013);
+    			add_location(div0, file$c, 30, 3, 961);
     			attr_dev(div1, "class", "box_container svelte-xvo8yi");
-    			add_location(div1, file$c, 35, 3, 1059);
+    			add_location(div1, file$c, 31, 3, 1007);
     			attr_dev(div2, "class", "pinned");
-    			add_location(div2, file$c, 33, 2, 988);
+    			add_location(div2, file$c, 29, 2, 936);
     			attr_dev(div3, "class", "content_title svelte-xvo8yi");
-    			add_location(div3, file$c, 45, 3, 1402);
+    			add_location(div3, file$c, 41, 3, 1350);
     			attr_dev(div4, "class", "grass");
-    			add_location(div4, file$c, 44, 2, 1378);
+    			add_location(div4, file$c, 40, 2, 1326);
     			attr_dev(div5, "class", "content svelte-xvo8yi");
-    			add_location(div5, file$c, 32, 1, 963);
+    			add_location(div5, file$c, 28, 1, 911);
     			attr_dev(div6, "class", "overview svelte-xvo8yi");
-    			add_location(div6, file$c, 30, 0, 924);
+    			add_location(div6, file$c, 26, 0, 872);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5342,18 +5342,14 @@ var app = (function () {
     	let grass_list = null;
 
     	// TODO: 유저별로 home을 만들지 자기 home만 보이게 할 것인지 회의 필요
-    	beforeUpdate(() => {
-    		if (!$user) {
-    			if (localStorage.getItem(ACCESS_TOKEN)) getUser(); else push$1('/login');
-    		}
-    	});
-
-    	afterUpdate(async () => {
-    		$$invalidate(0, grass_list = await getGrass($user?.githubId));
-    	});
-
-    	onMount(() => {
+    	onMount(async () => {
     		changeTab(0);
+
+    		if (!$user) {
+    			if (localStorage.getItem(ACCESS_TOKEN)) await getUser(); else push$1('/login');
+    		}
+
+    		$$invalidate(0, grass_list = await getGrass($user?.githubId));
     	});
 
     	const writable_props = [];

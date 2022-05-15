@@ -21,6 +21,11 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
+
+      # Node 환경을 설정하여 npm 커맨드를 사용할 수 있도록 하는 Action을 불러옵니다.
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
             
       - name: Install dependencies
         run: npm install
