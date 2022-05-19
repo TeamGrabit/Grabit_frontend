@@ -13,17 +13,13 @@
 	let grass_list = null
 
 	// TODO: 유저별로 home을 만들지 자기 home만 보이게 할 것인지 회의 필요
-	beforeUpdate(() => {
+	onMount(async() => {
+		changeTab(0)
 		if (!$user){
-			if(localStorage.getItem(ACCESS_TOKEN)) getUser();
+			if(localStorage.getItem(ACCESS_TOKEN)) await getUser();
 			else push('/login');
 		}
-	});
-	afterUpdate(async () => {
 		grass_list = await getGrass($user?.githubId)
-	});
-	onMount(() => {
-		changeTab(0)
 	})
 </script>
 
