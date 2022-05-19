@@ -1,6 +1,11 @@
 <script>
 	import { user } from '../store/user.js';
 	import { GIT_URL } from '../common/Variable.js';
+	import { push } from 'svelte-spa-router'
+
+	function onClick(){
+		push('/editprofile');
+	}
 </script>
 
 <div class="profile">
@@ -8,9 +13,9 @@
 		<img src='{GIT_URL}/{$user.githubId}.png' alt='userProfile' class="profile_img" />
 	{/if}
 	<div class="profile_id">{$user?.githubId}</div>
-	<div class="edit_btn">
+	<button class="edit_btn" on:click={onClick}>
 		<p>Edit profile</p>
-	</div>
+	</button>
 </div>
 
 <style lang="scss">
