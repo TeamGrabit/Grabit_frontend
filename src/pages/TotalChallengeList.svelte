@@ -2,7 +2,7 @@
     import { onMount, onDestroy } from 'svelte';
     import { push } from 'svelte-spa-router'
     import { changeTab } from '../store/page';
-    import { challengeList , getAllChallenge} from '../store/challenge.js';
+    import { challengeList, totalPages, getAllChallenge} from '../store/challenge.js';
     
     import { index } from '../const/tab';
 
@@ -19,6 +19,7 @@
     const tabItem = ['\0TITLE', '\0DESCRIPTION', '\0LEADER'];
 
     let activeItem = 0;
+    let view_item_num= 1; //TODO : 한 페이지에 보여질 CHALLENGE 개수 정할 수 있도록
 
     function onClickItem(i) {
 		activeItem = i;
@@ -41,10 +42,15 @@
         push('/createchallenge');
     }
 
+    function getChallenge(event){
+        getAllChallenge(event.detail.recentpage, view_item_num);
+    }
+    
 	onMount(() => {
-        getAllChallenge();
+        getAllChallenge(0, view_item_num);
 	    changeTab(index.OTHERS);
 	})
+    
 	onDestroy(() => {
 		changeTab(index.HOME);
 	})
@@ -78,9 +84,9 @@
             {/each}
         </div>
         {#each $challengeList as c}
-            <ChallengeBox challenge={c} />
+            <ChallengeBox challenge={c} />            
         {/each}
-        <PagingDiv/>
+        <PagingDiv on:message={getChallenge}/>
     </div>
 </div>
 

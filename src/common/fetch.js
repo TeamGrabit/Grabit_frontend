@@ -29,6 +29,7 @@ export async function fetchGet(path, otherOptions = {}, headers = {}) {
 	const res = await fetch(url, options);
 	const data = await res.json();
 
+	console.log(data);
 	return data;
 
 }
@@ -125,4 +126,25 @@ export async function fetchDelete(path, otherOptions = {}, headers = {}) {
 	const data = await res.json();
 
 	return data;
+}
+
+export async function fetchPostImage(path, body, otherOptions = {}, headers = {}) {
+	const url = `${API_URL}/${path}`;
+
+	const options = {
+		method: "POST",
+		headers: {
+			"Content-Type": "multipart/form-data",
+			...bearer,
+			...headers,
+		},
+		body: {body},
+		...otherOptions
+	};
+
+	const res = await fetch(url, options);
+	//?const data=res.text();
+	console.log(res);
+	
+	return res;
 }

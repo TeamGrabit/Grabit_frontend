@@ -5,20 +5,23 @@ import { Button, Input } from '../storybook';
 import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
 import { user } from '../store/user.js';
 import { GIT_URL } from '../common/Variable.js';
+import { fetchPostImage } from '../common/fetch';
 
 let name='';
 let bio="";
 let input;
-let image;
 let showImage = false;
+let image;
+let file;
 
 onMount(() => {
 	name=$user.username;
-    bio=$user.bio; 
+    bio=$user.bio;
 })
 
 function Save(){
-    fetchPostImage('image',);
+    console.log(file);
+    fetchPostImage('image', file);
 
     alert("수정되었습니다.");
 
@@ -28,10 +31,10 @@ function Cancel(){
     push('/');
 }
 
-  function onChange() {
+function onChange() {
 
-    const file = input.files[0];
-		
+    file = input.files[0];
+
     if (file) {
 	    showImage = true;
         const reader = new FileReader();
@@ -39,7 +42,6 @@ function Cancel(){
         image.setAttribute("src", reader.result);
       });
       reader.readAsDataURL(file);
-			
 		return;
     } 
 		showImage = false; 
@@ -58,6 +60,7 @@ function Cancel(){
             {:else}
                 <img bind:this={image} src="" alt="Preview" class="content__profileImg" />
             {/if}
+
             <input bind:this={input} on:change={onChange} type="file"/>
         </div>
 

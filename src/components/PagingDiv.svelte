@@ -1,50 +1,78 @@
 <script>
-    let recent_page=1; // 이후 challenge store에서 관리로 변경예정 
+    import { totalPages } from '../store/challenge.js'; 
+    import { createEventDispatcher } from 'svelte';
 
-    let total_page=100;
-    //let total_page=fetchGet()... total_page_num 받아오기
+	const dispatch = createEventDispatcher();
 
+
+    let recent_page=0;
+    let init_i=0;
+
+    function clickPageBtn(i) {
+        recent_page=i;
+		dispatch('message', {
+			recentpage: i
+		});
+	}
     function returnAllPageNum(){
         let array=Array();
-        if(recent_page<100){
-            for(let i=1; i<11; i++)
-            array.push(i)
+        
+        init_i=Math.floor(recent_page/10)*10;
+
+        if(init_i+10>$totalPages){
+            for(let i=init_i; i<$totalPages;i++)
+                array.push(i);
+        }else{
+            for(let i=init_i; i<init_i+10;i++)
+                array.push(i);
         }
-        return array
+        return array;
     }
     function clickLeftBtn(){
-        //recent_page-10
+        if(recent_page-10<0)
+            recent_page=0;
+        else
+            recent_page=recent_page-10;
+
+        clickPageBtn(recent_page);
     }
     function clickRightBtn(){
-        //recent_page+10
+        console.log(recent_page, $totalPages);
+        if(recent_page+10>=$totalPages){
+            recent_page=$totalPages-1;
+        }else{
+            recent_page=recent_page+10;
+        }
+        
+        clickPageBtn(recent_page);
     }
-    function onChange(event){
-        //page reload
-    }
+
 </script>
 
 <div class='Paging'>
-    
-    {#if recent_page<10}
-        <button class="Paging__move_button" on:click={clickLeftBtn}>&lt;</button>
-    {/if}
-    
-    {#each returnAllPageNum() as i}
-        {#if recent_page==i}
-            <label class="Paging__button">
-                <input checked="checked" type="radio" name="page_num" on:change={onChange} value={i}/>
-                <span>{i}</span>
-            </label>
-        {:else}
-            <label class="Paging__button">
-                <input type="radio" name="page_num" on:change={onChange} value={i}/>
-                <span>{i}</span>
-            </label>
+   {#if $totalPages!=0}
+        {#if init_i>=10}
+            <button class="Paging__move_button" on:click={clickLeftBtn}>&lt;</button>
         {/if}
-    {/each}
+    
+        {#each returnAllPageNum() as i}
+            {#if recent_page==i}
+                <label class="Paging__button">
+                    <input checked="checked" type="radio" name="page_num" on:change={()=>{clickPageBtn(i)}}/>
+                    <span>{i+1}</span>
+                </label>
+            {:else}
+                <label class="Paging__button">
+                    <input type="radio" name="page_num" on:change={()=>{clickPageBtn(i)}}/>
+                    <span>{i+1}</span>
+                </label>
+            {/if}
+        {/each}
 
-    {#if true} <!-- #if recentpage > totalpage-10 -->
-        <button class="Paging__move_button" on:click={clickRightBtn}>&gt;</button>
+        {#if init_i+10 < $totalPages}
+            <button class="Paging__move_button" on:click={clickRightBtn}>&gt;</button>
+        {/if}
+        
     {/if}
 </div>
 
