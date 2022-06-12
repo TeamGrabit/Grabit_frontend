@@ -1,8 +1,10 @@
 <script>
+	import { onMount } from 'svelte';
 	import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
 	import { SubNav, SubNavItem } from '../storybook';
 	import SettingChallenge from '../components/SettingChallenge.svelte';
 	import ApproveMember from '../components/ApproveMember.svelte';
+	export let params = {}
 	
 	const tabItem = ['설정', '참여 승인']
 	const settingSubComponent = [SettingChallenge, ApproveMember]
@@ -24,7 +26,7 @@
 		{/each}
 	</SubNav>
 	{#each settingSubComponent as SubComp, index}
-		<SubComp isActive={activeItem === index} />
+		<SubComp isActive={activeItem === index} {params} />
 	{/each}
 </div>
 

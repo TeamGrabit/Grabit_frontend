@@ -86,3 +86,24 @@ export async function joinChallenge( challenge_id ) {
 	const res = await fetchPatch(`challenges/${challenge_id}/join`);
 	return res;
 }
+
+export function getApproveList(groupId) {
+	// TODO: api 나오면 연결하기
+	return [
+		{
+			requestId: 1,
+			name: 'tnghd5761',
+			message: '같이 해요 :)같이 해요 :)같이 해요 :)같이 해요 :)'
+		},
+		{
+			requestId: 2,
+			name: 'llJTOll',
+			message: '같이 해요 :)'
+		},
+		{
+			requestId: 2,
+			name: 'MOBUMIN',
+			message: '같이 해요 :)'
+		}
+	]
+}
