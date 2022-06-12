@@ -17,13 +17,13 @@ Grass🌱 + Habit✍
 
 ## 사이트 뷰
 
-![home]('https://raw.githubusercontent.com/TeamGrabit/Grabit_frontend/develop/public/images/[Readme]Home.png')
+![home](https://raw.githubusercontent.com/TeamGrabit/Grabit_frontend/develop/public/images/[Readme]Home.png)
 
-![home]('https://raw.githubusercontent.com/TeamGrabit/Grabit_frontend/develop/public/images/[Readme]ChallengeDetail.png')
+![detail](https://raw.githubusercontent.com/TeamGrabit/Grabit_frontend/develop/public/images/[Readme]ChallengeDetail.png)
 
-![home]('https://raw.githubusercontent.com/TeamGrabit/Grabit_frontend/develop/public/images/[Readme]ChallengeSetting.png')
+![setting](https://raw.githubusercontent.com/TeamGrabit/Grabit_frontend/develop/public/images/[Readme]ChallengeSetting.png)
 
-![home]('https://raw.githubusercontent.com/TeamGrabit/Grabit_frontend/develop/public/images/[Readme]ChallengeApprove.png')
+![approve](https://raw.githubusercontent.com/TeamGrabit/Grabit_frontend/develop/public/images/[Readme]ChallengeApprove.png)
 
 ## 깃허브 구경가기
 
