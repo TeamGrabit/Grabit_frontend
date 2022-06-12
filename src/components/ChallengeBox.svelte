@@ -5,7 +5,6 @@
 	export let challenge;
 
 	const isLeader = $user?.githubId === challenge.leader;
-	console.log($user);
 	let isStarred = challenge.isStarred;
 
 	function onClickTitle(){

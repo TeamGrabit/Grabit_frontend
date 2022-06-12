@@ -32,7 +32,7 @@
 				<Input bind:bindvalue={challengename} maxlength=20 size=20/>
 				<Button 
 					width='8rem'
-					height='2.5rem'
+					height='2.1rem'
 					backgroundColor='var(--main-green-color)'
 					onClick={save}
 				>	
@@ -42,7 +42,7 @@
 			
 			<div class=text>Description</div>
 
-			<Input bind:bindvalue={description} size=80/>
+			<Input bind:bindvalue={description} size=70/>
 		</div>
 		<hr align=left class=hr />
 		<div class=sub_content>
@@ -65,7 +65,7 @@
 			</div>
 		</div>
 		<hr align=left class=hr />
-		<div class=sub_content>
+		<div class="sub_content button_group">
 			<Button 
 				width='8rem'
 				height='2.5rem'
@@ -97,7 +97,8 @@
 		padding-top: 6rem;
 	}
 	.content{
-		width: auto;
+		width: 40rem;
+		margin-bottom: 1.5rem;
 	}
 	.sub_content{
 		margin-top:0.1rem;
@@ -117,7 +118,6 @@
 	.hr{
 		border:none;
 		height: 1px;
-		width: 40rem;
 		background: var(--border-color);
 		margin-top: 2rem;
 		margin-bottom: 2rem;

@@ -30,6 +30,8 @@
 
 <style lang="scss">
 	.Setting {
-		
+		display: flex;
+		gap: 2rem;
+		width: 100%;
 	}
 </style>
