@@ -1,10 +1,11 @@
 <script>
-	export let isActive
+	export let isActive;
+	import { Card } from '../storybook';
 </script>
 
 {#if isActive}
 <div class="page">
-	ApproveMemeber
+	<Card>hi</Card>
 </div>
 {/if}
 
@@ -15,5 +16,6 @@
 		align-items: center;
 		padding: 1rem;
 		padding-top: 6rem;
+		width: 40rem;
 	}
 </style>
