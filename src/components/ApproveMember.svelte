@@ -92,7 +92,7 @@
 
 			&--ellipsis {
 				overflow: hidden;
-    			text-overflow: ellipsis;
+				text-overflow: ellipsis;
 			}
 		}
 
