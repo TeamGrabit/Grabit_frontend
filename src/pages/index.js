@@ -17,7 +17,7 @@ export default {
 	'/createchallenge': CreateChallenge,
 	'/mychallenge' : MyChallengeList, // TODO: 사람 별로 페이지를 가질지 결정 후 변경
 	'/totalchallenge' : TotalChallengeList,
-	'/editprofile' : EditProfile,
+	'/edit_profile' : EditProfile,
 	'/redirect': RedirectPage,
 	'*': NotFound,
 }

@@ -41,7 +41,7 @@
 	<div class="Box__footer">
 		<div class="Box__footer__group">
 			<img class="Box__icon" src="images/human.svg" alt="human" />
-			{Array(challenge.member).length|| 0}
+			{challenge.member.length|| 0}
 		</div>
 		<div class="Box__footer__group">
 			<img class="Box__icon" src="images/crown.svg" alt="crown" />

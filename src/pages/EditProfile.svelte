@@ -5,7 +5,7 @@ import { Button, Input } from '../storybook';
 import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
 import { user } from '../store/user.js';
 import { GIT_URL } from '../common/Variable.js';
-import { fetchPostImage } from '../common/fetch';
+import { fetchPost } from '../common/fetch';
 
 let name='';
 let bio="";
@@ -21,7 +21,8 @@ onMount(() => {
 
 function Save(){
     console.log(file);
-    fetchPostImage('image', file);
+    console.log(typeof(file));
+    fetchPost('image', file,{},{"Content-Type": "multipart/form-data"});
 
     alert("수정되었습니다.");
 
@@ -42,7 +43,7 @@ function onChange() {
         image.setAttribute("src", reader.result);
       });
       reader.readAsDataURL(file);
-		return;
+	  return;
     } 
 		showImage = false; 
   }

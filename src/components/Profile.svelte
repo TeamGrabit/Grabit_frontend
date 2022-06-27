@@ -4,7 +4,7 @@
 	import { push } from 'svelte-spa-router'
 
 	function onClick(){
-		push('/editprofile');
+		push('/edit_profile');
 	}
 </script>
 
