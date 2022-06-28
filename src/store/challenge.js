@@ -13,7 +13,7 @@ const initialState = [
 		id: 2,
         title: '이 챌린지는 소개글이 없습니다',
         description: '',
-        leader: 'user1',
+        leader: 'MOBUMIN',
         count: 2,
 		isStarred: true
     },
@@ -85,4 +85,25 @@ export async function getAllChallenge() {
 export async function joinChallenge( challenge_id ) {
 	const res = await fetchPatch(`challenges/${challenge_id}/join`);
 	return res;
+}
+
+export function getApproveList(groupId) {
+	// TODO: api 나오면 연결하기
+	return [
+		{
+			requestId: 1,
+			name: 'tnghd5761',
+			message: '같이 해요 :)같이 해요 :)같이 해요 :)같이 해요 :)'
+		},
+		{
+			requestId: 2,
+			name: 'llJTOll',
+			message: '같이 해요 :)'
+		},
+		{
+			requestId: 2,
+			name: 'MOBUMIN',
+			message: '같이 해요 :)'
+		}
+	]
 }

@@ -26,8 +26,14 @@ export async function fetchGet(path, otherOptions = {}, headers = {}) {
 		...otherOptions
 	}
 
-	const res = await fetch(url, options);
-	const data = await res.json();
+	let data;
+
+	try{
+		const res = await fetch(url, options);
+		data = await res.json();
+	} catch(error) {
+		data = { err: error.name, errMsg: error.message }
+	}
 
 	return data;
 
