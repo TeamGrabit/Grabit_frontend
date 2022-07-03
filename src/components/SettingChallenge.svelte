@@ -25,7 +25,7 @@
 	})
 
 	const onClickSave = () => {
-		const isPrivate = secure==='private' ? true: false;
+		const isPrivate = secure === 'private';
 		editChallenge(params.id, { name, description, isPrivate }).then(() => {
 			notifications.send('저장되었습니다.');
 		})
