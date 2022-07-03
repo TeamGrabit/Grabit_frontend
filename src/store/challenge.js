@@ -1,5 +1,5 @@
 import { writable, get } from 'svelte/store';
-import { fetchGet, fetchPatch } from '../common/fetch';
+import { fetchDelete, fetchGet, fetchPatch } from '../common/fetch';
 
 const initialState = [
     {
@@ -73,12 +73,21 @@ const initialState = [
 export const challengeList = writable(initialState);
 
 export async function getChallenge( id ) {
-	const res = await fetchGet(`challenges/${id}`)
+	let res = await fetchGet(`challenges/${id}`)
+	if(res.error) {
+		// TODO: api 연결된 후에는 에러처리 하기
+		res = {name: 'API 연결해죠', description: 'API 연결행', isPrivate: true };
+	}
 	return res;
 }
 
 export async function getAllChallenge() {
 	const res = await fetchGet(`challenges`);
+	return res;
+}
+
+export async function getUserChallenge() {
+	const res = await fetchGet(`users/challenge`);
 	return res;
 }
 
@@ -106,4 +115,14 @@ export function getApproveList(groupId) {
 			message: '같이 해요 :)'
 		}
 	]
+}
+
+export const editChallenge = async(id, body) => {
+	const res = await fetchPatch(`challenges/${id}`, body);
+	return res;
+}
+
+export const deleteChallenge = async(id) => {
+	const res = await fetchDelete(`challenges/${id}`);
+	return res;
 }
