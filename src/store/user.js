@@ -2,7 +2,11 @@ import { writable } from 'svelte/store';
 import { ACCESS_TOKEN, CALLBACK_URL } from '../common/Variable';
 import { fetchGet, fetchGetRedirectUrl, getQueryUri } from '../common/fetch';
 
-export const user = writable(null);
+const tempUser = {
+	githubId: 'MOBUMIN',
+}
+
+export const user = writable(tempUser);
 
 export async function login() {
 	await fetchGetRedirectUrl(`oauth2/authorization/github?${getQueryUri({ 'redirect_uri' : CALLBACK_URL+'#/redirect'})}`, {redirect: 'manual'})
@@ -31,6 +35,6 @@ export function setUserToken() {
 export async function getUser() {
 	// TODO: 로그인 실패시 토스트 알럿 띄우기
 	const userData = await fetchGet('users');
-	if(userData.error) failLogin();
+	if(userData.err) failLogin();
 	else user.set(userData);
 }

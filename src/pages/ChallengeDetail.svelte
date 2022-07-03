@@ -1,12 +1,22 @@
 <script>
-	import { onMount } from 'svelte';
+	import { onMount, beforeUpdate } from 'svelte';
 	import Grass from '../components/Grass.svelte';
 	import CommitRequest from '../components/CommitRequest.svelte';
-	import { getChallenge } from '../store/challenge.js';
-	
+	import { getChallenge, joinChallenge } from '../store/challenge.js';
+	import { ACCESS_TOKEN } from '../common/Variable';
+	import { user, getUser } from '../store/user.js';
+	import Button from '../storybook/Button.svelte';
+
+
 	export let params = {}
 	let challenge = null;
 
+	beforeUpdate(() => {
+		if (!$user){
+			if(localStorage.getItem(ACCESS_TOKEN)) getUser();
+			else push('/login');
+		}
+	});
 	onMount(async () => {
 		challenge = await getChallenge(params.id);
 	});
@@ -32,8 +42,22 @@
 <div class="upper">
 	<!--<div class="upper_title">{challenge.title}</div>-->
 	<!--<div class="upper_description">{challenge.desc}</div>-->
-	<div class="upper_title">챌린지 이름</div>
-	<div class="upper_description">하루 한번 씩</div>
+	<div class="title_desc">
+		<div class="upper_title">챌린지 이름</div>
+		<div class="upper_description">하루 한번 씩</div>
+	</div>
+	{#if !group.includes($user.githubId)}
+		<div class="join">
+			<Button
+				width='5rem'
+				height='2rem'
+				backgroundColor='#B8FFC8'
+				onClick={joinChallenge(params.id)}
+			>
+				<div class="btn_txt">JOIN</div>
+			</Button>
+		</div>
+	{/if}
 </div>
 <div class="content">
 	<div class="team_grass">
@@ -69,6 +93,8 @@
 		background-color: #F7F7F7;
 		width: 100%;
 		border-bottom: solid 1px #DDDDDD;
+		display: flex;
+		justify-content: space-between;
 		&_title{
 			padding-bottom: 1rem;
 			font-weight: bold;

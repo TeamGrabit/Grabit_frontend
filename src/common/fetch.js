@@ -26,8 +26,14 @@ export async function fetchGet(path, otherOptions = {}, headers = {}) {
 		...otherOptions
 	}
 
-	const res = await fetch(url, options);
-	const data = await res.json();
+	let data;
+
+	try{
+		const res = await fetch(url, options);
+		data = await res.json();
+	} catch(error) {
+		data = { err: error.name, errMsg: error.message }
+	}
 
 	return data;
 
@@ -74,6 +80,26 @@ export async function fetchPut(path, body, otherOptions = {}, headers = {}) {
 
 	const options = {
 		method: "PUT",
+		headers: {
+			"Content-Type": "application/json",
+			...bearer,
+			...headers,
+		},
+		body: JSON.stringify(body),
+		...otherOptions
+	};
+
+	const res = await fetch(url, options)
+	const data = await res.json();
+
+	return data;
+}
+
+export async function fetchPatch(path, body, otherOptions = {}, headers = {}) {
+	const url = `${API_URL}/${path}`;
+
+	const options = {
+		method: "PATCH",
 		headers: {
 			"Content-Type": "application/json",
 			...bearer,

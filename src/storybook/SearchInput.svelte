@@ -1,10 +1,9 @@
 <script>
-    export let bindvalue;
-    function searchRequest() {
-        alert(bindvalue+"를 검색함"); // TODO: back과 통신.
-    }
+	export let searchHandler;
+	let searchVal = "";
+
     const onKeyPress = e => {
-        if (e.charCode === 13) searchRequest();
+        if (e.charCode === 13) searchHandler(searchVal);
     };
 </script>
 
@@ -13,7 +12,7 @@
         type="text"
         placeholder="Search..."
         on:keypress={onKeyPress}
-        bind:value={bindvalue}
+        bind:value={searchVal}
     />
     <img class="search__icon" src="images/search.png" alt="search_img" />
 </div>
