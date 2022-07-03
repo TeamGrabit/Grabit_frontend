@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { location } from 'svelte-spa-router';
+	import { user } from '../store/user.js';
 	import { challengeList } from '../store/challenge.js';
 
 	let challenge_code = null;
@@ -24,6 +25,17 @@
 	//		challenge_code = $location.split('/')[2];
 	//	};
 	//})
+	const chat_logs = [
+		{id: 'user1', message: '내용1', createdAt: '22-07-03 16:11'},
+		{id: 'user1', message: '내용2', createdAt: '22-07-03 16:11'},
+		{id: 'tnghd5761', message: '내 메세지1', createdAt: '22-07-03 16:12'},
+		{id: 'user1', message: '내용3', createdAt: '22-07-03 16:12'},
+		{id: 'tnghd5761', message: '내 메세지2', createdAt: '22-07-03 16:12'},
+		{id: 'user1', message: '내용4', createdAt: '22-07-03 16:14'},
+		{id: 'user1', message: '내용5', createdAt: '22-07-03 16:15'},
+		{id: 'tnghd5761', message: '내 메세지3', createdAt: '22-07-03 16:15'},
+		{id: 'tnghd5761', message: '내 메세지4', createdAt: '22-07-03 16:16'}
+	]
 </script>
 
 {#if isClicked}
@@ -33,12 +45,20 @@
 			<div class="close" on:click={onClick} />
 		</div>
 		{#if chat_on}
-			<div>{challenge_code} 번의 채팅방</div>
-			<div>{$challengeList[challenge_code].title}</div>
+			<div class="chat_room">
+				<div class="chat_room_upper">{$challengeList[challenge_code].title}</div>
+				{#each log as chat_logs}
+					<!--{#if log.id == }-->
+				{/each}
+				<div class="chat_room_body">채팅방</div>
+			</div>
 		{:else}
 			<div class="chat_main">
 				{#each $challengeList as challenge}
-					<div class="chat_main_room" on:click={chatOn(challenge.id)}>{challenge.title}</div>
+					<div class="chat_main_room" on:click={chatOn(challenge.id)}>
+						<div>{challenge.title}</div>
+						<div>last chat</div>
+					</div>
 				{/each}
 			</div>
 		{/if}
@@ -61,6 +81,7 @@
 		height: 35rem;
 		max-width: 85vw;
 		max-height: 80vh;
+		padding: 0 0.5rem 0.5rem 0.5rem;
 		background-color: white;
 		border: 0.15rem solid #DDDDDD;
 		border-radius: 1rem;
@@ -80,12 +101,37 @@
 			cursor: pointer;
 		}
 		&_main{
-			margin-top: 1rem;
-			height: 30rem;
+			height: calc(100% - 2.5rem);
 			overflow-y: overlay;
 			&_room{
-				height: 4rem;
-				border-bottom: 1px solid #DDDDDD;
+				margin-top: 0.5rem;
+				margin-bottom: 0.5rem;
+				padding: 0.5rem;
+				background-color: #A6EDC0;
+				height: 3rem;
+				border: 1px solid #DDDDDD;
+				border-radius: 1rem;
+			}
+		}
+		&_room{
+			height: calc(100% - 2.5rem);
+			margin-top: 0.5rem;
+			&_upper{
+				height: 2rem;
+				padding: 0.5rem;
+				border-top-left-radius: 1rem;
+				border-top-right-radius: 1rem;
+				background-color: #42A968;
+				overflow:hidden;
+				text-overflow:ellipsis;
+				white-space:nowrap;
+			}
+			&_body{
+				height: calc(100% - 4.5rem);
+				padding: 0.5rem;
+				border-bottom-left-radius: 1rem;
+				border-bottom-right-radius: 1rem;
+				background-color: #A6EDC0;
 			}
 		}
 	}
