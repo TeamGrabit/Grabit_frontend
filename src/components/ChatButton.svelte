@@ -14,6 +14,9 @@
 	function chatOn(id) {
 		chat_on = true;
 		challenge_code = id-1;
+		var objDiv = document.getElementById("chat_room_body");
+		console.log(objDiv);
+		objDiv.scrollTop = objDiv.scrollHeight;
 	}
 	function chatOff() {
 		chat_on = false;
@@ -47,10 +50,18 @@
 		{#if chat_on}
 			<div class="chat_room">
 				<div class="chat_room_upper">{$challengeList[challenge_code].title}</div>
-				{#each log as chat_logs}
-					<!--{#if log.id == }-->
-				{/each}
-				<div class="chat_room_body">채팅방</div>
+				<div id = "chat_room_body" class="chat_room_body">
+					{#each chat_logs as log}
+						{#if log.id == $user?.githubId}
+							<div>나</div>
+							<div class="message message_my">{log.message}</div>
+						{:else}
+							<div>{log.id}</div>
+							<div class="message message_other">{log.message}</div>
+						{/if}
+					{/each}
+				</div>
+				<input class="chat_write" />
 			</div>
 		{:else}
 			<div class="chat_main">
@@ -127,12 +138,28 @@
 				white-space:nowrap;
 			}
 			&_body{
-				height: calc(100% - 4.5rem);
+				height: calc(100% - 7.5rem);
+				background-color: #A6EDC0;
+				overflow-y: overlay;
+			}
+			&_write{
+				height: 3rem;
 				padding: 0.5rem;
+				background-color: white;
 				border-bottom-left-radius: 1rem;
 				border-bottom-right-radius: 1rem;
-				background-color: #A6EDC0;
 			}
+		}
+	}
+	.message{
+		height: 2.5rem;
+		border-radius: 0.5rem;
+		padding: 0.25rem;
+		&_my{
+			background-color: yellow;
+		}
+		&_other{
+			background-color: white;
 		}
 	}
 	.chat_btn{
