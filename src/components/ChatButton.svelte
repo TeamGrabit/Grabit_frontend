@@ -3,6 +3,7 @@
 	import { location } from 'svelte-spa-router';
 	import { user } from '../store/user.js';
 	import { challengeList } from '../store/challenge.js';
+	import ChatRoom from './ChatRoom.svelte';
 
 	let challenge_code = null;
 	let chat_on = false;
@@ -14,9 +15,6 @@
 	function chatOn(id) {
 		chat_on = true;
 		challenge_code = id-1;
-		var objDiv = document.getElementById("chat_room_body");
-		console.log(objDiv);
-		objDiv.scrollTop = objDiv.scrollHeight;
 	}
 	function chatOff() {
 		chat_on = false;
@@ -28,17 +26,6 @@
 	//		challenge_code = $location.split('/')[2];
 	//	};
 	//})
-	const chat_logs = [
-		{id: 'user1', message: '내용1', createdAt: '22-07-03 16:11'},
-		{id: 'user1', message: '내용2', createdAt: '22-07-03 16:11'},
-		{id: 'tnghd5761', message: '내 메세지1', createdAt: '22-07-03 16:12'},
-		{id: 'user1', message: '내용3', createdAt: '22-07-03 16:12'},
-		{id: 'tnghd5761', message: '내 메세지2', createdAt: '22-07-03 16:12'},
-		{id: 'user1', message: '내용4', createdAt: '22-07-03 16:14'},
-		{id: 'user1', message: '내용5', createdAt: '22-07-03 16:15'},
-		{id: 'tnghd5761', message: '내 메세지3', createdAt: '22-07-03 16:15'},
-		{id: 'tnghd5761', message: '내 메세지4', createdAt: '22-07-03 16:16'}
-	]
 </script>
 
 {#if isClicked}
@@ -48,21 +35,7 @@
 			<div class="close" on:click={onClick} />
 		</div>
 		{#if chat_on}
-			<div class="chat_room">
-				<div class="chat_room_upper">{$challengeList[challenge_code].title}</div>
-				<div id = "chat_room_body" class="chat_room_body">
-					{#each chat_logs as log}
-						{#if log.id == $user?.githubId}
-							<div>나</div>
-							<div class="message message_my">{log.message}</div>
-						{:else}
-							<div>{log.id}</div>
-							<div class="message message_other">{log.message}</div>
-						{/if}
-					{/each}
-				</div>
-				<input class="chat_write" />
-			</div>
+			<ChatRoom title={$challengeList[challenge_code].title} />
 		{:else}
 			<div class="chat_main">
 				{#each $challengeList as challenge}
@@ -123,43 +96,6 @@
 				border: 1px solid #DDDDDD;
 				border-radius: 1rem;
 			}
-		}
-		&_room{
-			height: calc(100% - 2.5rem);
-			margin-top: 0.5rem;
-			&_upper{
-				height: 2rem;
-				padding: 0.5rem;
-				border-top-left-radius: 1rem;
-				border-top-right-radius: 1rem;
-				background-color: #42A968;
-				overflow:hidden;
-				text-overflow:ellipsis;
-				white-space:nowrap;
-			}
-			&_body{
-				height: calc(100% - 7.5rem);
-				background-color: #A6EDC0;
-				overflow-y: overlay;
-			}
-			&_write{
-				height: 3rem;
-				padding: 0.5rem;
-				background-color: white;
-				border-bottom-left-radius: 1rem;
-				border-bottom-right-radius: 1rem;
-			}
-		}
-	}
-	.message{
-		height: 2.5rem;
-		border-radius: 0.5rem;
-		padding: 0.25rem;
-		&_my{
-			background-color: yellow;
-		}
-		&_other{
-			background-color: white;
 		}
 	}
 	.chat_btn{
