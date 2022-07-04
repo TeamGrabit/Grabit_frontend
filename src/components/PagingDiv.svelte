@@ -1,75 +1,72 @@
 <script>
     import { totalPages } from '../store/challenge.js'; 
-    import { createEventDispatcher } from 'svelte';
+    import { onMount, afterUpdate } from 'svelte';
 
-	const dispatch = createEventDispatcher();
-
+    export let getDataFunc;
 
     let recent_page=0;
-    let init_i=0;
+    let first_page_num=0;
+    let button_num_arr=[];
 
-    function clickPageBtn(i) {
-        recent_page=i;
-		dispatch('message', {
-			recentpage: i
-		});
-	}
+    onMount(()=>{
+        returnAllPageNum();
+    })
+
     function returnAllPageNum(){
         let array=Array();
-        
-        init_i=Math.floor(recent_page/10)*10;
+        first_page_num=Math.floor(recent_page/10)*10;
 
-        if(init_i+10>$totalPages){
-            for(let i=init_i; i<$totalPages;i++)
+        if(first_page_num+10>$totalPages){
+            for(let i=first_page_num; i<$totalPages;i++)
                 array.push(i);
         }else{
-            for(let i=init_i; i<init_i+10;i++)
+            for(let i=first_page_num; i<first_page_num+10;i++)
                 array.push(i);
         }
-        return array;
+        button_num_arr=array;
     }
     function clickLeftBtn(){
         if(recent_page-10<0)
-            recent_page=0;
+            changeRecentNum(0);
         else
-            recent_page=recent_page-10;
+            changeRecentNum(recent_page-10);
 
-        clickPageBtn(recent_page);
+        getDataFunc(recent_page);
+        returnAllPageNum();
     }
     function clickRightBtn(){
-        console.log(recent_page, $totalPages);
         if(recent_page+10>=$totalPages){
-            recent_page=$totalPages-1;
+           changeRecentNum($totalPages-1);
         }else{
-            recent_page=recent_page+10;
+           changeRecentNum(recent_page+10);
         }
-        
-        clickPageBtn(recent_page);
+        getDataFunc(recent_page);
+        returnAllPageNum();
     }
+    const changeRecentNum=(i)=>{recent_page=i}
 
+    $: $totalPages, returnAllPageNum()
 </script>
 
 <div class='Paging'>
    {#if $totalPages!=0}
-        {#if init_i>=10}
+        {#if first_page_num>=10}
             <button class="Paging__move_button" on:click={clickLeftBtn}>&lt;</button>
         {/if}
-    
-        {#each returnAllPageNum() as i}
+        {#each button_num_arr as i}
             {#if recent_page==i}
                 <label class="Paging__button">
-                    <input checked="checked" type="radio" name="page_num" on:change={()=>{clickPageBtn(i)}}/>
+                    <input checked="checked" type="radio" name="page_num" on:change={()=>{getDataFunc(i)}, changeRecentNum(i)}/>
                     <span>{i+1}</span>
                 </label>
             {:else}
                 <label class="Paging__button">
-                    <input type="radio" name="page_num" on:change={()=>{clickPageBtn(i)}}/>
+                    <input type="radio" name="page_num" on:change={()=>{getDataFunc(i), changeRecentNum(i)}}/>
                     <span>{i+1}</span>
                 </label>
             {/if}
         {/each}
-
-        {#if init_i+10 < $totalPages}
+        {#if first_page_num+10 < $totalPages}
             <button class="Paging__move_button" on:click={clickRightBtn}>&gt;</button>
         {/if}
         

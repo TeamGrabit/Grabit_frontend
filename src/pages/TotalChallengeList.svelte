@@ -10,14 +10,15 @@
     import GlobalNavigationBar from '../components/GlobalNavigationBar.svelte';
     import ChallengeBox from '../components/ChallengeBox.svelte';
     import PagingDiv from '../components/PagingDiv.svelte';
+    import Toast from '../components/Toast.svelte';
 
     import { Input, Button, SubNavItem, SearchInput } from '../storybook'; 
 
     import {notifications} from '../store/notifications.js';
-    import Toast from '../components/Toast.svelte';
-
+ 
     const tabItem = ['\0TITLE', '\0DESCRIPTION', '\0LEADER'];
 
+    let current_page_tmp=0;
     let activeItem = 0;
     let view_item_num= 1; //TODO : 한 페이지에 보여질 CHALLENGE 개수 정할 수 있도록
 
@@ -38,23 +39,19 @@
     function setActive(i) {
 		if(i === activeItem) return true;
 	}
+    function getChallenge(i){
+        getAllChallenge(i, view_item_num);
+    }
     function onClickCreateChallenge(){
         push('/createchallenge');
     }
-
-    function getChallenge(event){
-        getAllChallenge(event.detail.recentpage, view_item_num);
-    }
-    
 	onMount(() => {
-        getAllChallenge(0, view_item_num);
+        getChallenge(0);
 	    changeTab(index.OTHERS);
-	})
-    
+	}) 
 	onDestroy(() => {
 		changeTab(index.HOME);
 	})
-
 	function searchHandler(val) {
 		alert(val)
 	}
@@ -64,6 +61,7 @@
 <GlobalNavigationBar />
 
 <div class='Page'>
+    
     <Profile />
     <div class='Page__content'>
         <div class='Page__top'>
@@ -86,7 +84,7 @@
         {#each $challengeList as c}
             <ChallengeBox challenge={c} />            
         {/each}
-        <PagingDiv on:message={getChallenge}/>
+        <PagingDiv getDataFunc={getChallenge}/>
     </div>
 </div>
 
