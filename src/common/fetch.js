@@ -126,23 +126,3 @@ export async function fetchDelete(path, otherOptions = {}, headers = {}) {
 
 	return data;
 }
-
-export async function fetchPostImage(path, body, otherOptions = {}, headers = {}) {
-	const url = `${API_URL}/${path}`;
-	
-	const options = {
-		method: "POST",
-		headers: {
-			"Content-Type": "multipart/form-data",
-			...bearer,
-			...headers,
-		},
-		body: {body},
-		...otherOptions
-	};
-
-	const res = await fetch(url, options);
-	console.log(res);
-	
-	return res;
-}
