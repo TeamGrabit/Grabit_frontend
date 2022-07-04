@@ -4,7 +4,7 @@
 
 	export let challenge;
 
-	const isLeader = $user === challenge.leader;
+	const isLeader = $user?.githubId === challenge.leader;
 	let isStarred = challenge.isStarred;
 
 	function onClickTitle(){
