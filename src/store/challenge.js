@@ -17,10 +17,15 @@ export async function getChallenge( id ) {
 }
 
 export async function getAllChallenge(page, size) {
-    const res = await fetchGet('challenges?page='+page+'&size='+size);
+
+	const res = await fetchGet('challenges?'+ new URLSearchParams({
+		page: page,
+		size: size,
+	}));
+
     if(res.error)
         failGetChallenge();
-    else{
+    else{	
         challengeList.set(res.content);
         totalPages.set(res.totalPages); 
 
