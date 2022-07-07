@@ -2,12 +2,8 @@
 	import { user } from '../store/user.js';
 	import { onMount } from 'svelte';
 	import { useEffect } from '../common/hook.js';
+	//import Stomp from 'stompjs';
 	export let title;
-	
-	//const socket = new WebSocket('wss://localhost:8080/chat');
-	//socket.addEventListener('open', function (event) {
-	//	console.log("It's open");
-	//});
 
 	let message = '';
 	let chat_logs = [
@@ -28,6 +24,10 @@
 	}
 
 	onMount(() => {
+		const socket = new WebSocket('wss://grabit-backend.link/api/stomp/chat');
+		socket.addEventListener('open', function (event) {
+			console.log("It's open");
+		});
 		scrollDown();
 	})
 
@@ -72,7 +72,7 @@
 			{/if}
 		{/each}
 	</div>
-	<input class="chat_write" type="text" bind:value={message} />
+	<input class="chat_room_write" type="text" bind:value={message} />
 	<button on:click={onSendMessage}>
 		Send Message
 	</button>

@@ -6,6 +6,7 @@ import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import sveltePreprocess from 'svelte-preprocess';
 import replace from '@rollup/plugin-replace';
+import json from '@rollup/plugin-json';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -72,6 +73,7 @@ export default {
 			browser: true,
 			dedupe: ['svelte']
 		}),
+		json(),
 		commonjs(),
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
