@@ -6370,7 +6370,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (99:3) {:else}
+    // (100:3) {:else}
     function create_else_block$4(ctx) {
     	let div2;
     	let div0;
@@ -6391,11 +6391,11 @@ var app = (function () {
     			div1 = element("div");
     			t2 = text(t2_value);
     			t3 = space();
-    			add_location(div0, file$j, 100, 5, 2801);
+    			add_location(div0, file$j, 101, 5, 2812);
     			attr_dev(div1, "class", "message message_other svelte-5qgta6");
-    			add_location(div1, file$j, 101, 5, 2827);
+    			add_location(div1, file$j, 102, 5, 2838);
     			attr_dev(div2, "class", "chat chat_other svelte-5qgta6");
-    			add_location(div2, file$j, 99, 3, 2765);
+    			add_location(div2, file$j, 100, 3, 2776);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -6416,14 +6416,14 @@ var app = (function () {
     		block,
     		id: create_else_block$4.name,
     		type: "else",
-    		source: "(99:3) {:else}",
+    		source: "(100:3) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (94:3) {#if log.id == $user?.githubId}
+    // (95:3) {#if log.id == $user?.githubId}
     function create_if_block$7(ctx) {
     	let div2;
     	let div0;
@@ -6442,11 +6442,11 @@ var app = (function () {
     			div1 = element("div");
     			t2 = text(t2_value);
     			t3 = space();
-    			add_location(div0, file$j, 95, 5, 2666);
+    			add_location(div0, file$j, 96, 5, 2677);
     			attr_dev(div1, "class", "message message_my svelte-5qgta6");
-    			add_location(div1, file$j, 96, 5, 2685);
+    			add_location(div1, file$j, 97, 5, 2696);
     			attr_dev(div2, "class", "chat chat_my svelte-5qgta6");
-    			add_location(div2, file$j, 94, 4, 2633);
+    			add_location(div2, file$j, 95, 4, 2644);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -6466,14 +6466,14 @@ var app = (function () {
     		block,
     		id: create_if_block$7.name,
     		type: "if",
-    		source: "(94:3) {#if log.id == $user?.githubId}",
+    		source: "(95:3) {#if log.id == $user?.githubId}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (93:2) {#each chat_logs as log}
+    // (94:2) {#each chat_logs as log}
     function create_each_block$a(ctx) {
     	let if_block_anchor;
 
@@ -6517,7 +6517,7 @@ var app = (function () {
     		block,
     		id: create_each_block$a.name,
     		type: "each",
-    		source: "(93:2) {#each chat_logs as log}",
+    		source: "(94:2) {#each chat_logs as log}",
     		ctx
     	});
 
@@ -6562,16 +6562,16 @@ var app = (function () {
     			button = element("button");
     			button.textContent = "Send Message";
     			attr_dev(div0, "class", "chat_room_upper svelte-5qgta6");
-    			add_location(div0, file$j, 90, 1, 2470);
+    			add_location(div0, file$j, 91, 1, 2481);
     			attr_dev(div1, "id", "chat_room_body");
     			attr_dev(div1, "class", "chat_room_body svelte-5qgta6");
-    			add_location(div1, file$j, 91, 1, 2515);
+    			add_location(div1, file$j, 92, 1, 2526);
     			attr_dev(input, "class", "chat_room_write svelte-5qgta6");
     			attr_dev(input, "type", "text");
-    			add_location(input, file$j, 106, 1, 2926);
-    			add_location(button, file$j, 107, 1, 2995);
+    			add_location(input, file$j, 107, 1, 2937);
+    			add_location(button, file$j, 108, 1, 3006);
     			attr_dev(div2, "class", "chat_room svelte-5qgta6");
-    			add_location(div2, file$j, 89, 0, 2444);
+    			add_location(div2, file$j, 90, 0, 2455);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6719,20 +6719,19 @@ var app = (function () {
     	let client;
 
     	onMount(() => {
-    		const socket = new WebSocket('wss://grabit-backend.link/api/stomp/chat');
+    		//socket.addEventListener('open', function (event) {
+    		//	console.log("It's open");
+    		//});
+    		connect();
 
-    		socket.addEventListener('open', function (event) {
-    			console.log("It's open");
-    		});
-
-    		//connect();
     		scrollDown();
     	});
 
     	const connect = () => {
-    		client.current = new Client({
-    				brokerURL: "wss://grabit-backend.link/api/stomp/chat", // 웹소켓 서버로 직접 접속
-    				//webSocketFactory: () => new SockJS("/ws-stomp"), // proxy를 통한 접속
+    		//const socket = new SockJS('https://localhost:8080/api/stomp/chat');
+    		client = new Client({
+    				//brokerURL: "wss://localhost:8080/api/stomp/chat", // 웹소켓 서버로 직접 접속
+    				webSocketFactory: () => new SockJS("https://localhost:8080/api/stomp/chat"), // proxy를 통한 접속
     				connectHeaders: { "auth-token": "spring-chat-auth-token" },
     				debug(str) {
     					console.log(str);
@@ -6748,7 +6747,7 @@ var app = (function () {
     				}
     			});
 
-    		client.current.activate();
+    		client.activate();
     	};
 
     	const disconnect = () => {

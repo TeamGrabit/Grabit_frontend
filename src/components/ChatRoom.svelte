@@ -25,19 +25,20 @@
 	}
 	let client;
 	onMount(() => {
-		const socket = new WebSocket('wss://grabit-backend.link/api/stomp/chat');
-		socket.addEventListener('open', function (event) {
-			console.log("It's open");
-		});
-		//connect();
+		//socket.addEventListener('open', function (event) {
+		//	console.log("It's open");
+		//});
+		connect();
 
 		scrollDown();
 	})
 
 	const connect = () => {
-		client.current = new StompJS.Client({
-			brokerURL: "wss://grabit-backend.link/api/stomp/chat", // 웹소켓 서버로 직접 접속
-			//webSocketFactory: () => new SockJS("/ws-stomp"), // proxy를 통한 접속
+		//const socket = new SockJS('https://localhost:8080/api/stomp/chat');
+		
+		client = new StompJS.Client({
+			//brokerURL: "wss://localhost:8080/api/stomp/chat", // 웹소켓 서버로 직접 접속
+			webSocketFactory: () => new SockJS("https://localhost:8080/api/stomp/chat"), // proxy를 통한 접속
 			connectHeaders: {
 				"auth-token": "spring-chat-auth-token",
 			},
@@ -55,7 +56,7 @@
 			},
 		});
 
-		client.current.activate();
+		client.activate();
 	};
 
 	const disconnect = () => {
