@@ -1,11 +1,7 @@
 
 (function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
-var app = (function (require$$1) {
+var app = (function () {
     'use strict';
-
-    function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-    var require$$1__default = /*#__PURE__*/_interopDefaultLegacy(require$$1);
 
     function noop() { }
     const identity = x => x;
@@ -4028,7 +4024,7 @@ var app = (function (require$$1) {
     			img = element("img");
     			t0 = space();
     			div0 = element("div");
-    			div0.textContent = `${name$1}`;
+    			div0.textContent = `${name}`;
     			t2 = space();
     			if_block.c();
     			attr_dev(img, "class", "header__logo__img svelte-kgkk5q");
@@ -4118,7 +4114,7 @@ var app = (function (require$$1) {
     	return block;
     }
 
-    const name$1 = "Grabit";
+    const name = "Grabit";
 
     function instance$m($$self, $$props, $$invalidate) {
     	let $user;
@@ -4157,7 +4153,7 @@ var app = (function (require$$1) {
     		GIT_URL,
     		Dropdown,
     		DropdownItem,
-    		name: name$1,
+    		name,
     		src,
     		isOpenDropdown,
     		onClickProfile,
@@ -4558,6 +4554,1811 @@ var app = (function (require$$1) {
     	});
     }
 
+    /**
+     * Some byte values, used as per STOMP specifications.
+     *
+     * Part of `@stomp/stompjs`.
+     *
+     * @internal
+     */
+    const BYTE = {
+        // LINEFEED byte (octet 10)
+        LF: '\x0A',
+        // NULL byte (octet 0)
+        NULL: '\x00',
+    };
+
+    /**
+     * Frame class represents a STOMP frame.
+     *
+     * @internal
+     */
+    class FrameImpl {
+        /**
+         * Frame constructor. `command`, `headers` and `body` are available as properties.
+         *
+         * @internal
+         */
+        constructor(params) {
+            const { command, headers, body, binaryBody, escapeHeaderValues, skipContentLengthHeader, } = params;
+            this.command = command;
+            this.headers = Object.assign({}, headers || {});
+            if (binaryBody) {
+                this._binaryBody = binaryBody;
+                this.isBinaryBody = true;
+            }
+            else {
+                this._body = body || '';
+                this.isBinaryBody = false;
+            }
+            this.escapeHeaderValues = escapeHeaderValues || false;
+            this.skipContentLengthHeader = skipContentLengthHeader || false;
+        }
+        /**
+         * body of the frame
+         */
+        get body() {
+            if (!this._body && this.isBinaryBody) {
+                this._body = new TextDecoder().decode(this._binaryBody);
+            }
+            return this._body;
+        }
+        /**
+         * body as Uint8Array
+         */
+        get binaryBody() {
+            if (!this._binaryBody && !this.isBinaryBody) {
+                this._binaryBody = new TextEncoder().encode(this._body);
+            }
+            return this._binaryBody;
+        }
+        /**
+         * deserialize a STOMP Frame from raw data.
+         *
+         * @internal
+         */
+        static fromRawFrame(rawFrame, escapeHeaderValues) {
+            const headers = {};
+            const trim = (str) => str.replace(/^\s+|\s+$/g, '');
+            // In case of repeated headers, as per standards, first value need to be used
+            for (const header of rawFrame.headers.reverse()) {
+                header.indexOf(':');
+                const key = trim(header[0]);
+                let value = trim(header[1]);
+                if (escapeHeaderValues &&
+                    rawFrame.command !== 'CONNECT' &&
+                    rawFrame.command !== 'CONNECTED') {
+                    value = FrameImpl.hdrValueUnEscape(value);
+                }
+                headers[key] = value;
+            }
+            return new FrameImpl({
+                command: rawFrame.command,
+                headers,
+                binaryBody: rawFrame.binaryBody,
+                escapeHeaderValues,
+            });
+        }
+        /**
+         * @internal
+         */
+        toString() {
+            return this.serializeCmdAndHeaders();
+        }
+        /**
+         * serialize this Frame in a format suitable to be passed to WebSocket.
+         * If the body is string the output will be string.
+         * If the body is binary (i.e. of type Unit8Array) it will be serialized to ArrayBuffer.
+         *
+         * @internal
+         */
+        serialize() {
+            const cmdAndHeaders = this.serializeCmdAndHeaders();
+            if (this.isBinaryBody) {
+                return FrameImpl.toUnit8Array(cmdAndHeaders, this._binaryBody).buffer;
+            }
+            else {
+                return cmdAndHeaders + this._body + BYTE.NULL;
+            }
+        }
+        serializeCmdAndHeaders() {
+            const lines = [this.command];
+            if (this.skipContentLengthHeader) {
+                delete this.headers['content-length'];
+            }
+            for (const name of Object.keys(this.headers || {})) {
+                const value = this.headers[name];
+                if (this.escapeHeaderValues &&
+                    this.command !== 'CONNECT' &&
+                    this.command !== 'CONNECTED') {
+                    lines.push(`${name}:${FrameImpl.hdrValueEscape(`${value}`)}`);
+                }
+                else {
+                    lines.push(`${name}:${value}`);
+                }
+            }
+            if (this.isBinaryBody ||
+                (!this.isBodyEmpty() && !this.skipContentLengthHeader)) {
+                lines.push(`content-length:${this.bodyLength()}`);
+            }
+            return lines.join(BYTE.LF) + BYTE.LF + BYTE.LF;
+        }
+        isBodyEmpty() {
+            return this.bodyLength() === 0;
+        }
+        bodyLength() {
+            const binaryBody = this.binaryBody;
+            return binaryBody ? binaryBody.length : 0;
+        }
+        /**
+         * Compute the size of a UTF-8 string by counting its number of bytes
+         * (and not the number of characters composing the string)
+         */
+        static sizeOfUTF8(s) {
+            return s ? new TextEncoder().encode(s).length : 0;
+        }
+        static toUnit8Array(cmdAndHeaders, binaryBody) {
+            const uint8CmdAndHeaders = new TextEncoder().encode(cmdAndHeaders);
+            const nullTerminator = new Uint8Array([0]);
+            const uint8Frame = new Uint8Array(uint8CmdAndHeaders.length + binaryBody.length + nullTerminator.length);
+            uint8Frame.set(uint8CmdAndHeaders);
+            uint8Frame.set(binaryBody, uint8CmdAndHeaders.length);
+            uint8Frame.set(nullTerminator, uint8CmdAndHeaders.length + binaryBody.length);
+            return uint8Frame;
+        }
+        /**
+         * Serialize a STOMP frame as per STOMP standards, suitable to be sent to the STOMP broker.
+         *
+         * @internal
+         */
+        static marshall(params) {
+            const frame = new FrameImpl(params);
+            return frame.serialize();
+        }
+        /**
+         *  Escape header values
+         */
+        static hdrValueEscape(str) {
+            return str
+                .replace(/\\/g, '\\\\')
+                .replace(/\r/g, '\\r')
+                .replace(/\n/g, '\\n')
+                .replace(/:/g, '\\c');
+        }
+        /**
+         * UnEscape header values
+         */
+        static hdrValueUnEscape(str) {
+            return str
+                .replace(/\\r/g, '\r')
+                .replace(/\\n/g, '\n')
+                .replace(/\\c/g, ':')
+                .replace(/\\\\/g, '\\');
+        }
+    }
+
+    /**
+     * @internal
+     */
+    const NULL = 0;
+    /**
+     * @internal
+     */
+    const LF = 10;
+    /**
+     * @internal
+     */
+    const CR = 13;
+    /**
+     * @internal
+     */
+    const COLON = 58;
+    /**
+     * This is an evented, rec descent parser.
+     * A stream of Octets can be passed and whenever it recognizes
+     * a complete Frame or an incoming ping it will invoke the registered callbacks.
+     *
+     * All incoming Octets are fed into _onByte function.
+     * Depending on current state the _onByte function keeps changing.
+     * Depending on the state it keeps accumulating into _token and _results.
+     * State is indicated by current value of _onByte, all states are named as _collect.
+     *
+     * STOMP standards https://stomp.github.io/stomp-specification-1.2.html
+     * imply that all lengths are considered in bytes (instead of string lengths).
+     * So, before actual parsing, if the incoming data is String it is converted to Octets.
+     * This allows faithful implementation of the protocol and allows NULL Octets to be present in the body.
+     *
+     * There is no peek function on the incoming data.
+     * When a state change occurs based on an Octet without consuming the Octet,
+     * the Octet, after state change, is fed again (_reinjectByte).
+     * This became possible as the state change can be determined by inspecting just one Octet.
+     *
+     * There are two modes to collect the body, if content-length header is there then it by counting Octets
+     * otherwise it is determined by NULL terminator.
+     *
+     * Following the standards, the command and headers are converted to Strings
+     * and the body is returned as Octets.
+     * Headers are returned as an array and not as Hash - to allow multiple occurrence of an header.
+     *
+     * This parser does not use Regular Expressions as that can only operate on Strings.
+     *
+     * It handles if multiple STOMP frames are given as one chunk, a frame is split into multiple chunks, or
+     * any combination there of. The parser remembers its state (any partial frame) and continues when a new chunk
+     * is pushed.
+     *
+     * Typically the higher level function will convert headers to Hash, handle unescaping of header values
+     * (which is protocol version specific), and convert body to text.
+     *
+     * Check the parser.spec.js to understand cases that this parser is supposed to handle.
+     *
+     * Part of `@stomp/stompjs`.
+     *
+     * @internal
+     */
+    class Parser {
+        constructor(onFrame, onIncomingPing) {
+            this.onFrame = onFrame;
+            this.onIncomingPing = onIncomingPing;
+            this._encoder = new TextEncoder();
+            this._decoder = new TextDecoder();
+            this._token = [];
+            this._initState();
+        }
+        parseChunk(segment, appendMissingNULLonIncoming = false) {
+            let chunk;
+            if (segment instanceof ArrayBuffer) {
+                chunk = new Uint8Array(segment);
+            }
+            else {
+                chunk = this._encoder.encode(segment);
+            }
+            // See https://github.com/stomp-js/stompjs/issues/89
+            // Remove when underlying issue is fixed.
+            //
+            // Send a NULL byte, if the last byte of a Text frame was not NULL.F
+            if (appendMissingNULLonIncoming && chunk[chunk.length - 1] !== 0) {
+                const chunkWithNull = new Uint8Array(chunk.length + 1);
+                chunkWithNull.set(chunk, 0);
+                chunkWithNull[chunk.length] = 0;
+                chunk = chunkWithNull;
+            }
+            // tslint:disable-next-line:prefer-for-of
+            for (let i = 0; i < chunk.length; i++) {
+                const byte = chunk[i];
+                this._onByte(byte);
+            }
+        }
+        // The following implements a simple Rec Descent Parser.
+        // The grammar is simple and just one byte tells what should be the next state
+        _collectFrame(byte) {
+            if (byte === NULL) {
+                // Ignore
+                return;
+            }
+            if (byte === CR) {
+                // Ignore CR
+                return;
+            }
+            if (byte === LF) {
+                // Incoming Ping
+                this.onIncomingPing();
+                return;
+            }
+            this._onByte = this._collectCommand;
+            this._reinjectByte(byte);
+        }
+        _collectCommand(byte) {
+            if (byte === CR) {
+                // Ignore CR
+                return;
+            }
+            if (byte === LF) {
+                this._results.command = this._consumeTokenAsUTF8();
+                this._onByte = this._collectHeaders;
+                return;
+            }
+            this._consumeByte(byte);
+        }
+        _collectHeaders(byte) {
+            if (byte === CR) {
+                // Ignore CR
+                return;
+            }
+            if (byte === LF) {
+                this._setupCollectBody();
+                return;
+            }
+            this._onByte = this._collectHeaderKey;
+            this._reinjectByte(byte);
+        }
+        _reinjectByte(byte) {
+            this._onByte(byte);
+        }
+        _collectHeaderKey(byte) {
+            if (byte === COLON) {
+                this._headerKey = this._consumeTokenAsUTF8();
+                this._onByte = this._collectHeaderValue;
+                return;
+            }
+            this._consumeByte(byte);
+        }
+        _collectHeaderValue(byte) {
+            if (byte === CR) {
+                // Ignore CR
+                return;
+            }
+            if (byte === LF) {
+                this._results.headers.push([this._headerKey, this._consumeTokenAsUTF8()]);
+                this._headerKey = undefined;
+                this._onByte = this._collectHeaders;
+                return;
+            }
+            this._consumeByte(byte);
+        }
+        _setupCollectBody() {
+            const contentLengthHeader = this._results.headers.filter((header) => {
+                return header[0] === 'content-length';
+            })[0];
+            if (contentLengthHeader) {
+                this._bodyBytesRemaining = parseInt(contentLengthHeader[1], 10);
+                this._onByte = this._collectBodyFixedSize;
+            }
+            else {
+                this._onByte = this._collectBodyNullTerminated;
+            }
+        }
+        _collectBodyNullTerminated(byte) {
+            if (byte === NULL) {
+                this._retrievedBody();
+                return;
+            }
+            this._consumeByte(byte);
+        }
+        _collectBodyFixedSize(byte) {
+            // It is post decrement, so that we discard the trailing NULL octet
+            if (this._bodyBytesRemaining-- === 0) {
+                this._retrievedBody();
+                return;
+            }
+            this._consumeByte(byte);
+        }
+        _retrievedBody() {
+            this._results.binaryBody = this._consumeTokenAsRaw();
+            this.onFrame(this._results);
+            this._initState();
+        }
+        // Rec Descent Parser helpers
+        _consumeByte(byte) {
+            this._token.push(byte);
+        }
+        _consumeTokenAsUTF8() {
+            return this._decoder.decode(this._consumeTokenAsRaw());
+        }
+        _consumeTokenAsRaw() {
+            const rawResult = new Uint8Array(this._token);
+            this._token = [];
+            return rawResult;
+        }
+        _initState() {
+            this._results = {
+                command: undefined,
+                headers: [],
+                binaryBody: undefined,
+            };
+            this._token = [];
+            this._headerKey = undefined;
+            this._onByte = this._collectFrame;
+        }
+    }
+
+    /**
+     * Possible states for the IStompSocket
+     */
+    var StompSocketState;
+    (function (StompSocketState) {
+        StompSocketState[StompSocketState["CONNECTING"] = 0] = "CONNECTING";
+        StompSocketState[StompSocketState["OPEN"] = 1] = "OPEN";
+        StompSocketState[StompSocketState["CLOSING"] = 2] = "CLOSING";
+        StompSocketState[StompSocketState["CLOSED"] = 3] = "CLOSED";
+    })(StompSocketState || (StompSocketState = {}));
+    /**
+     * Possible activation state
+     */
+    var ActivationState;
+    (function (ActivationState) {
+        ActivationState[ActivationState["ACTIVE"] = 0] = "ACTIVE";
+        ActivationState[ActivationState["DEACTIVATING"] = 1] = "DEACTIVATING";
+        ActivationState[ActivationState["INACTIVE"] = 2] = "INACTIVE";
+    })(ActivationState || (ActivationState = {}));
+
+    /**
+     * Supported STOMP versions
+     *
+     * Part of `@stomp/stompjs`.
+     */
+    class Versions {
+        /**
+         * Takes an array of string of versions, typical elements '1.0', '1.1', or '1.2'
+         *
+         * You will an instance if this class if you want to override supported versions to be declared during
+         * STOMP handshake.
+         */
+        constructor(versions) {
+            this.versions = versions;
+        }
+        /**
+         * Used as part of CONNECT STOMP Frame
+         */
+        supportedVersions() {
+            return this.versions.join(',');
+        }
+        /**
+         * Used while creating a WebSocket
+         */
+        protocolVersions() {
+            return this.versions.map(x => `v${x.replace('.', '')}.stomp`);
+        }
+    }
+    /**
+     * Indicates protocol version 1.0
+     */
+    Versions.V1_0 = '1.0';
+    /**
+     * Indicates protocol version 1.1
+     */
+    Versions.V1_1 = '1.1';
+    /**
+     * Indicates protocol version 1.2
+     */
+    Versions.V1_2 = '1.2';
+    /**
+     * @internal
+     */
+    Versions.default = new Versions([
+        Versions.V1_0,
+        Versions.V1_1,
+        Versions.V1_2,
+    ]);
+
+    /**
+     * @internal
+     */
+    function augmentWebsocket(webSocket, debug) {
+        webSocket.terminate = function () {
+            const noOp = () => { };
+            // set all callbacks to no op
+            this.onerror = noOp;
+            this.onmessage = noOp;
+            this.onopen = noOp;
+            const ts = new Date();
+            const origOnClose = this.onclose;
+            // Track delay in actual closure of the socket
+            this.onclose = closeEvent => {
+                const delay = new Date().getTime() - ts.getTime();
+                debug(`Discarded socket closed after ${delay}ms, with code/reason: ${closeEvent.code}/${closeEvent.reason}`);
+            };
+            this.close();
+            origOnClose.call(this, {
+                code: 4001,
+                reason: 'Heartbeat failure, discarding the socket',
+                wasClean: false,
+            });
+        };
+    }
+
+    /**
+     * The STOMP protocol handler
+     *
+     * Part of `@stomp/stompjs`.
+     *
+     * @internal
+     */
+    class StompHandler {
+        constructor(_client, _webSocket, config = {}) {
+            this._client = _client;
+            this._webSocket = _webSocket;
+            this._serverFrameHandlers = {
+                // [CONNECTED Frame](http://stomp.github.com/stomp-specification-1.2.html#CONNECTED_Frame)
+                CONNECTED: frame => {
+                    this.debug(`connected to server ${frame.headers.server}`);
+                    this._connected = true;
+                    this._connectedVersion = frame.headers.version;
+                    // STOMP version 1.2 needs header values to be escaped
+                    if (this._connectedVersion === Versions.V1_2) {
+                        this._escapeHeaderValues = true;
+                    }
+                    this._setupHeartbeat(frame.headers);
+                    this.onConnect(frame);
+                },
+                // [MESSAGE Frame](http://stomp.github.com/stomp-specification-1.2.html#MESSAGE)
+                MESSAGE: frame => {
+                    // the callback is registered when the client calls
+                    // `subscribe()`.
+                    // If there is no registered subscription for the received message,
+                    // the default `onUnhandledMessage` callback is used that the client can set.
+                    // This is useful for subscriptions that are automatically created
+                    // on the browser side (e.g. [RabbitMQ's temporary
+                    // queues](http://www.rabbitmq.com/stomp.html)).
+                    const subscription = frame.headers.subscription;
+                    const onReceive = this._subscriptions[subscription] || this.onUnhandledMessage;
+                    // bless the frame to be a Message
+                    const message = frame;
+                    const client = this;
+                    const messageId = this._connectedVersion === Versions.V1_2
+                        ? message.headers.ack
+                        : message.headers['message-id'];
+                    // add `ack()` and `nack()` methods directly to the returned frame
+                    // so that a simple call to `message.ack()` can acknowledge the message.
+                    message.ack = (headers = {}) => {
+                        return client.ack(messageId, subscription, headers);
+                    };
+                    message.nack = (headers = {}) => {
+                        return client.nack(messageId, subscription, headers);
+                    };
+                    onReceive(message);
+                },
+                // [RECEIPT Frame](http://stomp.github.com/stomp-specification-1.2.html#RECEIPT)
+                RECEIPT: frame => {
+                    const callback = this._receiptWatchers[frame.headers['receipt-id']];
+                    if (callback) {
+                        callback(frame);
+                        // Server will acknowledge only once, remove the callback
+                        delete this._receiptWatchers[frame.headers['receipt-id']];
+                    }
+                    else {
+                        this.onUnhandledReceipt(frame);
+                    }
+                },
+                // [ERROR Frame](http://stomp.github.com/stomp-specification-1.2.html#ERROR)
+                ERROR: frame => {
+                    this.onStompError(frame);
+                },
+            };
+            // used to index subscribers
+            this._counter = 0;
+            // subscription callbacks indexed by subscriber's ID
+            this._subscriptions = {};
+            // receipt-watchers indexed by receipts-ids
+            this._receiptWatchers = {};
+            this._partialData = '';
+            this._escapeHeaderValues = false;
+            this._lastServerActivityTS = Date.now();
+            this.configure(config);
+        }
+        get connectedVersion() {
+            return this._connectedVersion;
+        }
+        get connected() {
+            return this._connected;
+        }
+        configure(conf) {
+            // bulk assign all properties to this
+            Object.assign(this, conf);
+        }
+        start() {
+            const parser = new Parser(
+            // On Frame
+            rawFrame => {
+                const frame = FrameImpl.fromRawFrame(rawFrame, this._escapeHeaderValues);
+                // if this.logRawCommunication is set, the rawChunk is logged at this._webSocket.onmessage
+                if (!this.logRawCommunication) {
+                    this.debug(`<<< ${frame}`);
+                }
+                const serverFrameHandler = this._serverFrameHandlers[frame.command] || this.onUnhandledFrame;
+                serverFrameHandler(frame);
+            }, 
+            // On Incoming Ping
+            () => {
+                this.debug('<<< PONG');
+            });
+            this._webSocket.onmessage = (evt) => {
+                this.debug('Received data');
+                this._lastServerActivityTS = Date.now();
+                if (this.logRawCommunication) {
+                    const rawChunkAsString = evt.data instanceof ArrayBuffer
+                        ? new TextDecoder().decode(evt.data)
+                        : evt.data;
+                    this.debug(`<<< ${rawChunkAsString}`);
+                }
+                parser.parseChunk(evt.data, this.appendMissingNULLonIncoming);
+            };
+            this._onclose = (closeEvent) => {
+                this.debug(`Connection closed to ${this._client.brokerURL}`);
+                this._cleanUp();
+                this.onWebSocketClose(closeEvent);
+            };
+            this._webSocket.onclose = this._onclose;
+            this._webSocket.onerror = (errorEvent) => {
+                this.onWebSocketError(errorEvent);
+            };
+            this._webSocket.onopen = () => {
+                // Clone before updating
+                const connectHeaders = Object.assign({}, this.connectHeaders);
+                this.debug('Web Socket Opened...');
+                connectHeaders['accept-version'] = this.stompVersions.supportedVersions();
+                connectHeaders['heart-beat'] = [
+                    this.heartbeatOutgoing,
+                    this.heartbeatIncoming,
+                ].join(',');
+                this._transmit({ command: 'CONNECT', headers: connectHeaders });
+            };
+        }
+        _setupHeartbeat(headers) {
+            if (headers.version !== Versions.V1_1 &&
+                headers.version !== Versions.V1_2) {
+                return;
+            }
+            // It is valid for the server to not send this header
+            // https://stomp.github.io/stomp-specification-1.2.html#Heart-beating
+            if (!headers['heart-beat']) {
+                return;
+            }
+            // heart-beat header received from the server looks like:
+            //
+            //     heart-beat: sx, sy
+            const [serverOutgoing, serverIncoming] = headers['heart-beat']
+                .split(',')
+                .map((v) => parseInt(v, 10));
+            if (this.heartbeatOutgoing !== 0 && serverIncoming !== 0) {
+                const ttl = Math.max(this.heartbeatOutgoing, serverIncoming);
+                this.debug(`send PING every ${ttl}ms`);
+                this._pinger = setInterval(() => {
+                    if (this._webSocket.readyState === StompSocketState.OPEN) {
+                        this._webSocket.send(BYTE.LF);
+                        this.debug('>>> PING');
+                    }
+                }, ttl);
+            }
+            if (this.heartbeatIncoming !== 0 && serverOutgoing !== 0) {
+                const ttl = Math.max(this.heartbeatIncoming, serverOutgoing);
+                this.debug(`check PONG every ${ttl}ms`);
+                this._ponger = setInterval(() => {
+                    const delta = Date.now() - this._lastServerActivityTS;
+                    // We wait twice the TTL to be flexible on window's setInterval calls
+                    if (delta > ttl * 2) {
+                        this.debug(`did not receive server activity for the last ${delta}ms`);
+                        this._closeOrDiscardWebsocket();
+                    }
+                }, ttl);
+            }
+        }
+        _closeOrDiscardWebsocket() {
+            if (this.discardWebsocketOnCommFailure) {
+                this.debug('Discarding websocket, the underlying socket may linger for a while');
+                this._discardWebsocket();
+            }
+            else {
+                this.debug('Issuing close on the websocket');
+                this._closeWebsocket();
+            }
+        }
+        forceDisconnect() {
+            if (this._webSocket) {
+                if (this._webSocket.readyState === StompSocketState.CONNECTING ||
+                    this._webSocket.readyState === StompSocketState.OPEN) {
+                    this._closeOrDiscardWebsocket();
+                }
+            }
+        }
+        _closeWebsocket() {
+            this._webSocket.onmessage = () => { }; // ignore messages
+            this._webSocket.close();
+        }
+        _discardWebsocket() {
+            if (!this._webSocket.terminate) {
+                augmentWebsocket(this._webSocket, (msg) => this.debug(msg));
+            }
+            this._webSocket.terminate();
+        }
+        _transmit(params) {
+            const { command, headers, body, binaryBody, skipContentLengthHeader } = params;
+            const frame = new FrameImpl({
+                command,
+                headers,
+                body,
+                binaryBody,
+                escapeHeaderValues: this._escapeHeaderValues,
+                skipContentLengthHeader,
+            });
+            let rawChunk = frame.serialize();
+            if (this.logRawCommunication) {
+                this.debug(`>>> ${rawChunk}`);
+            }
+            else {
+                this.debug(`>>> ${frame}`);
+            }
+            if (this.forceBinaryWSFrames && typeof rawChunk === 'string') {
+                rawChunk = new TextEncoder().encode(rawChunk);
+            }
+            if (typeof rawChunk !== 'string' || !this.splitLargeFrames) {
+                this._webSocket.send(rawChunk);
+            }
+            else {
+                let out = rawChunk;
+                while (out.length > 0) {
+                    const chunk = out.substring(0, this.maxWebSocketChunkSize);
+                    out = out.substring(this.maxWebSocketChunkSize);
+                    this._webSocket.send(chunk);
+                    this.debug(`chunk sent = ${chunk.length}, remaining = ${out.length}`);
+                }
+            }
+        }
+        dispose() {
+            if (this.connected) {
+                try {
+                    // clone before updating
+                    const disconnectHeaders = Object.assign({}, this.disconnectHeaders);
+                    if (!disconnectHeaders.receipt) {
+                        disconnectHeaders.receipt = `close-${this._counter++}`;
+                    }
+                    this.watchForReceipt(disconnectHeaders.receipt, frame => {
+                        this._closeWebsocket();
+                        this._cleanUp();
+                        this.onDisconnect(frame);
+                    });
+                    this._transmit({ command: 'DISCONNECT', headers: disconnectHeaders });
+                }
+                catch (error) {
+                    this.debug(`Ignoring error during disconnect ${error}`);
+                }
+            }
+            else {
+                if (this._webSocket.readyState === StompSocketState.CONNECTING ||
+                    this._webSocket.readyState === StompSocketState.OPEN) {
+                    this._closeWebsocket();
+                }
+            }
+        }
+        _cleanUp() {
+            this._connected = false;
+            if (this._pinger) {
+                clearInterval(this._pinger);
+            }
+            if (this._ponger) {
+                clearInterval(this._ponger);
+            }
+        }
+        publish(params) {
+            const { destination, headers, body, binaryBody, skipContentLengthHeader } = params;
+            const hdrs = Object.assign({ destination }, headers);
+            this._transmit({
+                command: 'SEND',
+                headers: hdrs,
+                body,
+                binaryBody,
+                skipContentLengthHeader,
+            });
+        }
+        watchForReceipt(receiptId, callback) {
+            this._receiptWatchers[receiptId] = callback;
+        }
+        subscribe(destination, callback, headers = {}) {
+            headers = Object.assign({}, headers);
+            if (!headers.id) {
+                headers.id = `sub-${this._counter++}`;
+            }
+            headers.destination = destination;
+            this._subscriptions[headers.id] = callback;
+            this._transmit({ command: 'SUBSCRIBE', headers });
+            const client = this;
+            return {
+                id: headers.id,
+                unsubscribe(hdrs) {
+                    return client.unsubscribe(headers.id, hdrs);
+                },
+            };
+        }
+        unsubscribe(id, headers = {}) {
+            headers = Object.assign({}, headers);
+            delete this._subscriptions[id];
+            headers.id = id;
+            this._transmit({ command: 'UNSUBSCRIBE', headers });
+        }
+        begin(transactionId) {
+            const txId = transactionId || `tx-${this._counter++}`;
+            this._transmit({
+                command: 'BEGIN',
+                headers: {
+                    transaction: txId,
+                },
+            });
+            const client = this;
+            return {
+                id: txId,
+                commit() {
+                    client.commit(txId);
+                },
+                abort() {
+                    client.abort(txId);
+                },
+            };
+        }
+        commit(transactionId) {
+            this._transmit({
+                command: 'COMMIT',
+                headers: {
+                    transaction: transactionId,
+                },
+            });
+        }
+        abort(transactionId) {
+            this._transmit({
+                command: 'ABORT',
+                headers: {
+                    transaction: transactionId,
+                },
+            });
+        }
+        ack(messageId, subscriptionId, headers = {}) {
+            headers = Object.assign({}, headers);
+            if (this._connectedVersion === Versions.V1_2) {
+                headers.id = messageId;
+            }
+            else {
+                headers['message-id'] = messageId;
+            }
+            headers.subscription = subscriptionId;
+            this._transmit({ command: 'ACK', headers });
+        }
+        nack(messageId, subscriptionId, headers = {}) {
+            headers = Object.assign({}, headers);
+            if (this._connectedVersion === Versions.V1_2) {
+                headers.id = messageId;
+            }
+            else {
+                headers['message-id'] = messageId;
+            }
+            headers.subscription = subscriptionId;
+            return this._transmit({ command: 'NACK', headers });
+        }
+    }
+
+    var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+        function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+        return new (P || (P = Promise))(function (resolve, reject) {
+            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+            step((generator = generator.apply(thisArg, _arguments || [])).next());
+        });
+    };
+    /**
+     * STOMP Client Class.
+     *
+     * Part of `@stomp/stompjs`.
+     */
+    class Client {
+        /**
+         * Create an instance.
+         */
+        constructor(conf = {}) {
+            /**
+             * STOMP versions to attempt during STOMP handshake. By default versions `1.0`, `1.1`, and `1.2` are attempted.
+             *
+             * Example:
+             * ```javascript
+             *        // Try only versions 1.0 and 1.1
+             *        client.stompVersions = new Versions(['1.0', '1.1'])
+             * ```
+             */
+            this.stompVersions = Versions.default;
+            /**
+             * Will retry if Stomp connection is not established in specified milliseconds.
+             * Default 0, which implies wait for ever.
+             */
+            this.connectionTimeout = 0;
+            /**
+             *  automatically reconnect with delay in milliseconds, set to 0 to disable.
+             */
+            this.reconnectDelay = 5000;
+            /**
+             * Incoming heartbeat interval in milliseconds. Set to 0 to disable.
+             */
+            this.heartbeatIncoming = 10000;
+            /**
+             * Outgoing heartbeat interval in milliseconds. Set to 0 to disable.
+             */
+            this.heartbeatOutgoing = 10000;
+            /**
+             * This switches on a non standard behavior while sending WebSocket packets.
+             * It splits larger (text) packets into chunks of [maxWebSocketChunkSize]{@link Client#maxWebSocketChunkSize}.
+             * Only Java Spring brokers seems to use this mode.
+             *
+             * WebSockets, by itself, split large (text) packets,
+             * so it is not needed with a truly compliant STOMP/WebSocket broker.
+             * Actually setting it for such broker will cause large messages to fail.
+             *
+             * `false` by default.
+             *
+             * Binary frames are never split.
+             */
+            this.splitLargeFrames = false;
+            /**
+             * See [splitLargeFrames]{@link Client#splitLargeFrames}.
+             * This has no effect if [splitLargeFrames]{@link Client#splitLargeFrames} is `false`.
+             */
+            this.maxWebSocketChunkSize = 8 * 1024;
+            /**
+             * Usually the
+             * [type of WebSocket frame]{@link https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/send#Parameters}
+             * is automatically decided by type of the payload.
+             * Default is `false`, which should work with all compliant brokers.
+             *
+             * Set this flag to force binary frames.
+             */
+            this.forceBinaryWSFrames = false;
+            /**
+             * A bug in ReactNative chops a string on occurrence of a NULL.
+             * See issue [https://github.com/stomp-js/stompjs/issues/89]{@link https://github.com/stomp-js/stompjs/issues/89}.
+             * This makes incoming WebSocket messages invalid STOMP packets.
+             * Setting this flag attempts to reverse the damage by appending a NULL.
+             * If the broker splits a large message into multiple WebSocket messages,
+             * this flag will cause data loss and abnormal termination of connection.
+             *
+             * This is not an ideal solution, but a stop gap until the underlying issue is fixed at ReactNative library.
+             */
+            this.appendMissingNULLonIncoming = false;
+            /**
+             * Activation state.
+             *
+             * It will usually be ACTIVE or INACTIVE.
+             * When deactivating it may go from ACTIVE to INACTIVE without entering DEACTIVATING.
+             */
+            this.state = ActivationState.INACTIVE;
+            // Dummy callbacks
+            const noOp = () => { };
+            this.debug = noOp;
+            this.beforeConnect = noOp;
+            this.onConnect = noOp;
+            this.onDisconnect = noOp;
+            this.onUnhandledMessage = noOp;
+            this.onUnhandledReceipt = noOp;
+            this.onUnhandledFrame = noOp;
+            this.onStompError = noOp;
+            this.onWebSocketClose = noOp;
+            this.onWebSocketError = noOp;
+            this.logRawCommunication = false;
+            this.onChangeState = noOp;
+            // These parameters would typically get proper values before connect is called
+            this.connectHeaders = {};
+            this._disconnectHeaders = {};
+            // Apply configuration
+            this.configure(conf);
+        }
+        /**
+         * Underlying WebSocket instance, READONLY.
+         */
+        get webSocket() {
+            return this._stompHandler ? this._stompHandler._webSocket : undefined;
+        }
+        /**
+         * Disconnection headers.
+         */
+        get disconnectHeaders() {
+            return this._disconnectHeaders;
+        }
+        set disconnectHeaders(value) {
+            this._disconnectHeaders = value;
+            if (this._stompHandler) {
+                this._stompHandler.disconnectHeaders = this._disconnectHeaders;
+            }
+        }
+        /**
+         * `true` if there is a active connection with STOMP Broker
+         */
+        get connected() {
+            return !!this._stompHandler && this._stompHandler.connected;
+        }
+        /**
+         * version of STOMP protocol negotiated with the server, READONLY
+         */
+        get connectedVersion() {
+            return this._stompHandler ? this._stompHandler.connectedVersion : undefined;
+        }
+        /**
+         * if the client is active (connected or going to reconnect)
+         */
+        get active() {
+            return this.state === ActivationState.ACTIVE;
+        }
+        _changeState(state) {
+            this.state = state;
+            this.onChangeState(state);
+        }
+        /**
+         * Update configuration.
+         */
+        configure(conf) {
+            // bulk assign all properties to this
+            Object.assign(this, conf);
+        }
+        /**
+         * Initiate the connection with the broker.
+         * If the connection breaks, as per [Client#reconnectDelay]{@link Client#reconnectDelay},
+         * it will keep trying to reconnect.
+         *
+         * Call [Client#deactivate]{@link Client#deactivate} to disconnect and stop reconnection attempts.
+         */
+        activate() {
+            if (this.state === ActivationState.DEACTIVATING) {
+                this.debug('Still DEACTIVATING, please await call to deactivate before trying to re-activate');
+                throw new Error('Still DEACTIVATING, can not activate now');
+            }
+            if (this.active) {
+                this.debug('Already ACTIVE, ignoring request to activate');
+                return;
+            }
+            this._changeState(ActivationState.ACTIVE);
+            this._connect();
+        }
+        _connect() {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (this.connected) {
+                    this.debug('STOMP: already connected, nothing to do');
+                    return;
+                }
+                yield this.beforeConnect();
+                if (!this.active) {
+                    this.debug('Client has been marked inactive, will not attempt to connect');
+                    return;
+                }
+                // setup connection watcher
+                if (this.connectionTimeout > 0) {
+                    // clear first
+                    if (this._connectionWatcher) {
+                        clearTimeout(this._connectionWatcher);
+                    }
+                    this._connectionWatcher = setTimeout(() => {
+                        if (this.connected) {
+                            return;
+                        }
+                        // Connection not established, close the underlying socket
+                        // a reconnection will be attempted
+                        this.debug(`Connection not established in ${this.connectionTimeout}ms, closing socket`);
+                        this.forceDisconnect();
+                    }, this.connectionTimeout);
+                }
+                this.debug('Opening Web Socket...');
+                // Get the actual WebSocket (or a similar object)
+                const webSocket = this._createWebSocket();
+                this._stompHandler = new StompHandler(this, webSocket, {
+                    debug: this.debug,
+                    stompVersions: this.stompVersions,
+                    connectHeaders: this.connectHeaders,
+                    disconnectHeaders: this._disconnectHeaders,
+                    heartbeatIncoming: this.heartbeatIncoming,
+                    heartbeatOutgoing: this.heartbeatOutgoing,
+                    splitLargeFrames: this.splitLargeFrames,
+                    maxWebSocketChunkSize: this.maxWebSocketChunkSize,
+                    forceBinaryWSFrames: this.forceBinaryWSFrames,
+                    logRawCommunication: this.logRawCommunication,
+                    appendMissingNULLonIncoming: this.appendMissingNULLonIncoming,
+                    discardWebsocketOnCommFailure: this.discardWebsocketOnCommFailure,
+                    onConnect: frame => {
+                        // Successfully connected, stop the connection watcher
+                        if (this._connectionWatcher) {
+                            clearTimeout(this._connectionWatcher);
+                            this._connectionWatcher = undefined;
+                        }
+                        if (!this.active) {
+                            this.debug('STOMP got connected while deactivate was issued, will disconnect now');
+                            this._disposeStompHandler();
+                            return;
+                        }
+                        this.onConnect(frame);
+                    },
+                    onDisconnect: frame => {
+                        this.onDisconnect(frame);
+                    },
+                    onStompError: frame => {
+                        this.onStompError(frame);
+                    },
+                    onWebSocketClose: evt => {
+                        this._stompHandler = undefined; // a new one will be created in case of a reconnect
+                        if (this.state === ActivationState.DEACTIVATING) {
+                            // Mark deactivation complete
+                            this._resolveSocketClose();
+                            this._resolveSocketClose = undefined;
+                            this._changeState(ActivationState.INACTIVE);
+                        }
+                        this.onWebSocketClose(evt);
+                        // The callback is called before attempting to reconnect, this would allow the client
+                        // to be `deactivated` in the callback.
+                        if (this.active) {
+                            this._schedule_reconnect();
+                        }
+                    },
+                    onWebSocketError: evt => {
+                        this.onWebSocketError(evt);
+                    },
+                    onUnhandledMessage: message => {
+                        this.onUnhandledMessage(message);
+                    },
+                    onUnhandledReceipt: frame => {
+                        this.onUnhandledReceipt(frame);
+                    },
+                    onUnhandledFrame: frame => {
+                        this.onUnhandledFrame(frame);
+                    },
+                });
+                this._stompHandler.start();
+            });
+        }
+        _createWebSocket() {
+            let webSocket;
+            if (this.webSocketFactory) {
+                webSocket = this.webSocketFactory();
+            }
+            else {
+                webSocket = new WebSocket(this.brokerURL, this.stompVersions.protocolVersions());
+            }
+            webSocket.binaryType = 'arraybuffer';
+            return webSocket;
+        }
+        _schedule_reconnect() {
+            if (this.reconnectDelay > 0) {
+                this.debug(`STOMP: scheduling reconnection in ${this.reconnectDelay}ms`);
+                this._reconnector = setTimeout(() => {
+                    this._connect();
+                }, this.reconnectDelay);
+            }
+        }
+        /**
+         * Disconnect if connected and stop auto reconnect loop.
+         * Appropriate callbacks will be invoked if underlying STOMP connection was connected.
+         *
+         * This call is async, it will resolve immediately if there is no underlying active websocket,
+         * otherwise, it will resolve after underlying websocket is properly disposed.
+         *
+         * To reactivate you can call [Client#activate]{@link Client#activate}.
+         */
+        deactivate() {
+            return __awaiter(this, void 0, void 0, function* () {
+                let retPromise;
+                if (this.state !== ActivationState.ACTIVE) {
+                    this.debug(`Already ${ActivationState[this.state]}, ignoring call to deactivate`);
+                    return Promise.resolve();
+                }
+                this._changeState(ActivationState.DEACTIVATING);
+                // Clear if a reconnection was scheduled
+                if (this._reconnector) {
+                    clearTimeout(this._reconnector);
+                }
+                if (this._stompHandler &&
+                    this.webSocket.readyState !== StompSocketState.CLOSED) {
+                    // we need to wait for underlying websocket to close
+                    retPromise = new Promise((resolve, reject) => {
+                        this._resolveSocketClose = resolve;
+                    });
+                }
+                else {
+                    // indicate that auto reconnect loop should terminate
+                    this._changeState(ActivationState.INACTIVE);
+                    return Promise.resolve();
+                }
+                this._disposeStompHandler();
+                return retPromise;
+            });
+        }
+        /**
+         * Force disconnect if there is an active connection by directly closing the underlying WebSocket.
+         * This is different than a normal disconnect where a DISCONNECT sequence is carried out with the broker.
+         * After forcing disconnect, automatic reconnect will be attempted.
+         * To stop further reconnects call [Client#deactivate]{@link Client#deactivate} as well.
+         */
+        forceDisconnect() {
+            if (this._stompHandler) {
+                this._stompHandler.forceDisconnect();
+            }
+        }
+        _disposeStompHandler() {
+            // Dispose STOMP Handler
+            if (this._stompHandler) {
+                this._stompHandler.dispose();
+                this._stompHandler = null;
+            }
+        }
+        /**
+         * Send a message to a named destination. Refer to your STOMP broker documentation for types
+         * and naming of destinations.
+         *
+         * STOMP protocol specifies and suggests some headers and also allows broker specific headers.
+         *
+         * `body` must be String.
+         * You will need to covert the payload to string in case it is not string (e.g. JSON).
+         *
+         * To send a binary message body use binaryBody parameter. It should be a
+         * [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array).
+         * Sometimes brokers may not support binary frames out of the box.
+         * Please check your broker documentation.
+         *
+         * `content-length` header is automatically added to the STOMP Frame sent to the broker.
+         * Set `skipContentLengthHeader` to indicate that `content-length` header should not be added.
+         * For binary messages `content-length` header is always added.
+         *
+         * Caution: The broker will, most likely, report an error and disconnect if message body has NULL octet(s)
+         * and `content-length` header is missing.
+         *
+         * ```javascript
+         *        client.publish({destination: "/queue/test", headers: {priority: 9}, body: "Hello, STOMP"});
+         *
+         *        // Only destination is mandatory parameter
+         *        client.publish({destination: "/queue/test", body: "Hello, STOMP"});
+         *
+         *        // Skip content-length header in the frame to the broker
+         *        client.publish({"/queue/test", body: "Hello, STOMP", skipContentLengthHeader: true});
+         *
+         *        var binaryData = generateBinaryData(); // This need to be of type Uint8Array
+         *        // setting content-type header is not mandatory, however a good practice
+         *        client.publish({destination: '/topic/special', binaryBody: binaryData,
+         *                         headers: {'content-type': 'application/octet-stream'}});
+         * ```
+         */
+        publish(params) {
+            this._stompHandler.publish(params);
+        }
+        /**
+         * STOMP brokers may carry out operation asynchronously and allow requesting for acknowledgement.
+         * To request an acknowledgement, a `receipt` header needs to be sent with the actual request.
+         * The value (say receipt-id) for this header needs to be unique for each use. Typically a sequence, a UUID, a
+         * random number or a combination may be used.
+         *
+         * A complaint broker will send a RECEIPT frame when an operation has actually been completed.
+         * The operation needs to be matched based in the value of the receipt-id.
+         *
+         * This method allow watching for a receipt and invoke the callback
+         * when corresponding receipt has been received.
+         *
+         * The actual {@link FrameImpl} will be passed as parameter to the callback.
+         *
+         * Example:
+         * ```javascript
+         *        // Subscribing with acknowledgement
+         *        let receiptId = randomText();
+         *
+         *        client.watchForReceipt(receiptId, function() {
+         *          // Will be called after server acknowledges
+         *        });
+         *
+         *        client.subscribe(TEST.destination, onMessage, {receipt: receiptId});
+         *
+         *
+         *        // Publishing with acknowledgement
+         *        receiptId = randomText();
+         *
+         *        client.watchForReceipt(receiptId, function() {
+         *          // Will be called after server acknowledges
+         *        });
+         *        client.publish({destination: TEST.destination, headers: {receipt: receiptId}, body: msg});
+         * ```
+         */
+        watchForReceipt(receiptId, callback) {
+            this._stompHandler.watchForReceipt(receiptId, callback);
+        }
+        /**
+         * Subscribe to a STOMP Broker location. The callback will be invoked for each received message with
+         * the {@link IMessage} as argument.
+         *
+         * Note: The library will generate an unique ID if there is none provided in the headers.
+         *       To use your own ID, pass it using the headers argument.
+         *
+         * ```javascript
+         *        callback = function(message) {
+         *        // called when the client receives a STOMP message from the server
+         *          if (message.body) {
+         *            alert("got message with body " + message.body)
+         *          } else {
+         *            alert("got empty message");
+         *          }
+         *        });
+         *
+         *        var subscription = client.subscribe("/queue/test", callback);
+         *
+         *        // Explicit subscription id
+         *        var mySubId = 'my-subscription-id-001';
+         *        var subscription = client.subscribe(destination, callback, { id: mySubId });
+         * ```
+         */
+        subscribe(destination, callback, headers = {}) {
+            return this._stompHandler.subscribe(destination, callback, headers);
+        }
+        /**
+         * It is preferable to unsubscribe from a subscription by calling
+         * `unsubscribe()` directly on {@link StompSubscription} returned by `client.subscribe()`:
+         *
+         * ```javascript
+         *        var subscription = client.subscribe(destination, onmessage);
+         *        // ...
+         *        subscription.unsubscribe();
+         * ```
+         *
+         * See: http://stomp.github.com/stomp-specification-1.2.html#UNSUBSCRIBE UNSUBSCRIBE Frame
+         */
+        unsubscribe(id, headers = {}) {
+            this._stompHandler.unsubscribe(id, headers);
+        }
+        /**
+         * Start a transaction, the returned {@link ITransaction} has methods - [commit]{@link ITransaction#commit}
+         * and [abort]{@link ITransaction#abort}.
+         *
+         * `transactionId` is optional, if not passed the library will generate it internally.
+         */
+        begin(transactionId) {
+            return this._stompHandler.begin(transactionId);
+        }
+        /**
+         * Commit a transaction.
+         *
+         * It is preferable to commit a transaction by calling [commit]{@link ITransaction#commit} directly on
+         * {@link ITransaction} returned by [client.begin]{@link Client#begin}.
+         *
+         * ```javascript
+         *        var tx = client.begin(txId);
+         *        //...
+         *        tx.commit();
+         * ```
+         */
+        commit(transactionId) {
+            this._stompHandler.commit(transactionId);
+        }
+        /**
+         * Abort a transaction.
+         * It is preferable to abort a transaction by calling [abort]{@link ITransaction#abort} directly on
+         * {@link ITransaction} returned by [client.begin]{@link Client#begin}.
+         *
+         * ```javascript
+         *        var tx = client.begin(txId);
+         *        //...
+         *        tx.abort();
+         * ```
+         */
+        abort(transactionId) {
+            this._stompHandler.abort(transactionId);
+        }
+        /**
+         * ACK a message. It is preferable to acknowledge a message by calling [ack]{@link IMessage#ack} directly
+         * on the {@link IMessage} handled by a subscription callback:
+         *
+         * ```javascript
+         *        var callback = function (message) {
+         *          // process the message
+         *          // acknowledge it
+         *          message.ack();
+         *        };
+         *        client.subscribe(destination, callback, {'ack': 'client'});
+         * ```
+         */
+        ack(messageId, subscriptionId, headers = {}) {
+            this._stompHandler.ack(messageId, subscriptionId, headers);
+        }
+        /**
+         * NACK a message. It is preferable to acknowledge a message by calling [nack]{@link IMessage#nack} directly
+         * on the {@link IMessage} handled by a subscription callback:
+         *
+         * ```javascript
+         *        var callback = function (message) {
+         *          // process the message
+         *          // an error occurs, nack it
+         *          message.nack();
+         *        };
+         *        client.subscribe(destination, callback, {'ack': 'client'});
+         * ```
+         */
+        nack(messageId, subscriptionId, headers = {}) {
+            this._stompHandler.nack(messageId, subscriptionId, headers);
+        }
+    }
+
+    /**
+     * Configuration options for STOMP Client, each key corresponds to
+     * field by the same name in {@link Client}. This can be passed to
+     * the constructor of {@link Client} or to [Client#configure]{@link Client#configure}.
+     *
+     * There used to be a class with the same name in `@stomp/ng2-stompjs`, which has been replaced by
+     * {@link RxStompConfig} and {@link InjectableRxStompConfig}.
+     *
+     * Part of `@stomp/stompjs`.
+     */
+    class StompConfig {
+    }
+
+    /**
+     * STOMP headers. Many functions calls will accept headers as parameters.
+     * The headers sent by Broker will be available as [IFrame#headers]{@link IFrame#headers}.
+     *
+     * `key` and `value` must be valid strings.
+     * In addition, `key` must not contain `CR`, `LF`, or `:`.
+     *
+     * Part of `@stomp/stompjs`.
+     */
+    class StompHeaders {
+    }
+
+    /**
+     * Call [Client#subscribe]{@link Client#subscribe} to create a StompSubscription.
+     *
+     * Part of `@stomp/stompjs`.
+     */
+    class StompSubscription {
+    }
+
+    /**
+     * Part of `@stomp/stompjs`.
+     *
+     * @internal
+     */
+    class HeartbeatInfo {
+        constructor(client) {
+            this.client = client;
+        }
+        get outgoing() {
+            return this.client.heartbeatOutgoing;
+        }
+        set outgoing(value) {
+            this.client.heartbeatOutgoing = value;
+        }
+        get incoming() {
+            return this.client.heartbeatIncoming;
+        }
+        set incoming(value) {
+            this.client.heartbeatIncoming = value;
+        }
+    }
+
+    /**
+     * Available for backward compatibility, please shift to using {@link Client}.
+     *
+     * **Deprecated**
+     *
+     * Part of `@stomp/stompjs`.
+     *
+     * To upgrade, please follow the [Upgrade Guide](../additional-documentation/upgrading.html)
+     */
+    class CompatClient extends Client {
+        /**
+         * Available for backward compatibility, please shift to using {@link Client}
+         * and [Client#webSocketFactory]{@link Client#webSocketFactory}.
+         *
+         * **Deprecated**
+         *
+         * @internal
+         */
+        constructor(webSocketFactory) {
+            super();
+            /**
+             * It is no op now. No longer needed. Large packets work out of the box.
+             */
+            this.maxWebSocketFrameSize = 16 * 1024;
+            this._heartbeatInfo = new HeartbeatInfo(this);
+            this.reconnect_delay = 0;
+            this.webSocketFactory = webSocketFactory;
+            // Default from previous version
+            this.debug = (...message) => {
+                console.log(...message);
+            };
+        }
+        _parseConnect(...args) {
+            let closeEventCallback;
+            let connectCallback;
+            let errorCallback;
+            let headers = {};
+            if (args.length < 2) {
+                throw new Error('Connect requires at least 2 arguments');
+            }
+            if (typeof args[1] === 'function') {
+                [headers, connectCallback, errorCallback, closeEventCallback] = args;
+            }
+            else {
+                switch (args.length) {
+                    case 6:
+                        [
+                            headers.login,
+                            headers.passcode,
+                            connectCallback,
+                            errorCallback,
+                            closeEventCallback,
+                            headers.host,
+                        ] = args;
+                        break;
+                    default:
+                        [
+                            headers.login,
+                            headers.passcode,
+                            connectCallback,
+                            errorCallback,
+                            closeEventCallback,
+                        ] = args;
+                }
+            }
+            return [headers, connectCallback, errorCallback, closeEventCallback];
+        }
+        /**
+         * Available for backward compatibility, please shift to using [Client#activate]{@link Client#activate}.
+         *
+         * **Deprecated**
+         *
+         * The `connect` method accepts different number of arguments and types. See the Overloads list. Use the
+         * version with headers to pass your broker specific options.
+         *
+         * overloads:
+         * - connect(headers, connectCallback)
+         * - connect(headers, connectCallback, errorCallback)
+         * - connect(login, passcode, connectCallback)
+         * - connect(login, passcode, connectCallback, errorCallback)
+         * - connect(login, passcode, connectCallback, errorCallback, closeEventCallback)
+         * - connect(login, passcode, connectCallback, errorCallback, closeEventCallback, host)
+         *
+         * params:
+         * - headers, see [Client#connectHeaders]{@link Client#connectHeaders}
+         * - connectCallback, see [Client#onConnect]{@link Client#onConnect}
+         * - errorCallback, see [Client#onStompError]{@link Client#onStompError}
+         * - closeEventCallback, see [Client#onWebSocketClose]{@link Client#onWebSocketClose}
+         * - login [String], see [Client#connectHeaders](../classes/Client.html#connectHeaders)
+         * - passcode [String], [Client#connectHeaders](../classes/Client.html#connectHeaders)
+         * - host [String], see [Client#connectHeaders](../classes/Client.html#connectHeaders)
+         *
+         * To upgrade, please follow the [Upgrade Guide](../additional-documentation/upgrading.html)
+         */
+        connect(...args) {
+            const out = this._parseConnect(...args);
+            if (out[0]) {
+                this.connectHeaders = out[0];
+            }
+            if (out[1]) {
+                this.onConnect = out[1];
+            }
+            if (out[2]) {
+                this.onStompError = out[2];
+            }
+            if (out[3]) {
+                this.onWebSocketClose = out[3];
+            }
+            super.activate();
+        }
+        /**
+         * Available for backward compatibility, please shift to using [Client#deactivate]{@link Client#deactivate}.
+         *
+         * **Deprecated**
+         *
+         * See:
+         * [Client#onDisconnect]{@link Client#onDisconnect}, and
+         * [Client#disconnectHeaders]{@link Client#disconnectHeaders}
+         *
+         * To upgrade, please follow the [Upgrade Guide](../additional-documentation/upgrading.html)
+         */
+        disconnect(disconnectCallback, headers = {}) {
+            if (disconnectCallback) {
+                this.onDisconnect = disconnectCallback;
+            }
+            this.disconnectHeaders = headers;
+            super.deactivate();
+        }
+        /**
+         * Available for backward compatibility, use [Client#publish]{@link Client#publish}.
+         *
+         * Send a message to a named destination. Refer to your STOMP broker documentation for types
+         * and naming of destinations. The headers will, typically, be available to the subscriber.
+         * However, there may be special purpose headers corresponding to your STOMP broker.
+         *
+         *  **Deprecated**, use [Client#publish]{@link Client#publish}
+         *
+         * Note: Body must be String. You will need to covert the payload to string in case it is not string (e.g. JSON)
+         *
+         * ```javascript
+         *        client.send("/queue/test", {priority: 9}, "Hello, STOMP");
+         *
+         *        // If you want to send a message with a body, you must also pass the headers argument.
+         *        client.send("/queue/test", {}, "Hello, STOMP");
+         * ```
+         *
+         * To upgrade, please follow the [Upgrade Guide](../additional-documentation/upgrading.html)
+         */
+        send(destination, headers = {}, body = '') {
+            headers = Object.assign({}, headers);
+            const skipContentLengthHeader = headers['content-length'] === false;
+            if (skipContentLengthHeader) {
+                delete headers['content-length'];
+            }
+            this.publish({
+                destination,
+                headers: headers,
+                body,
+                skipContentLengthHeader,
+            });
+        }
+        /**
+         * Available for backward compatibility, renamed to [Client#reconnectDelay]{@link Client#reconnectDelay}.
+         *
+         * **Deprecated**
+         */
+        set reconnect_delay(value) {
+            this.reconnectDelay = value;
+        }
+        /**
+         * Available for backward compatibility, renamed to [Client#webSocket]{@link Client#webSocket}.
+         *
+         * **Deprecated**
+         */
+        get ws() {
+            return this.webSocket;
+        }
+        /**
+         * Available for backward compatibility, renamed to [Client#connectedVersion]{@link Client#connectedVersion}.
+         *
+         * **Deprecated**
+         */
+        get version() {
+            return this.connectedVersion;
+        }
+        /**
+         * Available for backward compatibility, renamed to [Client#onUnhandledMessage]{@link Client#onUnhandledMessage}.
+         *
+         * **Deprecated**
+         */
+        get onreceive() {
+            return this.onUnhandledMessage;
+        }
+        /**
+         * Available for backward compatibility, renamed to [Client#onUnhandledMessage]{@link Client#onUnhandledMessage}.
+         *
+         * **Deprecated**
+         */
+        set onreceive(value) {
+            this.onUnhandledMessage = value;
+        }
+        /**
+         * Available for backward compatibility, renamed to [Client#onUnhandledReceipt]{@link Client#onUnhandledReceipt}.
+         * Prefer using [Client#watchForReceipt]{@link Client#watchForReceipt}.
+         *
+         * **Deprecated**
+         */
+        get onreceipt() {
+            return this.onUnhandledReceipt;
+        }
+        /**
+         * Available for backward compatibility, renamed to [Client#onUnhandledReceipt]{@link Client#onUnhandledReceipt}.
+         *
+         * **Deprecated**
+         */
+        set onreceipt(value) {
+            this.onUnhandledReceipt = value;
+        }
+        /**
+         * Available for backward compatibility, renamed to [Client#heartbeatIncoming]{@link Client#heartbeatIncoming}
+         * [Client#heartbeatOutgoing]{@link Client#heartbeatOutgoing}.
+         *
+         * **Deprecated**
+         */
+        get heartbeat() {
+            return this._heartbeatInfo;
+        }
+        /**
+         * Available for backward compatibility, renamed to [Client#heartbeatIncoming]{@link Client#heartbeatIncoming}
+         * [Client#heartbeatOutgoing]{@link Client#heartbeatOutgoing}.
+         *
+         * **Deprecated**
+         */
+        set heartbeat(value) {
+            this.heartbeatIncoming = value.incoming;
+            this.heartbeatOutgoing = value.outgoing;
+        }
+    }
+
+    /**
+     * STOMP Class, acts like a factory to create {@link Client}.
+     *
+     * Part of `@stomp/stompjs`.
+     *
+     * **Deprecated**
+     *
+     * It will be removed in next major version. Please switch to {@link Client}.
+     */
+    class Stomp {
+        /**
+         * This method creates a WebSocket client that is connected to
+         * the STOMP server located at the url.
+         *
+         * ```javascript
+         *        var url = "ws://localhost:61614/stomp";
+         *        var client = Stomp.client(url);
+         * ```
+         *
+         * **Deprecated**
+         *
+         * It will be removed in next major version. Please switch to {@link Client}
+         * using [Client#brokerURL]{@link Client#brokerURL}.
+         */
+        static client(url, protocols) {
+            // This is a hack to allow another implementation than the standard
+            // HTML5 WebSocket class.
+            //
+            // It is possible to use another class by calling
+            //
+            //     Stomp.WebSocketClass = MozWebSocket
+            //
+            // *prior* to call `Stomp.client()`.
+            //
+            // This hack is deprecated and `Stomp.over()` method should be used
+            // instead.
+            // See remarks on the function Stomp.over
+            if (protocols == null) {
+                protocols = Versions.default.protocolVersions();
+            }
+            const wsFn = () => {
+                const klass = Stomp.WebSocketClass || WebSocket;
+                return new klass(url, protocols);
+            };
+            return new CompatClient(wsFn);
+        }
+        /**
+         * This method is an alternative to [Stomp#client]{@link Stomp#client} to let the user
+         * specify the WebSocket to use (either a standard HTML5 WebSocket or
+         * a similar object).
+         *
+         * In order to support reconnection, the function Client._connect should be callable more than once.
+         * While reconnecting
+         * a new instance of underlying transport (TCP Socket, WebSocket or SockJS) will be needed. So, this function
+         * alternatively allows passing a function that should return a new instance of the underlying socket.
+         *
+         * ```javascript
+         *        var client = Stomp.over(function(){
+         *          return new WebSocket('ws://localhost:15674/ws')
+         *        });
+         * ```
+         *
+         * **Deprecated**
+         *
+         * It will be removed in next major version. Please switch to {@link Client}
+         * using [Client#webSocketFactory]{@link Client#webSocketFactory}.
+         */
+        static over(ws) {
+            let wsFn;
+            if (typeof ws === 'function') {
+                wsFn = ws;
+            }
+            else {
+                console.warn('Stomp.over did not receive a factory, auto reconnect will not work. ' +
+                    'Please see https://stomp-js.github.io/api-docs/latest/classes/Stomp.html#over');
+                wsFn = () => ws;
+            }
+            return new CompatClient(wsFn);
+        }
+    }
+    /**
+     * In case you need to use a non standard class for WebSocket.
+     *
+     * For example when using within NodeJS environment:
+     *
+     * ```javascript
+     *        StompJs = require('../../esm5/');
+     *        Stomp = StompJs.Stomp;
+     *        Stomp.WebSocketClass = require('websocket').w3cwebsocket;
+     * ```
+     *
+     * **Deprecated**
+     *
+     *
+     * It will be removed in next major version. Please switch to {@link Client}
+     * using [Client#webSocketFactory]{@link Client#webSocketFactory}.
+     */
+    // tslint:disable-next-line:variable-name
+    Stomp.WebSocketClass = null;
+
+    var StompJS = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        Client: Client,
+        FrameImpl: FrameImpl,
+        Parser: Parser,
+        StompConfig: StompConfig,
+        StompHeaders: StompHeaders,
+        StompSubscription: StompSubscription,
+        get StompSocketState () { return StompSocketState; },
+        get ActivationState () { return ActivationState; },
+        Versions: Versions,
+        CompatClient: CompatClient,
+        Stomp: Stomp
+    });
+
     /* src\components\ChatRoom.svelte generated by Svelte v3.46.3 */
 
     const { console: console_1 } = globals;
@@ -4565,19 +6366,19 @@ var app = (function (require$$1) {
 
     function get_each_context$a(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[8] = list[i];
+    	child_ctx[11] = list[i];
     	return child_ctx;
     }
 
-    // (67:3) {:else}
+    // (99:3) {:else}
     function create_else_block$4(ctx) {
     	let div2;
     	let div0;
-    	let t0_value = /*log*/ ctx[8].id + "";
+    	let t0_value = /*log*/ ctx[11].id + "";
     	let t0;
     	let t1;
     	let div1;
-    	let t2_value = /*log*/ ctx[8].message + "";
+    	let t2_value = /*log*/ ctx[11].message + "";
     	let t2;
     	let t3;
 
@@ -4590,11 +6391,11 @@ var app = (function (require$$1) {
     			div1 = element("div");
     			t2 = text(t2_value);
     			t3 = space();
-    			add_location(div0, file$j, 68, 5, 1999);
+    			add_location(div0, file$j, 100, 5, 2801);
     			attr_dev(div1, "class", "message message_other svelte-5qgta6");
-    			add_location(div1, file$j, 69, 5, 2025);
+    			add_location(div1, file$j, 101, 5, 2827);
     			attr_dev(div2, "class", "chat chat_other svelte-5qgta6");
-    			add_location(div2, file$j, 67, 3, 1963);
+    			add_location(div2, file$j, 99, 3, 2765);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -4605,10 +6406,7 @@ var app = (function (require$$1) {
     			append_dev(div1, t2);
     			append_dev(div2, t3);
     		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*chat_logs*/ 4 && t0_value !== (t0_value = /*log*/ ctx[8].id + "")) set_data_dev(t0, t0_value);
-    			if (dirty & /*chat_logs*/ 4 && t2_value !== (t2_value = /*log*/ ctx[8].message + "")) set_data_dev(t2, t2_value);
-    		},
+    		p: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div2);
     		}
@@ -4618,20 +6416,20 @@ var app = (function (require$$1) {
     		block,
     		id: create_else_block$4.name,
     		type: "else",
-    		source: "(67:3) {:else}",
+    		source: "(99:3) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (62:3) {#if log.id == $user?.githubId}
+    // (94:3) {#if log.id == $user?.githubId}
     function create_if_block$7(ctx) {
     	let div2;
     	let div0;
     	let t1;
     	let div1;
-    	let t2_value = /*log*/ ctx[8].message + "";
+    	let t2_value = /*log*/ ctx[11].message + "";
     	let t2;
     	let t3;
 
@@ -4644,11 +6442,11 @@ var app = (function (require$$1) {
     			div1 = element("div");
     			t2 = text(t2_value);
     			t3 = space();
-    			add_location(div0, file$j, 63, 5, 1864);
+    			add_location(div0, file$j, 95, 5, 2666);
     			attr_dev(div1, "class", "message message_my svelte-5qgta6");
-    			add_location(div1, file$j, 64, 5, 1883);
+    			add_location(div1, file$j, 96, 5, 2685);
     			attr_dev(div2, "class", "chat chat_my svelte-5qgta6");
-    			add_location(div2, file$j, 62, 4, 1831);
+    			add_location(div2, file$j, 94, 4, 2633);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -4658,9 +6456,7 @@ var app = (function (require$$1) {
     			append_dev(div1, t2);
     			append_dev(div2, t3);
     		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*chat_logs*/ 4 && t2_value !== (t2_value = /*log*/ ctx[8].message + "")) set_data_dev(t2, t2_value);
-    		},
+    		p: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div2);
     		}
@@ -4670,19 +6466,19 @@ var app = (function (require$$1) {
     		block,
     		id: create_if_block$7.name,
     		type: "if",
-    		source: "(62:3) {#if log.id == $user?.githubId}",
+    		source: "(94:3) {#if log.id == $user?.githubId}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (61:2) {#each chat_logs as log}
+    // (93:2) {#each chat_logs as log}
     function create_each_block$a(ctx) {
     	let if_block_anchor;
 
     	function select_block_type(ctx, dirty) {
-    		if (/*log*/ ctx[8].id == /*$user*/ ctx[3]?.githubId) return create_if_block$7;
+    		if (/*log*/ ctx[11].id == /*$user*/ ctx[2]?.githubId) return create_if_block$7;
     		return create_else_block$4;
     	}
 
@@ -4721,7 +6517,7 @@ var app = (function (require$$1) {
     		block,
     		id: create_each_block$a.name,
     		type: "each",
-    		source: "(61:2) {#each chat_logs as log}",
+    		source: "(93:2) {#each chat_logs as log}",
     		ctx
     	});
 
@@ -4740,7 +6536,7 @@ var app = (function (require$$1) {
     	let button;
     	let mounted;
     	let dispose;
-    	let each_value = /*chat_logs*/ ctx[2];
+    	let each_value = /*chat_logs*/ ctx[3];
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -4766,16 +6562,16 @@ var app = (function (require$$1) {
     			button = element("button");
     			button.textContent = "Send Message";
     			attr_dev(div0, "class", "chat_room_upper svelte-5qgta6");
-    			add_location(div0, file$j, 58, 1, 1668);
+    			add_location(div0, file$j, 90, 1, 2470);
     			attr_dev(div1, "id", "chat_room_body");
     			attr_dev(div1, "class", "chat_room_body svelte-5qgta6");
-    			add_location(div1, file$j, 59, 1, 1713);
+    			add_location(div1, file$j, 91, 1, 2515);
     			attr_dev(input, "class", "chat_room_write svelte-5qgta6");
     			attr_dev(input, "type", "text");
-    			add_location(input, file$j, 74, 1, 2124);
-    			add_location(button, file$j, 75, 1, 2193);
+    			add_location(input, file$j, 106, 1, 2926);
+    			add_location(button, file$j, 107, 1, 2995);
     			attr_dev(div2, "class", "chat_room svelte-5qgta6");
-    			add_location(div2, file$j, 57, 0, 1642);
+    			add_location(div2, file$j, 89, 0, 2444);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4800,7 +6596,7 @@ var app = (function (require$$1) {
     			if (!mounted) {
     				dispose = [
     					listen_dev(input, "input", /*input_input_handler*/ ctx[5]),
-    					listen_dev(button, "click", /*onSendMessage*/ ctx[4], false, false, false)
+    					listen_dev(button, "click", /*publish*/ ctx[4], false, false, false)
     				];
 
     				mounted = true;
@@ -4810,7 +6606,7 @@ var app = (function (require$$1) {
     			if (dirty & /*title*/ 1) set_data_dev(t0, /*title*/ ctx[0]);
 
     			if (dirty & /*chat_logs, $user*/ 12) {
-    				each_value = /*chat_logs*/ ctx[2];
+    				each_value = /*chat_logs*/ ctx[3];
     				validate_each_argument(each_value);
     				let i;
 
@@ -4861,7 +6657,7 @@ var app = (function (require$$1) {
     function instance$j($$self, $$props, $$invalidate) {
     	let $user;
     	validate_store(user, 'user');
-    	component_subscribe($$self, user, $$value => $$invalidate(3, $user = $$value));
+    	component_subscribe($$self, user, $$value => $$invalidate(2, $user = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('ChatRoom', slots, []);
     	let { title } = $$props;
@@ -4920,6 +6716,8 @@ var app = (function (require$$1) {
     		objDiv.scrollTop = objDiv.scrollHeight;
     	};
 
+    	let client;
+
     	onMount(() => {
     		const socket = new WebSocket('wss://grabit-backend.link/api/stomp/chat');
 
@@ -4927,27 +6725,54 @@ var app = (function (require$$1) {
     			console.log("It's open");
     		});
 
+    		//connect();
     		scrollDown();
     	});
 
-    	const sendMessage = message => {
-    		const new_chat = {
-    			id: $user?.githubId,
-    			message,
-    			createdAt: 'now'
-    		};
+    	const connect = () => {
+    		client.current = new Client({
+    				brokerURL: "wss://grabit-backend.link/api/stomp/chat", // 웹소켓 서버로 직접 접속
+    				//webSocketFactory: () => new SockJS("/ws-stomp"), // proxy를 통한 접속
+    				connectHeaders: { "auth-token": "spring-chat-auth-token" },
+    				debug(str) {
+    					console.log(str);
+    				},
+    				reconnectDelay: 5000,
+    				heartbeatIncoming: 4000,
+    				heartbeatOutgoing: 4000,
+    				onConnect: () => {
+    					subscribe();
+    				},
+    				onStompError: frame => {
+    					console.error(frame);
+    				}
+    			});
 
-    		$$invalidate(2, chat_logs = [...chat_logs, new_chat]);
-    	}; //if (socket.readyState <= 1) {
-    	//	socket.send(message);
-    	//}
+    		client.current.activate();
+    	};
 
-    	function onSendMessage() {
-    		if (message.length > 0) {
-    			sendMessage(message);
-    			$$invalidate(1, message = "");
+    	const disconnect = () => {
+    		client.current.deactivate();
+    	};
+
+    	const subscribe = () => {
+    		client.current.subscribe(`/sub/chat/${ROOM_SEQ}`, ({ body }) => {
+    			setChatMessages(_chatMessages => [..._chatMessages, JSON.parse(body)]);
+    		});
+    	};
+
+    	const publish = message => {
+    		if (!client.current.connected) {
+    			return;
     		}
-    	}
+
+    		client.current.publish({
+    			destination: "/pub/chat",
+    			body: JSON.stringify({ roomSeq: ROOM_SEQ, message })
+    		});
+
+    		setMessage("");
+    	};
 
     	useEffect(
     		() => {
@@ -4976,26 +6801,31 @@ var app = (function (require$$1) {
     		user,
     		onMount,
     		useEffect,
+    		StompJS,
     		title,
     		message,
     		chat_logs,
     		scrollDown,
-    		sendMessage,
-    		onSendMessage,
+    		client,
+    		connect,
+    		disconnect,
+    		subscribe,
+    		publish,
     		$user
     	});
 
     	$$self.$inject_state = $$props => {
     		if ('title' in $$props) $$invalidate(0, title = $$props.title);
     		if ('message' in $$props) $$invalidate(1, message = $$props.message);
-    		if ('chat_logs' in $$props) $$invalidate(2, chat_logs = $$props.chat_logs);
+    		if ('chat_logs' in $$props) $$invalidate(3, chat_logs = $$props.chat_logs);
+    		if ('client' in $$props) client = $$props.client;
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [title, message, chat_logs, $user, onSendMessage, input_input_handler];
+    	return [title, message, $user, chat_logs, publish, input_input_handler];
     }
 
     class ChatRoom extends SvelteComponentDev {
@@ -12058,802 +13888,6 @@ var app = (function (require$$1) {
     	}
     }
 
-    var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
-    function createCommonjsModule(fn) {
-      var module = { exports: {} };
-    	return fn(module, module.exports), module.exports;
-    }
-
-    var stomp = createCommonjsModule(function (module, exports) {
-    // Generated by CoffeeScript 1.7.1
-
-    /*
-       Stomp Over WebSocket http://www.jmesnil.net/stomp-websocket/doc/ | Apache License V2.0
-
-       Copyright (C) 2010-2013 [Jeff Mesnil](http://jmesnil.net/)
-       Copyright (C) 2012 [FuseSource, Inc.](http://fusesource.com)
-     */
-
-    (function() {
-      var Byte, Client, Frame, Stomp,
-        __hasProp = {}.hasOwnProperty,
-        __slice = [].slice;
-
-      Byte = {
-        LF: '\x0A',
-        NULL: '\x00'
-      };
-
-      Frame = (function() {
-        var unmarshallSingle;
-
-        function Frame(command, headers, body) {
-          this.command = command;
-          this.headers = headers != null ? headers : {};
-          this.body = body != null ? body : '';
-        }
-
-        Frame.prototype.toString = function() {
-          var lines, name, skipContentLength, value, _ref;
-          lines = [this.command];
-          skipContentLength = this.headers['content-length'] === false ? true : false;
-          if (skipContentLength) {
-            delete this.headers['content-length'];
-          }
-          _ref = this.headers;
-          for (name in _ref) {
-            if (!__hasProp.call(_ref, name)) continue;
-            value = _ref[name];
-            lines.push("" + name + ":" + value);
-          }
-          if (this.body && !skipContentLength) {
-            lines.push("content-length:" + (Frame.sizeOfUTF8(this.body)));
-          }
-          lines.push(Byte.LF + this.body);
-          return lines.join(Byte.LF);
-        };
-
-        Frame.sizeOfUTF8 = function(s) {
-          if (s) {
-            return encodeURI(s).match(/%..|./g).length;
-          } else {
-            return 0;
-          }
-        };
-
-        unmarshallSingle = function(data) {
-          var body, chr, command, divider, headerLines, headers, i, idx, len, line, start, trim, _i, _j, _len, _ref, _ref1;
-          divider = data.search(RegExp("" + Byte.LF + Byte.LF));
-          headerLines = data.substring(0, divider).split(Byte.LF);
-          command = headerLines.shift();
-          headers = {};
-          trim = function(str) {
-            return str.replace(/^\s+|\s+$/g, '');
-          };
-          _ref = headerLines.reverse();
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            line = _ref[_i];
-            idx = line.indexOf(':');
-            headers[trim(line.substring(0, idx))] = trim(line.substring(idx + 1));
-          }
-          body = '';
-          start = divider + 2;
-          if (headers['content-length']) {
-            len = parseInt(headers['content-length']);
-            body = ('' + data).substring(start, start + len);
-          } else {
-            chr = null;
-            for (i = _j = start, _ref1 = data.length; start <= _ref1 ? _j < _ref1 : _j > _ref1; i = start <= _ref1 ? ++_j : --_j) {
-              chr = data.charAt(i);
-              if (chr === Byte.NULL) {
-                break;
-              }
-              body += chr;
-            }
-          }
-          return new Frame(command, headers, body);
-        };
-
-        Frame.unmarshall = function(datas) {
-          var data;
-          return (function() {
-            var _i, _len, _ref, _results;
-            _ref = datas.split(RegExp("" + Byte.NULL + Byte.LF + "*"));
-            _results = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              data = _ref[_i];
-              if ((data != null ? data.length : void 0) > 0) {
-                _results.push(unmarshallSingle(data));
-              }
-            }
-            return _results;
-          })();
-        };
-
-        Frame.marshall = function(command, headers, body) {
-          var frame;
-          frame = new Frame(command, headers, body);
-          return frame.toString() + Byte.NULL;
-        };
-
-        return Frame;
-
-      })();
-
-      Client = (function() {
-        var now;
-
-        function Client(ws) {
-          this.ws = ws;
-          this.ws.binaryType = "arraybuffer";
-          this.counter = 0;
-          this.connected = false;
-          this.heartbeat = {
-            outgoing: 10000,
-            incoming: 10000
-          };
-          this.maxWebSocketFrameSize = 16 * 1024;
-          this.subscriptions = {};
-        }
-
-        Client.prototype.debug = function(message) {
-          var _ref;
-          return typeof window !== "undefined" && window !== null ? (_ref = window.console) != null ? _ref.log(message) : void 0 : void 0;
-        };
-
-        now = function() {
-          if (Date.now) {
-            return Date.now();
-          } else {
-            return new Date().valueOf;
-          }
-        };
-
-        Client.prototype._transmit = function(command, headers, body) {
-          var out;
-          out = Frame.marshall(command, headers, body);
-          if (typeof this.debug === "function") {
-            this.debug(">>> " + out);
-          }
-          while (true) {
-            if (out.length > this.maxWebSocketFrameSize) {
-              this.ws.send(out.substring(0, this.maxWebSocketFrameSize));
-              out = out.substring(this.maxWebSocketFrameSize);
-              if (typeof this.debug === "function") {
-                this.debug("remaining = " + out.length);
-              }
-            } else {
-              return this.ws.send(out);
-            }
-          }
-        };
-
-        Client.prototype._setupHeartbeat = function(headers) {
-          var serverIncoming, serverOutgoing, ttl, v, _ref, _ref1;
-          if ((_ref = headers.version) !== Stomp.VERSIONS.V1_1 && _ref !== Stomp.VERSIONS.V1_2) {
-            return;
-          }
-          _ref1 = (function() {
-            var _i, _len, _ref1, _results;
-            _ref1 = headers['heart-beat'].split(",");
-            _results = [];
-            for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-              v = _ref1[_i];
-              _results.push(parseInt(v));
-            }
-            return _results;
-          })(), serverOutgoing = _ref1[0], serverIncoming = _ref1[1];
-          if (!(this.heartbeat.outgoing === 0 || serverIncoming === 0)) {
-            ttl = Math.max(this.heartbeat.outgoing, serverIncoming);
-            if (typeof this.debug === "function") {
-              this.debug("send PING every " + ttl + "ms");
-            }
-            this.pinger = Stomp.setInterval(ttl, (function(_this) {
-              return function() {
-                _this.ws.send(Byte.LF);
-                return typeof _this.debug === "function" ? _this.debug(">>> PING") : void 0;
-              };
-            })(this));
-          }
-          if (!(this.heartbeat.incoming === 0 || serverOutgoing === 0)) {
-            ttl = Math.max(this.heartbeat.incoming, serverOutgoing);
-            if (typeof this.debug === "function") {
-              this.debug("check PONG every " + ttl + "ms");
-            }
-            return this.ponger = Stomp.setInterval(ttl, (function(_this) {
-              return function() {
-                var delta;
-                delta = now() - _this.serverActivity;
-                if (delta > ttl * 2) {
-                  if (typeof _this.debug === "function") {
-                    _this.debug("did not receive server activity for the last " + delta + "ms");
-                  }
-                  return _this.ws.close();
-                }
-              };
-            })(this));
-          }
-        };
-
-        Client.prototype._parseConnect = function() {
-          var args, connectCallback, errorCallback, headers;
-          args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-          headers = {};
-          switch (args.length) {
-            case 2:
-              headers = args[0], connectCallback = args[1];
-              break;
-            case 3:
-              if (args[1] instanceof Function) {
-                headers = args[0], connectCallback = args[1], errorCallback = args[2];
-              } else {
-                headers.login = args[0], headers.passcode = args[1], connectCallback = args[2];
-              }
-              break;
-            case 4:
-              headers.login = args[0], headers.passcode = args[1], connectCallback = args[2], errorCallback = args[3];
-              break;
-            default:
-              headers.login = args[0], headers.passcode = args[1], connectCallback = args[2], errorCallback = args[3], headers.host = args[4];
-          }
-          return [headers, connectCallback, errorCallback];
-        };
-
-        Client.prototype.connect = function() {
-          var args, errorCallback, headers, out;
-          args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-          out = this._parseConnect.apply(this, args);
-          headers = out[0], this.connectCallback = out[1], errorCallback = out[2];
-          if (typeof this.debug === "function") {
-            this.debug("Opening Web Socket...");
-          }
-          this.ws.onmessage = (function(_this) {
-            return function(evt) {
-              var arr, c, client, data, frame, messageID, onreceive, subscription, _i, _len, _ref, _results;
-              data = typeof ArrayBuffer !== 'undefined' && evt.data instanceof ArrayBuffer ? (arr = new Uint8Array(evt.data), typeof _this.debug === "function" ? _this.debug("--- got data length: " + arr.length) : void 0, ((function() {
-                var _i, _len, _results;
-                _results = [];
-                for (_i = 0, _len = arr.length; _i < _len; _i++) {
-                  c = arr[_i];
-                  _results.push(String.fromCharCode(c));
-                }
-                return _results;
-              })()).join('')) : evt.data;
-              _this.serverActivity = now();
-              if (data === Byte.LF) {
-                if (typeof _this.debug === "function") {
-                  _this.debug("<<< PONG");
-                }
-                return;
-              }
-              if (typeof _this.debug === "function") {
-                _this.debug("<<< " + data);
-              }
-              _ref = Frame.unmarshall(data);
-              _results = [];
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                frame = _ref[_i];
-                switch (frame.command) {
-                  case "CONNECTED":
-                    if (typeof _this.debug === "function") {
-                      _this.debug("connected to server " + frame.headers.server);
-                    }
-                    _this.connected = true;
-                    _this._setupHeartbeat(frame.headers);
-                    _results.push(typeof _this.connectCallback === "function" ? _this.connectCallback(frame) : void 0);
-                    break;
-                  case "MESSAGE":
-                    subscription = frame.headers.subscription;
-                    onreceive = _this.subscriptions[subscription] || _this.onreceive;
-                    if (onreceive) {
-                      client = _this;
-                      messageID = frame.headers["message-id"];
-                      frame.ack = function(headers) {
-                        if (headers == null) {
-                          headers = {};
-                        }
-                        return client.ack(messageID, subscription, headers);
-                      };
-                      frame.nack = function(headers) {
-                        if (headers == null) {
-                          headers = {};
-                        }
-                        return client.nack(messageID, subscription, headers);
-                      };
-                      _results.push(onreceive(frame));
-                    } else {
-                      _results.push(typeof _this.debug === "function" ? _this.debug("Unhandled received MESSAGE: " + frame) : void 0);
-                    }
-                    break;
-                  case "RECEIPT":
-                    _results.push(typeof _this.onreceipt === "function" ? _this.onreceipt(frame) : void 0);
-                    break;
-                  case "ERROR":
-                    _results.push(typeof errorCallback === "function" ? errorCallback(frame) : void 0);
-                    break;
-                  default:
-                    _results.push(typeof _this.debug === "function" ? _this.debug("Unhandled frame: " + frame) : void 0);
-                }
-              }
-              return _results;
-            };
-          })(this);
-          this.ws.onclose = (function(_this) {
-            return function() {
-              var msg;
-              msg = "Whoops! Lost connection to " + _this.ws.url;
-              if (typeof _this.debug === "function") {
-                _this.debug(msg);
-              }
-              _this._cleanUp();
-              return typeof errorCallback === "function" ? errorCallback(msg) : void 0;
-            };
-          })(this);
-          return this.ws.onopen = (function(_this) {
-            return function() {
-              if (typeof _this.debug === "function") {
-                _this.debug('Web Socket Opened...');
-              }
-              headers["accept-version"] = Stomp.VERSIONS.supportedVersions();
-              headers["heart-beat"] = [_this.heartbeat.outgoing, _this.heartbeat.incoming].join(',');
-              return _this._transmit("CONNECT", headers);
-            };
-          })(this);
-        };
-
-        Client.prototype.disconnect = function(disconnectCallback, headers) {
-          if (headers == null) {
-            headers = {};
-          }
-          this._transmit("DISCONNECT", headers);
-          this.ws.onclose = null;
-          this.ws.close();
-          this._cleanUp();
-          return typeof disconnectCallback === "function" ? disconnectCallback() : void 0;
-        };
-
-        Client.prototype._cleanUp = function() {
-          this.connected = false;
-          if (this.pinger) {
-            Stomp.clearInterval(this.pinger);
-          }
-          if (this.ponger) {
-            return Stomp.clearInterval(this.ponger);
-          }
-        };
-
-        Client.prototype.send = function(destination, headers, body) {
-          if (headers == null) {
-            headers = {};
-          }
-          if (body == null) {
-            body = '';
-          }
-          headers.destination = destination;
-          return this._transmit("SEND", headers, body);
-        };
-
-        Client.prototype.subscribe = function(destination, callback, headers) {
-          var client;
-          if (headers == null) {
-            headers = {};
-          }
-          if (!headers.id) {
-            headers.id = "sub-" + this.counter++;
-          }
-          headers.destination = destination;
-          this.subscriptions[headers.id] = callback;
-          this._transmit("SUBSCRIBE", headers);
-          client = this;
-          return {
-            id: headers.id,
-            unsubscribe: function() {
-              return client.unsubscribe(headers.id);
-            }
-          };
-        };
-
-        Client.prototype.unsubscribe = function(id) {
-          delete this.subscriptions[id];
-          return this._transmit("UNSUBSCRIBE", {
-            id: id
-          });
-        };
-
-        Client.prototype.begin = function(transaction) {
-          var client, txid;
-          txid = transaction || "tx-" + this.counter++;
-          this._transmit("BEGIN", {
-            transaction: txid
-          });
-          client = this;
-          return {
-            id: txid,
-            commit: function() {
-              return client.commit(txid);
-            },
-            abort: function() {
-              return client.abort(txid);
-            }
-          };
-        };
-
-        Client.prototype.commit = function(transaction) {
-          return this._transmit("COMMIT", {
-            transaction: transaction
-          });
-        };
-
-        Client.prototype.abort = function(transaction) {
-          return this._transmit("ABORT", {
-            transaction: transaction
-          });
-        };
-
-        Client.prototype.ack = function(messageID, subscription, headers) {
-          if (headers == null) {
-            headers = {};
-          }
-          headers["message-id"] = messageID;
-          headers.subscription = subscription;
-          return this._transmit("ACK", headers);
-        };
-
-        Client.prototype.nack = function(messageID, subscription, headers) {
-          if (headers == null) {
-            headers = {};
-          }
-          headers["message-id"] = messageID;
-          headers.subscription = subscription;
-          return this._transmit("NACK", headers);
-        };
-
-        return Client;
-
-      })();
-
-      Stomp = {
-        VERSIONS: {
-          V1_0: '1.0',
-          V1_1: '1.1',
-          V1_2: '1.2',
-          supportedVersions: function() {
-            return '1.1,1.0';
-          }
-        },
-        client: function(url, protocols) {
-          var klass, ws;
-          if (protocols == null) {
-            protocols = ['v10.stomp', 'v11.stomp'];
-          }
-          klass = Stomp.WebSocketClass || WebSocket;
-          ws = new klass(url, protocols);
-          return new Client(ws);
-        },
-        over: function(ws) {
-          return new Client(ws);
-        },
-        Frame: Frame
-      };
-
-      if (exports !== null) {
-        exports.Stomp = Stomp;
-      }
-
-      if (typeof window !== "undefined" && window !== null) {
-        Stomp.setInterval = function(interval, f) {
-          return window.setInterval(f, interval);
-        };
-        Stomp.clearInterval = function(id) {
-          return window.clearInterval(id);
-        };
-        window.Stomp = Stomp;
-      } else if (!exports) {
-        self.Stomp = Stomp;
-      }
-
-    }).call(commonjsGlobal);
-    });
-
-    var naiveFallback = function () {
-    	if (typeof self === "object" && self) return self;
-    	if (typeof window === "object" && window) return window;
-    	throw new Error("Unable to resolve global `this`");
-    };
-
-    var global$1 = (function () {
-    	if (this) return this;
-
-    	// Unexpected strict mode (may happen if e.g. bundled into ESM module)
-
-    	// Fallback to standard globalThis if available
-    	if (typeof globalThis === "object" && globalThis) return globalThis;
-
-    	// Thanks @mathiasbynens -> https://mathiasbynens.be/notes/globalthis
-    	// In all ES5+ engines global object inherits from Object.prototype
-    	// (if you approached one that doesn't please report)
-    	try {
-    		Object.defineProperty(Object.prototype, "__global__", {
-    			get: function () { return this; },
-    			configurable: true
-    		});
-    	} catch (error) {
-    		// Unfortunate case of updates to Object.prototype being restricted
-    		// via preventExtensions, seal or freeze
-    		return naiveFallback();
-    	}
-    	try {
-    		// Safari case (window.__global__ works, but __global__ does not)
-    		if (!__global__) return naiveFallback();
-    		return __global__;
-    	} finally {
-    		delete Object.prototype.__global__;
-    	}
-    })();
-
-    var name = "websocket";
-    var description = "Websocket Client & Server Library implementing the WebSocket protocol as specified in RFC 6455.";
-    var keywords = [
-    	"websocket",
-    	"websockets",
-    	"socket",
-    	"networking",
-    	"comet",
-    	"push",
-    	"RFC-6455",
-    	"realtime",
-    	"server",
-    	"client"
-    ];
-    var author = "Brian McKelvey <theturtle32@gmail.com> (https://github.com/theturtle32)";
-    var contributors = [
-    	"Iñaki Baz Castillo <ibc@aliax.net> (http://dev.sipdoc.net)"
-    ];
-    var version$1 = "1.0.34";
-    var repository = {
-    	type: "git",
-    	url: "https://github.com/theturtle32/WebSocket-Node.git"
-    };
-    var homepage = "https://github.com/theturtle32/WebSocket-Node";
-    var engines = {
-    	node: ">=4.0.0"
-    };
-    var dependencies = {
-    	bufferutil: "^4.0.1",
-    	debug: "^2.2.0",
-    	"es5-ext": "^0.10.50",
-    	"typedarray-to-buffer": "^3.1.5",
-    	"utf-8-validate": "^5.0.2",
-    	yaeti: "^0.0.6"
-    };
-    var devDependencies = {
-    	"buffer-equal": "^1.0.0",
-    	gulp: "^4.0.2",
-    	"gulp-jshint": "^2.0.4",
-    	"jshint-stylish": "^2.2.1",
-    	jshint: "^2.0.0",
-    	tape: "^4.9.1"
-    };
-    var config = {
-    	verbose: false
-    };
-    var scripts = {
-    	test: "tape test/unit/*.js",
-    	gulp: "gulp"
-    };
-    var main = "index";
-    var directories = {
-    	lib: "./lib"
-    };
-    var browser$1 = "lib/browser.js";
-    var license = "Apache-2.0";
-    var require$$0 = {
-    	name: name,
-    	description: description,
-    	keywords: keywords,
-    	author: author,
-    	contributors: contributors,
-    	version: version$1,
-    	repository: repository,
-    	homepage: homepage,
-    	engines: engines,
-    	dependencies: dependencies,
-    	devDependencies: devDependencies,
-    	config: config,
-    	scripts: scripts,
-    	main: main,
-    	directories: directories,
-    	browser: browser$1,
-    	license: license
-    };
-
-    var version = require$$0.version;
-
-    var _globalThis;
-    if (typeof globalThis === 'object') {
-    	_globalThis = globalThis;
-    } else {
-    	try {
-    		_globalThis = global$1;
-    	} catch (error) {
-    	} finally {
-    		if (!_globalThis && typeof window !== 'undefined') { _globalThis = window; }
-    		if (!_globalThis) { throw new Error('Could not determine global this'); }
-    	}
-    }
-
-    var NativeWebSocket = _globalThis.WebSocket || _globalThis.MozWebSocket;
-
-
-
-    /**
-     * Expose a W3C WebSocket class with just one or two arguments.
-     */
-    function W3CWebSocket(uri, protocols) {
-    	var native_instance;
-
-    	if (protocols) {
-    		native_instance = new NativeWebSocket(uri, protocols);
-    	}
-    	else {
-    		native_instance = new NativeWebSocket(uri);
-    	}
-
-    	/**
-    	 * 'native_instance' is an instance of nativeWebSocket (the browser's WebSocket
-    	 * class). Since it is an Object it will be returned as it is when creating an
-    	 * instance of W3CWebSocket via 'new W3CWebSocket()'.
-    	 *
-    	 * ECMAScript 5: http://bclary.com/2004/11/07/#a-13.2.2
-    	 */
-    	return native_instance;
-    }
-    if (NativeWebSocket) {
-    	['CONNECTING', 'OPEN', 'CLOSING', 'CLOSED'].forEach(function(prop) {
-    		Object.defineProperty(W3CWebSocket, prop, {
-    			get: function() { return NativeWebSocket[prop]; }
-    		});
-    	});
-    }
-
-    /**
-     * Module exports.
-     */
-    var browser = {
-        'w3cwebsocket' : NativeWebSocket ? W3CWebSocket : null,
-        'version'      : version
-    };
-
-    var stompNode = createCommonjsModule(function (module, exports) {
-    // Generated by CoffeeScript 1.7.1
-
-    /*
-       Stomp Over WebSocket http://www.jmesnil.net/stomp-websocket/doc/ | Apache License V2.0
-
-       Copyright (C) 2013 [Jeff Mesnil](http://jmesnil.net/)
-     */
-
-    (function() {
-      var Stomp, net, overTCP, overWS, wrapTCP, wrapWS;
-
-      Stomp = stomp;
-
-      net = require$$1__default["default"];
-
-      Stomp.Stomp.setInterval = function(interval, f) {
-        return setInterval(f, interval);
-      };
-
-      Stomp.Stomp.clearInterval = function(id) {
-        return clearInterval(id);
-      };
-
-      wrapTCP = function(port, host) {
-        var socket, ws;
-        socket = null;
-        ws = {
-          url: 'tcp:// ' + host + ':' + port,
-          send: function(d) {
-            return socket.write(d);
-          },
-          close: function() {
-            return socket.end();
-          }
-        };
-        socket = net.connect(port, host, function(e) {
-          return ws.onopen();
-        });
-        socket.on('error', function(e) {
-          return typeof ws.onclose === "function" ? ws.onclose(e) : void 0;
-        });
-        socket.on('close', function(e) {
-          return typeof ws.onclose === "function" ? ws.onclose(e) : void 0;
-        });
-        socket.on('data', function(data) {
-          var event;
-          event = {
-            'data': data.toString()
-          };
-          return ws.onmessage(event);
-        });
-        return ws;
-      };
-
-      wrapWS = function(url) {
-        var WebSocketClient, connection, socket, ws;
-        WebSocketClient = browser.client;
-        connection = null;
-        ws = {
-          url: url,
-          send: function(d) {
-            return connection.sendUTF(d);
-          },
-          close: function() {
-            return connection.close();
-          }
-        };
-        socket = new WebSocketClient();
-        socket.on('connect', function(conn) {
-          connection = conn;
-          ws.onopen();
-          connection.on('error', function(error) {
-            return typeof ws.onclose === "function" ? ws.onclose(error) : void 0;
-          });
-          connection.on('close', function() {
-            return typeof ws.onclose === "function" ? ws.onclose() : void 0;
-          });
-          return connection.on('message', function(message) {
-            var event;
-            if (message.type === 'utf8') {
-              event = {
-                'data': message.utf8Data
-              };
-              return ws.onmessage(event);
-            }
-          });
-        });
-        socket.connect(url);
-        return ws;
-      };
-
-      overTCP = function(host, port) {
-        var socket;
-        socket = wrapTCP(port, host);
-        return Stomp.Stomp.over(socket);
-      };
-
-      overWS = function(url) {
-        var socket;
-        socket = wrapWS(url);
-        return Stomp.Stomp.over(socket);
-      };
-
-      exports.overTCP = overTCP;
-
-      exports.overWS = overWS;
-
-    }).call(commonjsGlobal);
-    });
-
-    // Copyright (C) 2013 [Jeff Mesnil](http://jmesnil.net/)
-    //
-    //   Stomp Over WebSocket http://www.jmesnil.net/stomp-websocket/doc/ | Apache License V2.0
-    //
-    // The library can be used in node.js app to connect to STOMP brokers over TCP 
-    // or Web sockets.
-
-    // Root of the `stompjs module`
-
-
-
-
-    var stompjs = stomp.Stomp;
-    var overTCP = stompNode.overTCP;
-    var overWS = stompNode.overWS;
-    stompjs.overTCP = overTCP;
-    stompjs.overWS = overWS;
-
     const app = new App({
     	target: document.body,
     	props: {}
@@ -12861,5 +13895,5 @@ var app = (function (require$$1) {
 
     return app;
 
-})(require$$1);
+})();
 //# sourceMappingURL=bundle.js.map

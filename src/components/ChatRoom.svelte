@@ -2,7 +2,8 @@
 	import { user } from '../store/user.js';
 	import { onMount } from 'svelte';
 	import { useEffect } from '../common/hook.js';
-	//import Stomp from 'stompjs';
+	import * as StompJS from '@stomp/stompjs';
+	//import SockJS from 'sockjs-client';
 	export let title;
 
 	let message = '';
@@ -17,37 +18,68 @@
 		{id: 'tnghd5761', message: '내 메세지3', createdAt: '22-07-03 16:15'},
 		{id: 'tnghd5761', message: '내 메세지4', createdAt: '22-07-03 16:16'}
 	]
-	
+
 	const scrollDown = () => {
 		var objDiv = document.getElementById("chat_room_body");
 		objDiv.scrollTop = objDiv.scrollHeight;
 	}
-
+	let client;
 	onMount(() => {
 		const socket = new WebSocket('wss://grabit-backend.link/api/stomp/chat');
 		socket.addEventListener('open', function (event) {
 			console.log("It's open");
 		});
+		//connect();
+
 		scrollDown();
 	})
 
-	const sendMessage = (message) => {
-		const new_chat = {
-			id: $user?.githubId,
-			message: message,
-			createdAt: 'now'
+	const connect = () => {
+		client.current = new StompJS.Client({
+			brokerURL: "wss://grabit-backend.link/api/stomp/chat", // 웹소켓 서버로 직접 접속
+			//webSocketFactory: () => new SockJS("/ws-stomp"), // proxy를 통한 접속
+			connectHeaders: {
+				"auth-token": "spring-chat-auth-token",
+			},
+			debug: function (str) {
+				console.log(str);
+			},
+			reconnectDelay: 5000,
+			heartbeatIncoming: 4000,
+			heartbeatOutgoing: 4000,
+			onConnect: () => {
+				subscribe();
+			},
+			onStompError: (frame) => {
+				console.error(frame);
+			},
+		});
+
+		client.current.activate();
+	};
+
+	const disconnect = () => {
+		client.current.deactivate();
+	};
+
+	const subscribe = () => {
+		client.current.subscribe(`/sub/chat/${ROOM_SEQ}`, ({ body }) => {
+		setChatMessages((_chatMessages) => [..._chatMessages, JSON.parse(body)]);
+		});
+	};
+
+	const publish = (message) => {
+		if (!client.current.connected) {
+		return;
 		}
-		chat_logs = [...chat_logs, new_chat];
-		//if (socket.readyState <= 1) {
-		//	socket.send(message);
-		//}
-	}
-	function onSendMessage() {
-		if (message.length > 0) {
-			sendMessage(message);
-			message = "";
-		}
-	}
+
+		client.current.publish({
+		destination: "/pub/chat",
+		body: JSON.stringify({ roomSeq: ROOM_SEQ, message }),
+		});
+
+		setMessage("");
+	};
 
 	useEffect(() => {
 		scrollDown();
@@ -73,7 +105,7 @@
 		{/each}
 	</div>
 	<input class="chat_room_write" type="text" bind:value={message} />
-	<button on:click={onSendMessage}>
+	<button on:click={publish}>
 		Send Message
 	</button>
 </div>
