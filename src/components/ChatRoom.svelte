@@ -3,9 +3,9 @@
 	import { onMount } from 'svelte';
 	import { useEffect } from '../common/hook.js';
 	import * as StompJS from '@stomp/stompjs';
-	//import SockJS from 'sockjs-client';
+	import SockJS from 'sockjs-client';
 	export let title;
-
+	
 	let message = '';
 	let chat_logs = [
 		{id: 'user1', message: '내용1', createdAt: '22-07-03 16:11'},
@@ -35,10 +35,11 @@
 
 	const connect = () => {
 		//const socket = new SockJS('https://localhost:8080/api/stomp/chat');
+		// let SockJS = await import('sockjs-client');
 		
 		client = new StompJS.Client({
-			//brokerURL: "wss://localhost:8080/api/stomp/chat", // 웹소켓 서버로 직접 접속
-			webSocketFactory: () => new SockJS("https://localhost:8080/api/stomp/chat"), // proxy를 통한 접속
+			// brokerURL: "wss://localhost:8080/api/stomp/chat", // 웹소켓 서버로 직접 접속
+			webSocketFactory: () => new SockJS("https://grabit-backend.link/api/stomp/chat"), // proxy를 통한 접속
 			connectHeaders: {
 				"auth-token": "spring-chat-auth-token",
 			},
@@ -49,7 +50,7 @@
 			heartbeatIncoming: 4000,
 			heartbeatOutgoing: 4000,
 			onConnect: () => {
-				subscribe();
+				// subscribe();
 			},
 			onStompError: (frame) => {
 				console.error(frame);

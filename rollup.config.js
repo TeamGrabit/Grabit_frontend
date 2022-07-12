@@ -44,7 +44,8 @@ export default {
 		replace({
 			ENV_API_URL: JSON.stringify(process.env.API_URL),
 			ENV_CALLBACK_URL: production? JSON.stringify(process.env.CALLBACK_URL) : JSON.stringify(process.env.CALLBACK_URL_LOCAL),
-			ENV_GIT_URL: JSON.stringify(process.env.GIT_URL)
+			ENV_GIT_URL: JSON.stringify(process.env.GIT_URL),
+			'process.env.NODE_ENV': JSON.stringify( 'production' )
 		}),
 		svelte({
 			compilerOptions: {
