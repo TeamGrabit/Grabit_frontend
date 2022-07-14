@@ -17,7 +17,7 @@
             in:fly="{{ x: 100, duration: 1000 }}"
             out:fly="{{ x: 100, duration: 100}}"
         >
-            <div class="notifications__toast__message">{notification.message} {index}</div>
+            <div class="notifications__toast__message">{notification.message}</div>
             <img class="notifications__toast__button" src="images/x-mark.svg" alt="x-mark" on:click={()=>notifications.remove(index)}/>
         </div>
     {/each}

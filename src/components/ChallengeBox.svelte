@@ -22,7 +22,7 @@
 <div class="Box">
 	<div>
 		<div class="Box__header">
-			<span class="Box__header__title" on:click={onClickTitle}>{challenge.title}</span>
+			<span class="Box__header__title" on:click={onClickTitle}>{challenge.name}</span>
 			<div class="Box__header__group">
 					{#if isLeader}
 						<img class="Box__icon Box__icon--left" src="images/setting.svg" alt="setting" on:click={onClickSetting} />
@@ -41,7 +41,7 @@
 	<div class="Box__footer">
 		<div class="Box__footer__group">
 			<img class="Box__icon" src="images/human.svg" alt="human" />
-			{challenge.count || 0}
+			{challenge.member.length|| 0}
 		</div>
 		<div class="Box__footer__group">
 			<img class="Box__icon" src="images/crown.svg" alt="crown" />

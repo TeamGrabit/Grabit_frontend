@@ -10,13 +10,19 @@
 	import Profile from '../components/Profile.svelte';
 	import ChallengeBox from '../components/ChallengeBox.svelte';
 	import { Button, SearchInput } from '../storybook';
+
+	import { getUserChallenge } from '../store/challenge.js'
 	
 	function onClick() {
 		push('/createchallenge');
 	}
 	
-	onMount(() => {
+	onMount(async () => {
 		changeTab(index.MYCHALLENGE);
+		if(!challengeList) {
+			const myChallengeData = await getUserChallenge();
+			challengeList.set(myChallengeData);
+		}
 	})
 	onDestroy(() => {
 		changeTab(index.HOME);

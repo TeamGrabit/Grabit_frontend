@@ -25,7 +25,7 @@ export async function fetchGet(path, otherOptions = {}, headers = {}) {
 		},
 		...otherOptions
 	}
-
+	
 	let data;
 
 	try{
@@ -36,7 +36,6 @@ export async function fetchGet(path, otherOptions = {}, headers = {}) {
 	}
 
 	return data;
-
 }
 
 export async function fetchGetRedirectUrl(path, options = {}) {
