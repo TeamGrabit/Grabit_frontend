@@ -4,8 +4,8 @@
 
     export let getDataFunc;
 
-    let recent_page=0;
-    let first_page_num=0;
+    let recent_page=1;
+    let first_page_num=1;
     let button_num_arr=[];
 
     onMount(()=>{
@@ -14,10 +14,10 @@
 
     function returnAllPageNum(){
         let array=Array();
-        first_page_num=Math.floor(recent_page/10)*10;
+        first_page_num=Math.floor(recent_page/10)*10 +1 ;
 
-        if(first_page_num+10>$totalPages){
-            for(let i=first_page_num; i<$totalPages;i++)
+        if(first_page_num+10>=$totalPages){
+            for(let i=first_page_num; i<=$totalPages;i++)
                 array.push(i);
         }else{
             for(let i=first_page_num; i<first_page_num+10;i++)
@@ -27,7 +27,7 @@
     }
     function clickLeftBtn(){
         if(recent_page-10<0)
-            changeRecentNum(0);
+            changeRecentNum(1);
         else
             changeRecentNum(recent_page-10);
 
@@ -36,7 +36,7 @@
     }
     function clickRightBtn(){
         if(recent_page+10>=$totalPages){
-           changeRecentNum($totalPages-1);
+           changeRecentNum($totalPages);
         }else{
            changeRecentNum(recent_page+10);
         }
@@ -50,23 +50,23 @@
 
 <div class='Paging'>
    {#if $totalPages!=0}
-        {#if first_page_num>=10}
+        {#if first_page_num>10}
             <button class="Paging__move_button" on:click={clickLeftBtn}>&lt;</button>
         {/if}
         {#each button_num_arr as i}
             {#if recent_page==i}
                 <label class="Paging__button">
                     <input checked="checked" type="radio" name="page_num" on:change={()=>{getDataFunc(i)}, changeRecentNum(i)}/>
-                    <span>{i+1}</span>
+                    <span>{i}</span>
                 </label>
             {:else}
                 <label class="Paging__button">
                     <input type="radio" name="page_num" on:change={()=>{getDataFunc(i), changeRecentNum(i)}}/>
-                    <span>{i+1}</span>
+                    <span>{i}</span>
                 </label>
             {/if}
         {/each}
-        {#if first_page_num+10 < $totalPages}
+        {#if first_page_num+10<$totalPages}
             <button class="Paging__move_button" on:click={clickRightBtn}>&gt;</button>
         {/if}
         

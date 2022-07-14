@@ -2197,7 +2197,7 @@ var app = (function () {
 
     async function fetchPost(path, body, otherOptions = {}, headers = {}) {
     	const url = `${API_URL}/${path}`;
-
+    	console.log(url);
     	const options = {
     		method: "POST",
     		headers: {
@@ -2205,7 +2205,36 @@ var app = (function () {
     			...bearer,
     			...headers,
     		},
-    		body: JSON.stringify(body),
+    		body: body,
+    		...otherOptions
+    	};
+
+    	const res = await fetch(url, options);
+    	const data = await res.json();
+
+    	/* TODO: Error 처리
+    		if (res.ok) {
+    			return data;
+    		} else {
+    			throw Error(data);
+    		}
+    	*/
+
+    	return data;
+    }
+    async function fetchPost2(path, body, otherOptions = {}, headers = {}) {
+    	const url = `${API_URL}/${path}`;
+    	console.log(body);
+    	const options = {
+    		method: "POST",
+    		headers: {
+    			"Content-Type": "multipart/form-data",
+    			contentType: false,
+    			...bearer,
+    			...headers,
+    	
+    		},
+    		body: body,
     		...otherOptions
     	};
 
@@ -5314,14 +5343,15 @@ var app = (function () {
     }
 
     async function getAllChallenge(page, size) {
-        //const res = await fetchGet('challenges?page='+page+'&size='+size);
+
     	const res = await fetchGet('challenges?'+ new URLSearchParams({
     		page: page,
     		size: size,
     	}));
+
         if(res.error)
             failGetChallenge();
-        else {
+        else {	
             challengeList.set(res.content);
             totalPages.set(res.totalPages); 
 
@@ -10295,7 +10325,7 @@ var app = (function () {
     	let t0;
     	let t1;
     	let if_block1_anchor;
-    	let if_block0 = /*first_page_num*/ ctx[3] >= 10 && create_if_block_3(ctx);
+    	let if_block0 = /*first_page_num*/ ctx[3] > 10 && create_if_block_3(ctx);
     	let each_value = /*button_num_arr*/ ctx[4];
     	validate_each_argument(each_value);
     	let each_blocks = [];
@@ -10332,7 +10362,7 @@ var app = (function () {
     			insert_dev(target, if_block1_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (/*first_page_num*/ ctx[3] >= 10) {
+    			if (/*first_page_num*/ ctx[3] > 10) {
     				if (if_block0) {
     					if_block0.p(ctx, dirty);
     				} else {
@@ -10403,7 +10433,7 @@ var app = (function () {
     	return block;
     }
 
-    // (53:8) {#if first_page_num>=10}
+    // (53:8) {#if first_page_num>10}
     function create_if_block_3(ctx) {
     	let button;
     	let mounted;
@@ -10414,7 +10444,7 @@ var app = (function () {
     			button = element("button");
     			button.textContent = "<";
     			attr_dev(button, "class", "Paging__move_button svelte-e44yfa");
-    			add_location(button, file$4, 53, 12, 1388);
+    			add_location(button, file$4, 53, 12, 1391);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -10436,7 +10466,7 @@ var app = (function () {
     		block,
     		id: create_if_block_3.name,
     		type: "if",
-    		source: "(53:8) {#if first_page_num>=10}",
+    		source: "(53:8) {#if first_page_num>10}",
     		ctx
     	});
 
@@ -10449,7 +10479,7 @@ var app = (function () {
     	let input;
     	let t0;
     	let span;
-    	let t1_value = /*i*/ ctx[11] + 1 + "";
+    	let t1_value = /*i*/ ctx[11] + "";
     	let t1;
     	let mounted;
     	let dispose;
@@ -10468,11 +10498,11 @@ var app = (function () {
     			attr_dev(input, "type", "radio");
     			attr_dev(input, "name", "page_num");
     			attr_dev(input, "class", "svelte-e44yfa");
-    			add_location(input, file$4, 63, 20, 1882);
+    			add_location(input, file$4, 63, 20, 1883);
     			attr_dev(span, "class", "svelte-e44yfa");
-    			add_location(span, file$4, 64, 20, 1994);
+    			add_location(span, file$4, 64, 20, 1995);
     			attr_dev(label, "class", "Paging__button svelte-e44yfa");
-    			add_location(label, file$4, 62, 16, 1830);
+    			add_location(label, file$4, 62, 16, 1831);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, label, anchor);
@@ -10488,7 +10518,7 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*button_num_arr*/ 16 && t1_value !== (t1_value = /*i*/ ctx[11] + 1 + "")) set_data_dev(t1, t1_value);
+    			if (dirty & /*button_num_arr*/ 16 && t1_value !== (t1_value = /*i*/ ctx[11] + "")) set_data_dev(t1, t1_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(label);
@@ -10514,7 +10544,7 @@ var app = (function () {
     	let input;
     	let t0;
     	let span;
-    	let t1_value = /*i*/ ctx[11] + 1 + "";
+    	let t1_value = /*i*/ ctx[11] + "";
     	let t1;
     	let mounted;
     	let dispose;
@@ -10530,11 +10560,11 @@ var app = (function () {
     			attr_dev(input, "type", "radio");
     			attr_dev(input, "name", "page_num");
     			attr_dev(input, "class", "svelte-e44yfa");
-    			add_location(input, file$4, 58, 20, 1617);
+    			add_location(input, file$4, 58, 20, 1620);
     			attr_dev(span, "class", "svelte-e44yfa");
-    			add_location(span, file$4, 59, 20, 1747);
+    			add_location(span, file$4, 59, 20, 1750);
     			attr_dev(label, "class", "Paging__button svelte-e44yfa");
-    			add_location(label, file$4, 57, 16, 1565);
+    			add_location(label, file$4, 57, 16, 1568);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, label, anchor);
@@ -10560,7 +10590,7 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*button_num_arr*/ 16 && t1_value !== (t1_value = /*i*/ ctx[11] + 1 + "")) set_data_dev(t1, t1_value);
+    			if (dirty & /*button_num_arr*/ 16 && t1_value !== (t1_value = /*i*/ ctx[11] + "")) set_data_dev(t1, t1_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(label);
@@ -10631,7 +10661,7 @@ var app = (function () {
     	return block;
     }
 
-    // (69:8) {#if first_page_num+10 < $totalPages}
+    // (69:8) {#if first_page_num+10<$totalPages}
     function create_if_block_1$1(ctx) {
     	let button;
     	let mounted;
@@ -10642,7 +10672,7 @@ var app = (function () {
     			button = element("button");
     			button.textContent = ">";
     			attr_dev(button, "class", "Paging__move_button svelte-e44yfa");
-    			add_location(button, file$4, 69, 12, 2135);
+    			add_location(button, file$4, 69, 12, 2132);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -10664,7 +10694,7 @@ var app = (function () {
     		block,
     		id: create_if_block_1$1.name,
     		type: "if",
-    		source: "(69:8) {#if first_page_num+10 < $totalPages}",
+    		source: "(69:8) {#if first_page_num+10<$totalPages}",
     		ctx
     	});
 
@@ -10680,7 +10710,7 @@ var app = (function () {
     			div = element("div");
     			if (if_block) if_block.c();
     			attr_dev(div, "class", "Paging svelte-e44yfa");
-    			add_location(div, file$4, 50, 0, 1295);
+    			add_location(div, file$4, 50, 0, 1299);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -10729,8 +10759,8 @@ var app = (function () {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('PagingDiv', slots, []);
     	let { getDataFunc } = $$props;
-    	let recent_page = 0;
-    	let first_page_num = 0;
+    	let recent_page = 1;
+    	let first_page_num = 1;
     	let button_num_arr = [];
 
     	onMount(() => {
@@ -10739,10 +10769,10 @@ var app = (function () {
 
     	function returnAllPageNum() {
     		let array = Array();
-    		$$invalidate(3, first_page_num = Math.floor(recent_page / 10) * 10);
+    		$$invalidate(3, first_page_num = Math.floor(recent_page / 10) * 10 + 1);
 
-    		if (first_page_num + 10 > $totalPages) {
-    			for (let i = first_page_num; i < $totalPages; i++) array.push(i);
+    		if (first_page_num + 10 >= $totalPages) {
+    			for (let i = first_page_num; i <= $totalPages; i++) array.push(i);
     		} else {
     			for (let i = first_page_num; i < first_page_num + 10; i++) array.push(i);
     		}
@@ -10751,14 +10781,14 @@ var app = (function () {
     	}
 
     	function clickLeftBtn() {
-    		if (recent_page - 10 < 0) changeRecentNum(0); else changeRecentNum(recent_page - 10);
+    		if (recent_page - 10 < 0) changeRecentNum(1); else changeRecentNum(recent_page - 10);
     		getDataFunc(recent_page);
     		returnAllPageNum();
     	}
 
     	function clickRightBtn() {
     		if (recent_page + 10 >= $totalPages) {
-    			changeRecentNum($totalPages - 1);
+    			changeRecentNum($totalPages);
     		} else {
     			changeRecentNum(recent_page + 10);
     		}
@@ -10869,18 +10899,18 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[10] = list[i];
+    	child_ctx[9] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[13] = list[i];
-    	child_ctx[15] = i;
+    	child_ctx[12] = list[i];
+    	child_ctx[14] = i;
     	return child_ctx;
     }
 
-    // (74:16) <Button onClick={onClickCreateChallenge} width="4rem" height="1.9rem" backgroundColor="#50CE92" style="border: none; color: white;">
+    // (73:16) <Button onClick={onClickCreateChallenge} width="4rem" height="1.9rem" backgroundColor="#50CE92" style="border: none; color: white;">
     function create_default_slot_1$1(ctx) {
     	let t;
 
@@ -10900,16 +10930,16 @@ var app = (function () {
     		block,
     		id: create_default_slot_1$1.name,
     		type: "slot",
-    		source: "(74:16) <Button onClick={onClickCreateChallenge} width=\\\"4rem\\\" height=\\\"1.9rem\\\" backgroundColor=\\\"#50CE92\\\" style=\\\"border: none; color: white;\\\">",
+    		source: "(73:16) <Button onClick={onClickCreateChallenge} width=\\\"4rem\\\" height=\\\"1.9rem\\\" backgroundColor=\\\"#50CE92\\\" style=\\\"border: none; color: white;\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (80:20) <SubNavItem onClick={() => onClickItem(index)} isActive={activeItem === index}>
+    // (79:20) <SubNavItem onClick={() => onClickItem(index)} isActive={activeItem === index}>
     function create_default_slot$3(ctx) {
-    	let t_value = /*item*/ ctx[13] + "";
+    	let t_value = /*item*/ ctx[12] + "";
     	let t;
 
     	const block = {
@@ -10929,14 +10959,14 @@ var app = (function () {
     		block,
     		id: create_default_slot$3.name,
     		type: "slot",
-    		source: "(80:20) <SubNavItem onClick={() => onClickItem(index)} isActive={activeItem === index}>",
+    		source: "(79:20) <SubNavItem onClick={() => onClickItem(index)} isActive={activeItem === index}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (78:12) {#each tabItem as item, index}
+    // (77:12) {#each tabItem as item, index}
     function create_each_block_1(ctx) {
     	let div;
     	let subnavitem;
@@ -10944,13 +10974,13 @@ var app = (function () {
     	let current;
 
     	function func() {
-    		return /*func*/ ctx[6](/*index*/ ctx[15]);
+    		return /*func*/ ctx[6](/*index*/ ctx[14]);
     	}
 
     	subnavitem = new SubNavigationItem({
     			props: {
     				onClick: func,
-    				isActive: /*activeItem*/ ctx[0] === /*index*/ ctx[15],
+    				isActive: /*activeItem*/ ctx[0] === /*index*/ ctx[14],
     				$$slots: { default: [create_default_slot$3] },
     				$$scope: { ctx }
     			},
@@ -10963,7 +10993,7 @@ var app = (function () {
     			create_component(subnavitem.$$.fragment);
     			t = space();
     			attr_dev(div, "class", "Page__sort__font svelte-1bq2msn");
-    			add_location(div, file$3, 78, 16, 2318);
+    			add_location(div, file$3, 77, 16, 2290);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -10974,9 +11004,9 @@ var app = (function () {
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
     			const subnavitem_changes = {};
-    			if (dirty & /*activeItem*/ 1) subnavitem_changes.isActive = /*activeItem*/ ctx[0] === /*index*/ ctx[15];
+    			if (dirty & /*activeItem*/ 1) subnavitem_changes.isActive = /*activeItem*/ ctx[0] === /*index*/ ctx[14];
 
-    			if (dirty & /*$$scope*/ 65536) {
+    			if (dirty & /*$$scope*/ 32768) {
     				subnavitem_changes.$$scope = { dirty, ctx };
     			}
 
@@ -11001,20 +11031,20 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(78:12) {#each tabItem as item, index}",
+    		source: "(77:12) {#each tabItem as item, index}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (84:8) {#each $challengeList as c}
+    // (83:8) {#each $challengeList as c}
     function create_each_block(ctx) {
     	let challengebox;
     	let current;
 
     	challengebox = new ChallengeBox({
-    			props: { challenge: /*c*/ ctx[10] },
+    			props: { challenge: /*c*/ ctx[9] },
     			$$inline: true
     		});
 
@@ -11028,7 +11058,7 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			const challengebox_changes = {};
-    			if (dirty & /*$challengeList*/ 2) challengebox_changes.challenge = /*c*/ ctx[10];
+    			if (dirty & /*$challengeList*/ 2) challengebox_changes.challenge = /*c*/ ctx[9];
     			challengebox.$set(challengebox_changes);
     		},
     		i: function intro(local) {
@@ -11049,7 +11079,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(84:8) {#each $challengeList as c}",
+    		source: "(83:8) {#each $challengeList as c}",
     		ctx
     	});
 
@@ -11156,17 +11186,17 @@ var app = (function () {
     			t6 = space();
     			create_component(pagingdiv.$$.fragment);
     			attr_dev(div0, "class", "Page__top__search svelte-1bq2msn");
-    			add_location(div0, file$3, 67, 12, 1838);
+    			add_location(div0, file$3, 66, 12, 1810);
     			attr_dev(div1, "class", "Page__top__create_btn svelte-1bq2msn");
-    			add_location(div1, file$3, 72, 12, 1989);
+    			add_location(div1, file$3, 71, 12, 1961);
     			attr_dev(div2, "class", "Page__top svelte-1bq2msn");
-    			add_location(div2, file$3, 66, 8, 1801);
+    			add_location(div2, file$3, 65, 8, 1773);
     			attr_dev(div3, "class", "Page__sort svelte-1bq2msn");
-    			add_location(div3, file$3, 76, 8, 2232);
+    			add_location(div3, file$3, 75, 8, 2204);
     			attr_dev(div4, "class", "Page__content svelte-1bq2msn");
-    			add_location(div4, file$3, 65, 4, 1764);
+    			add_location(div4, file$3, 64, 4, 1736);
     			attr_dev(div5, "class", "Page svelte-1bq2msn");
-    			add_location(div5, file$3, 62, 0, 1717);
+    			add_location(div5, file$3, 61, 0, 1689);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -11206,7 +11236,7 @@ var app = (function () {
     		p: function update(ctx, [dirty]) {
     			const button_changes = {};
 
-    			if (dirty & /*$$scope*/ 65536) {
+    			if (dirty & /*$$scope*/ 32768) {
     				button_changes.$$scope = { dirty, ctx };
     			}
 
@@ -11345,7 +11375,6 @@ var app = (function () {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('TotalChallengeList', slots, []);
     	const tabItem = ['\0TITLE', '\0DESCRIPTION', '\0LEADER'];
-    	let current_page_tmp = 0;
     	let activeItem = 0;
     	let view_item_num = 1; //TODO : 한 페이지에 보여질 CHALLENGE 개수 정할 수 있도록
 
@@ -11366,7 +11395,7 @@ var app = (function () {
     	}
 
     	onMount(() => {
-    		getChallenge(0);
+    		getChallenge(1);
     		changeTab(index.OTHERS);
     	});
 
@@ -11402,7 +11431,6 @@ var app = (function () {
     		SearchInput,
     		notifications,
     		tabItem,
-    		current_page_tmp,
     		activeItem,
     		view_item_num,
     		onClickItem,
@@ -11414,7 +11442,6 @@ var app = (function () {
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ('current_page_tmp' in $$props) current_page_tmp = $$props.current_page_tmp;
     		if ('activeItem' in $$props) $$invalidate(0, activeItem = $$props.activeItem);
     		if ('view_item_num' in $$props) view_item_num = $$props.view_item_num;
     	};
@@ -11464,7 +11491,7 @@ var app = (function () {
     			if (!src_url_equal(img.src, img_src_value = "")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "Preview");
     			attr_dev(img, "class", "content__profileImg svelte-qrjkfw");
-    			add_location(img, file_1, 61, 16, 1449);
+    			add_location(img, file_1, 61, 16, 1408);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, img, anchor);
@@ -11544,7 +11571,7 @@ var app = (function () {
     			if (!src_url_equal(img.src, img_src_value = "" + (GIT_URL + "/" + /*$user*/ ctx[5].githubId + ".png"))) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "userProfile");
     			attr_dev(img, "class", "content__profileImg svelte-qrjkfw");
-    			add_location(img, file_1, 58, 24, 1297);
+    			add_location(img, file_1, 58, 24, 1256);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, img, anchor);
@@ -11579,7 +11606,7 @@ var app = (function () {
     			div = element("div");
     			div.textContent = "Save";
     			attr_dev(div, "class", "btn__text svelte-qrjkfw");
-    			add_location(div, file_1, 82, 20, 2189);
+    			add_location(div, file_1, 82, 20, 2148);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -11609,7 +11636,7 @@ var app = (function () {
     			div = element("div");
     			div.textContent = "Cancel";
     			attr_dev(div, "class", "btn__text svelte-qrjkfw");
-    			add_location(div, file_1, 91, 20, 2473);
+    			add_location(div, file_1, 91, 20, 2432);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -11734,24 +11761,24 @@ var app = (function () {
     			t9 = space();
     			create_component(button1.$$.fragment);
     			attr_dev(input0, "type", "file");
-    			add_location(input0, file_1, 64, 12, 1558);
+    			add_location(input0, file_1, 64, 12, 1517);
     			attr_dev(div0, "class", "div__column svelte-qrjkfw");
-    			add_location(div0, file_1, 55, 8, 1187);
+    			add_location(div0, file_1, 55, 8, 1146);
     			attr_dev(div1, "class", "text svelte-qrjkfw");
-    			add_location(div1, file_1, 69, 12, 1686);
+    			add_location(div1, file_1, 69, 12, 1645);
     			attr_dev(div2, "class", "text svelte-qrjkfw");
-    			add_location(div2, file_1, 72, 12, 1812);
+    			add_location(div2, file_1, 72, 12, 1771);
     			attr_dev(textarea, "placeholder", "Add a bio");
     			attr_dev(textarea, "class", "svelte-qrjkfw");
-    			add_location(textarea, file_1, 73, 12, 1851);
+    			add_location(textarea, file_1, 73, 12, 1810);
     			attr_dev(div3, "class", "btn__div svelte-qrjkfw");
-    			add_location(div3, file_1, 75, 12, 1929);
+    			add_location(div3, file_1, 75, 12, 1888);
     			attr_dev(div4, "class", "div__column svelte-qrjkfw");
-    			add_location(div4, file_1, 68, 8, 1647);
+    			add_location(div4, file_1, 68, 8, 1606);
     			attr_dev(div5, "class", "div__row svelte-qrjkfw");
-    			add_location(div5, file_1, 54, 4, 1155);
+    			add_location(div5, file_1, 54, 4, 1114);
     			attr_dev(div6, "class", "div svelte-qrjkfw");
-    			add_location(div6, file_1, 53, 0, 1132);
+    			add_location(div6, file_1, 53, 0, 1091);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -11895,7 +11922,7 @@ var app = (function () {
     	function Save() {
     		console.log(file);
     		console.log(typeof file);
-    		fetchPost('image', file, {}, { "Content-Type": "multipart/form-data" });
+    		fetchPost2('image', file);
     		alert("수정되었습니다.");
     	}
 
@@ -11961,7 +11988,7 @@ var app = (function () {
     		GlobalNavigationBar,
     		user,
     		GIT_URL,
-    		fetchPost,
+    		fetchPost2,
     		name,
     		bio,
     		input,
