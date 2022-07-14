@@ -18,7 +18,6 @@
  
     const tabItem = ['\0TITLE', '\0DESCRIPTION', '\0LEADER'];
 
-    let current_page_tmp=0;
     let activeItem = 0;
     let view_item_num= 1; //TODO : 한 페이지에 보여질 CHALLENGE 개수 정할 수 있도록
 
@@ -46,7 +45,7 @@
         push('/createchallenge');
     }
 	onMount(() => {
-        getChallenge(0);
+        getChallenge(1); 
 	    changeTab(index.OTHERS);
 	}) 
 	onDestroy(() => {
