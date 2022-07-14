@@ -6344,7 +6344,7 @@ var app = (function () {
     // tslint:disable-next-line:variable-name
     Stomp.WebSocketClass = null;
 
-    var StompJS = /*#__PURE__*/Object.freeze({
+    var StompJs = /*#__PURE__*/Object.freeze({
         __proto__: null,
         Client: Client,
         FrameImpl: FrameImpl,
@@ -10271,19 +10271,19 @@ var app = (function () {
 
     function get_each_context$a(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[11] = list[i];
+    	child_ctx[13] = list[i];
     	return child_ctx;
     }
 
-    // (101:3) {:else}
+    // (107:3) {:else}
     function create_else_block$4(ctx) {
     	let div2;
     	let div0;
-    	let t0_value = /*log*/ ctx[11].id + "";
+    	let t0_value = /*log*/ ctx[13].id + "";
     	let t0;
     	let t1;
     	let div1;
-    	let t2_value = /*log*/ ctx[11].message + "";
+    	let t2_value = /*log*/ ctx[13].message + "";
     	let t2;
     	let t3;
 
@@ -10296,11 +10296,11 @@ var app = (function () {
     			div1 = element("div");
     			t2 = text(t2_value);
     			t3 = space();
-    			add_location(div0, file$j, 102, 5, 2768);
-    			attr_dev(div1, "class", "message message_other svelte-11zq4r2");
-    			add_location(div1, file$j, 103, 5, 2793);
-    			attr_dev(div2, "class", "chat chat_other svelte-11zq4r2");
-    			add_location(div2, file$j, 101, 3, 2733);
+    			add_location(div0, file$j, 108, 5, 2704);
+    			attr_dev(div1, "class", "message message_other svelte-8qmjsi");
+    			add_location(div1, file$j, 109, 5, 2729);
+    			attr_dev(div2, "class", "chat chat_other svelte-8qmjsi");
+    			add_location(div2, file$j, 107, 3, 2669);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -10311,7 +10311,10 @@ var app = (function () {
     			append_dev(div1, t2);
     			append_dev(div2, t3);
     		},
-    		p: noop,
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*chat_logs*/ 4 && t0_value !== (t0_value = /*log*/ ctx[13].id + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*chat_logs*/ 4 && t2_value !== (t2_value = /*log*/ ctx[13].message + "")) set_data_dev(t2, t2_value);
+    		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div2);
     		}
@@ -10321,20 +10324,20 @@ var app = (function () {
     		block,
     		id: create_else_block$4.name,
     		type: "else",
-    		source: "(101:3) {:else}",
+    		source: "(107:3) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (96:3) {#if log.id == $user?.githubId}
+    // (102:3) {#if log.id == $user?.githubId}
     function create_if_block$7(ctx) {
     	let div2;
     	let div0;
     	let t1;
     	let div1;
-    	let t2_value = /*log*/ ctx[11].message + "";
+    	let t2_value = /*log*/ ctx[13].message + "";
     	let t2;
     	let t3;
 
@@ -10347,11 +10350,11 @@ var app = (function () {
     			div1 = element("div");
     			t2 = text(t2_value);
     			t3 = space();
-    			add_location(div0, file$j, 97, 5, 2638);
-    			attr_dev(div1, "class", "message message_my svelte-11zq4r2");
-    			add_location(div1, file$j, 98, 5, 2656);
-    			attr_dev(div2, "class", "chat chat_my svelte-11zq4r2");
-    			add_location(div2, file$j, 96, 4, 2606);
+    			add_location(div0, file$j, 103, 5, 2574);
+    			attr_dev(div1, "class", "message message_my svelte-8qmjsi");
+    			add_location(div1, file$j, 104, 5, 2592);
+    			attr_dev(div2, "class", "chat chat_my svelte-8qmjsi");
+    			add_location(div2, file$j, 102, 4, 2542);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -10361,7 +10364,9 @@ var app = (function () {
     			append_dev(div1, t2);
     			append_dev(div2, t3);
     		},
-    		p: noop,
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*chat_logs*/ 4 && t2_value !== (t2_value = /*log*/ ctx[13].message + "")) set_data_dev(t2, t2_value);
+    		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div2);
     		}
@@ -10371,19 +10376,19 @@ var app = (function () {
     		block,
     		id: create_if_block$7.name,
     		type: "if",
-    		source: "(96:3) {#if log.id == $user?.githubId}",
+    		source: "(102:3) {#if log.id == $user?.githubId}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (95:2) {#each chat_logs as log}
+    // (101:2) {#each chat_logs as log}
     function create_each_block$a(ctx) {
     	let if_block_anchor;
 
     	function select_block_type(ctx, dirty) {
-    		if (/*log*/ ctx[11].id == /*$user*/ ctx[2]?.githubId) return create_if_block$7;
+    		if (/*log*/ ctx[13].id == /*$user*/ ctx[3]?.githubId) return create_if_block$7;
     		return create_else_block$4;
     	}
 
@@ -10422,7 +10427,7 @@ var app = (function () {
     		block,
     		id: create_each_block$a.name,
     		type: "each",
-    		source: "(95:2) {#each chat_logs as log}",
+    		source: "(101:2) {#each chat_logs as log}",
     		ctx
     	});
 
@@ -10441,7 +10446,7 @@ var app = (function () {
     	let button;
     	let mounted;
     	let dispose;
-    	let each_value = /*chat_logs*/ ctx[3];
+    	let each_value = /*chat_logs*/ ctx[2];
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -10466,17 +10471,17 @@ var app = (function () {
     			t3 = space();
     			button = element("button");
     			button.textContent = "Send Message";
-    			attr_dev(div0, "class", "chat_room_upper svelte-11zq4r2");
-    			add_location(div0, file$j, 92, 1, 2447);
+    			attr_dev(div0, "class", "chat_room_upper svelte-8qmjsi");
+    			add_location(div0, file$j, 98, 1, 2383);
     			attr_dev(div1, "id", "chat_room_body");
-    			attr_dev(div1, "class", "chat_room_body svelte-11zq4r2");
-    			add_location(div1, file$j, 93, 1, 2491);
-    			attr_dev(input, "class", "chat_room_write svelte-11zq4r2");
+    			attr_dev(div1, "class", "chat_room_body svelte-8qmjsi");
+    			add_location(div1, file$j, 99, 1, 2427);
+    			attr_dev(input, "class", "chat_room_write svelte-8qmjsi");
     			attr_dev(input, "type", "text");
-    			add_location(input, file$j, 108, 1, 2887);
-    			add_location(button, file$j, 109, 1, 2955);
-    			attr_dev(div2, "class", "chat_room svelte-11zq4r2");
-    			add_location(div2, file$j, 91, 0, 2422);
+    			add_location(input, file$j, 114, 1, 2823);
+    			add_location(button, file$j, 115, 1, 2916);
+    			attr_dev(div2, "class", "chat_room svelte-8qmjsi");
+    			add_location(div2, file$j, 97, 0, 2358);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -10500,8 +10505,9 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input, "input", /*input_input_handler*/ ctx[5]),
-    					listen_dev(button, "click", /*publish*/ ctx[4], false, false, false)
+    					listen_dev(input, "keypress", /*onKeyPress*/ ctx[4], false, false, false),
+    					listen_dev(input, "input", /*input_input_handler*/ ctx[7]),
+    					listen_dev(button, "click", /*publish*/ ctx[5], false, false, false)
     				];
 
     				mounted = true;
@@ -10511,7 +10517,7 @@ var app = (function () {
     			if (dirty & /*title*/ 1) set_data_dev(t0, /*title*/ ctx[0]);
 
     			if (dirty & /*chat_logs, $user*/ 12) {
-    				each_value = /*chat_logs*/ ctx[3];
+    				each_value = /*chat_logs*/ ctx[2];
     				validate_each_argument(each_value);
     				let i;
 
@@ -10562,11 +10568,14 @@ var app = (function () {
     function instance$j($$self, $$props, $$invalidate) {
     	let $user;
     	validate_store(user, 'user');
-    	component_subscribe($$self, user, $$value => $$invalidate(2, $user = $$value));
+    	component_subscribe($$self, user, $$value => $$invalidate(3, $user = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('ChatRoom', slots, []);
     	let { title } = $$props;
+    	let { id } = $$props;
     	let message = '';
+    	let client;
+    	let sub;
 
     	let chat_logs = [
     		{
@@ -10621,20 +10630,11 @@ var app = (function () {
     		objDiv.scrollTop = objDiv.scrollHeight;
     	};
 
-    	let client;
-
-    	onMount(() => {
-    		//socket.addEventListener('open', function (event) {
-    		//	console.log("It's open");
-    		//});
-    		connect();
-
-    		scrollDown();
-    	});
+    	const onKeyPress = e => {
+    		if (e.charCode === 13) publish();
+    	};
 
     	const connect = () => {
-    		//const socket = new SockJS('https://localhost:8080/api/stomp/chat');
-    		// let SockJS = await import('sockjs-client');
     		client = new Client({
     				// brokerURL: "wss://localhost:8080/api/stomp/chat", // 웹소켓 서버로 직접 접속
     				webSocketFactory: () => new entry("https://grabit-backend.link/api/stomp/chat"), // proxy를 통한 접속
@@ -10646,8 +10646,11 @@ var app = (function () {
     				heartbeatIncoming: 4000,
     				heartbeatOutgoing: 4000,
     				onConnect: () => {
-    					
-    				}, // subscribe();
+    					// subscribe();
+    					console.log(client);
+
+    					sub = client.subscribe('/sub/chat', onReceive);
+    				},
     				onStompError: frame => {
     					console.error(frame);
     				}
@@ -10656,38 +10659,42 @@ var app = (function () {
     		client.activate();
     	};
 
-    	const disconnect = () => {
-    		client.current.deactivate();
+    	// const disconnect = () => {
+    	// 	client.deactivate();
+    	// };
+    	const onReceive = message => {
+    		const new_chat = JSON.parse(message.body);
+    		$$invalidate(2, chat_logs = [...chat_logs, new_chat]);
     	};
 
-    	const subscribe = () => {
-    		client.current.subscribe(`/sub/chat/${ROOM_SEQ}`, ({ body }) => {
-    			setChatMessages(_chatMessages => [..._chatMessages, JSON.parse(body)]);
-    		});
-    	};
-
-    	const publish = message => {
-    		if (!client.current.connected) {
+    	const publish = () => {
+    		if (!client.connected) {
     			return;
     		}
 
-    		client.current.publish({
-    			destination: "/pub/chat",
-    			body: JSON.stringify({ roomSeq: ROOM_SEQ, message })
+    		const new_chat = JSON.stringify({
+    			id: $user?.githubId,
+    			message,
+    			createdAt: '22-07-14 16:11'
     		});
 
-    		setMessage("");
+    		client.publish({ destination: "/sub/chat", body: new_chat });
+    		$$invalidate(1, message = "");
     	};
+
+    	onMount(() => {
+    		connect();
+    		scrollDown();
+    	});
 
     	useEffect(
     		() => {
     			scrollDown();
-    			console.log(chat_logs);
     		},
     		() => [chat_logs]
     	);
 
-    	const writable_props = ['title'];
+    	const writable_props = ['title', 'id'];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1.warn(`<ChatRoom> was created with unknown prop '${key}'`);
@@ -10700,44 +10707,49 @@ var app = (function () {
 
     	$$self.$$set = $$props => {
     		if ('title' in $$props) $$invalidate(0, title = $$props.title);
+    		if ('id' in $$props) $$invalidate(6, id = $$props.id);
     	};
 
     	$$self.$capture_state = () => ({
     		user,
     		onMount,
     		useEffect,
-    		StompJS,
+    		StompJs,
     		SockJS: entry,
     		title,
+    		id,
     		message,
+    		client,
+    		sub,
     		chat_logs,
     		scrollDown,
-    		client,
+    		onKeyPress,
     		connect,
-    		disconnect,
-    		subscribe,
+    		onReceive,
     		publish,
     		$user
     	});
 
     	$$self.$inject_state = $$props => {
     		if ('title' in $$props) $$invalidate(0, title = $$props.title);
+    		if ('id' in $$props) $$invalidate(6, id = $$props.id);
     		if ('message' in $$props) $$invalidate(1, message = $$props.message);
-    		if ('chat_logs' in $$props) $$invalidate(3, chat_logs = $$props.chat_logs);
     		if ('client' in $$props) client = $$props.client;
+    		if ('sub' in $$props) sub = $$props.sub;
+    		if ('chat_logs' in $$props) $$invalidate(2, chat_logs = $$props.chat_logs);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [title, message, $user, chat_logs, publish, input_input_handler];
+    	return [title, message, chat_logs, $user, onKeyPress, publish, id, input_input_handler];
     }
 
     class ChatRoom extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$j, create_fragment$j, safe_not_equal, { title: 0 });
+    		init(this, options, instance$j, create_fragment$j, safe_not_equal, { title: 0, id: 6 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -10752,6 +10764,10 @@ var app = (function () {
     		if (/*title*/ ctx[0] === undefined && !('title' in props)) {
     			console_1.warn("<ChatRoom> was created without expected prop 'title'");
     		}
+
+    		if (/*id*/ ctx[6] === undefined && !('id' in props)) {
+    			console_1.warn("<ChatRoom> was created without expected prop 'id'");
+    		}
     	}
 
     	get title() {
@@ -10759,6 +10775,14 @@ var app = (function () {
     	}
 
     	set title(value) {
+    		throw new Error("<ChatRoom>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get id() {
+    		throw new Error("<ChatRoom>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set id(value) {
     		throw new Error("<ChatRoom>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
@@ -10782,7 +10806,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			attr_dev(div, "class", "chat_btn svelte-1u4kljk");
-    			add_location(div, file$i, 51, 1, 1198);
+    			add_location(div, file$i, 51, 1, 1237);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -10857,7 +10881,7 @@ var app = (function () {
     			add_location(div1, file$i, 34, 3, 793);
     			attr_dev(div2, "class", "chat_upper svelte-1u4kljk");
     			add_location(div2, file$i, 32, 2, 706);
-    			add_location(div3, file$i, 48, 2, 1169);
+    			add_location(div3, file$i, 48, 2, 1208);
     			attr_dev(div4, "class", "chat svelte-1u4kljk");
     			add_location(div4, file$i, 31, 1, 685);
     		},
@@ -10957,7 +10981,7 @@ var app = (function () {
     			}
 
     			attr_dev(div, "class", "chat_main svelte-1u4kljk");
-    			add_location(div, file$i, 39, 3, 933);
+    			add_location(div, file$i, 39, 3, 972);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -11017,7 +11041,8 @@ var app = (function () {
 
     	chatroom = new ChatRoom({
     			props: {
-    				title: /*$challengeList*/ ctx[3][/*challenge_code*/ ctx[0]].title
+    				title: /*$challengeList*/ ctx[3][/*challenge_code*/ ctx[0]].title,
+    				id: /*$challengeList*/ ctx[3][/*challenge_code*/ ctx[0]].id
     			},
     			$$inline: true
     		});
@@ -11033,6 +11058,7 @@ var app = (function () {
     		p: function update(ctx, dirty) {
     			const chatroom_changes = {};
     			if (dirty & /*$challengeList, challenge_code*/ 9) chatroom_changes.title = /*$challengeList*/ ctx[3][/*challenge_code*/ ctx[0]].title;
+    			if (dirty & /*$challengeList, challenge_code*/ 9) chatroom_changes.id = /*$challengeList*/ ctx[3][/*challenge_code*/ ctx[0]].id;
     			chatroom.$set(chatroom_changes);
     		},
     		i: function intro(local) {
@@ -11081,10 +11107,10 @@ var app = (function () {
     			div1 = element("div");
     			div1.textContent = "last chat";
     			t3 = space();
-    			add_location(div0, file$i, 42, 6, 1069);
-    			add_location(div1, file$i, 43, 6, 1104);
+    			add_location(div0, file$i, 42, 6, 1108);
+    			add_location(div1, file$i, 43, 6, 1143);
     			attr_dev(div2, "class", "chat_main_room svelte-1u4kljk");
-    			add_location(div2, file$i, 41, 5, 1002);
+    			add_location(div2, file$i, 41, 5, 1041);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);

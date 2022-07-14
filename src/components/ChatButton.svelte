@@ -35,7 +35,7 @@
 			<div class="close" on:click={onClick} />
 		</div>
 		{#if chat_on}
-			<ChatRoom title={$challengeList[challenge_code].title} />
+			<ChatRoom title={$challengeList[challenge_code].title} id={$challengeList[challenge_code].id} />
 		{:else}
 			<div class="chat_main">
 				{#each $challengeList as challenge}

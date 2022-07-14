@@ -2,11 +2,15 @@
 	import { user } from '../store/user.js';
 	import { onMount } from 'svelte';
 	import { useEffect } from '../common/hook.js';
-	import * as StompJS from '@stomp/stompjs';
+	import * as StompJs from '@stomp/stompjs';
 	import SockJS from 'sockjs-client';
 	export let title;
+	export let id;
 	
 	let message = '';
+	let client;
+	let sub;
+
 	let chat_logs = [
 		{id: 'user1', message: '내용1', createdAt: '22-07-03 16:11'},
 		{id: 'user1', message: '내용2', createdAt: '22-07-03 16:11'},
@@ -22,22 +26,14 @@
 	const scrollDown = () => {
 		var objDiv = document.getElementById("chat_room_body");
 		objDiv.scrollTop = objDiv.scrollHeight;
-	}
-	let client;
-	onMount(() => {
-		//socket.addEventListener('open', function (event) {
-		//	console.log("It's open");
-		//});
-		connect();
+	};
 
-		scrollDown();
-	})
+	const onKeyPress = (e) => {
+		if (e.charCode === 13) publish();
+	};
 
 	const connect = () => {
-		//const socket = new SockJS('https://localhost:8080/api/stomp/chat');
-		// let SockJS = await import('sockjs-client');
-		
-		client = new StompJS.Client({
+		client = new StompJs.Client({
 			// brokerURL: "wss://localhost:8080/api/stomp/chat", // 웹소켓 서버로 직접 접속
 			webSocketFactory: () => new SockJS("https://grabit-backend.link/api/stomp/chat"), // proxy를 통한 접속
 			connectHeaders: {
@@ -51,6 +47,8 @@
 			heartbeatOutgoing: 4000,
 			onConnect: () => {
 				// subscribe();
+				console.log(client);
+				sub = client.subscribe('/sub/chat', onReceive);
 			},
 			onStompError: (frame) => {
 				console.error(frame);
@@ -60,32 +58,40 @@
 		client.activate();
 	};
 
-	const disconnect = () => {
-		client.current.deactivate();
+	// const disconnect = () => {
+	// 	client.deactivate();
+	// };
+
+	const onReceive = (message) => {
+		const new_chat = JSON.parse(message.body);
+		chat_logs = [...chat_logs, new_chat];
 	};
 
-	const subscribe = () => {
-		client.current.subscribe(`/sub/chat/${ROOM_SEQ}`, ({ body }) => {
-		setChatMessages((_chatMessages) => [..._chatMessages, JSON.parse(body)]);
-		});
-	};
-
-	const publish = (message) => {
-		if (!client.current.connected) {
-		return;
+	const publish = () => {
+		if (!client.connected) {
+			return;
 		}
-
-		client.current.publish({
-		destination: "/pub/chat",
-		body: JSON.stringify({ roomSeq: ROOM_SEQ, message }),
+		const new_chat = JSON.stringify({
+				id: $user?.githubId,
+				message: message,
+				createdAt: '22-07-14 16:11'
+			});
+		client.publish({
+			destination: "/sub/chat",
+			body: new_chat
 		});
 
-		setMessage("");
+		message = "";
 	};
+
+	onMount(() => {
+		connect();
+
+		scrollDown();
+	});
 
 	useEffect(() => {
 		scrollDown();
-		console.log(chat_logs);
 	}, () => [chat_logs])
 </script>
 
@@ -106,7 +112,7 @@
 			{/if}
 		{/each}
 	</div>
-	<input class="chat_room_write" type="text" bind:value={message} />
+	<input class="chat_room_write" on:keypress={onKeyPress} type="text" bind:value={message} />
 	<button on:click={publish}>
 		Send Message
 	</button>
@@ -127,7 +133,7 @@
 			white-space:nowrap;
 		}
 		&_body{
-			padding: 0 0.5rem 0.5rem 0.5rem;
+			padding: 0 1rem 0.5rem 1rem;
 			height: calc(100% - 7.5rem);
 			background-color: #A6EDC0;
 			overflow-y: overlay;
