@@ -48,7 +48,6 @@ export async function fetchGetRedirectUrl(path, options = {}) {
 
 export async function fetchPost(path, body, otherOptions = {}, headers = {}) {
 	const url = `${API_URL}/${path}`;
-
 	const options = {
 		method: "POST",
 		headers: {
@@ -71,6 +70,23 @@ export async function fetchPost(path, body, otherOptions = {}, headers = {}) {
 		}
 	*/
 
+	return data;
+}
+export async function fetchPostFormData(path, body, otherOptions = {}, headers = {}) {
+
+	const url = `${API_URL}/${path}`;
+	const options = {
+		method: "POST",
+		headers: {
+			...bearer,
+			...headers,
+		},
+		body: body,
+		...otherOptions
+	};
+
+	const res = await fetch(url, options);
+	const data =await res.json();
 	return data;
 }
 
