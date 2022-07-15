@@ -27,19 +27,38 @@
 		</div>
 		{#if $user}
 			<span class="header__profile">
-				<img 
-					src='{GIT_URL}/{$user.githubId}.png'
-					alt='userProfile'
-					class="header__profile__img"
-					on:click={onClickProfile}
-				/>
+				{#if $user.profileImg}
+					<img 
+						src={$user.profileImg}
+						alt='userProfile'
+						class="header__profile__img"
+						on:click={onClickProfile}
+					/>
+				{:else}
+					<img 
+						src='{GIT_URL}/{$user.githubId}.png'
+						alt='userProfile'
+						class="header__profile__img"
+						on:click={onClickProfile}
+					/>
+				{/if}
 				<Dropdown open={isOpenDropdown} {onClickOut} right>
 					<DropdownItem onClick=''>내정보</DropdownItem>
 					<DropdownItem onClick={logout}>로그아웃</DropdownItem>
 				</Dropdown>
 			</span>
 		{:else}
-			<span>guest</span>
+			<span class="header__profile">
+				<img 
+					src="images/grabit_logo.png"
+					alt='default_image_grabit_logo'
+					class="header__profile__img"
+					on:click={onClickProfile}
+				/>
+				<Dropdown open={isOpenDropdown} {onClickOut} right>
+					<DropdownItem onClick={()=>{push('/login')}}>로그인</DropdownItem>
+				</Dropdown>
+			</span>
 		{/if}
 	</div>
 </div>
