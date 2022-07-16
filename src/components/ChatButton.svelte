@@ -2,19 +2,20 @@
 	import { onMount } from 'svelte';
 	import { location } from 'svelte-spa-router';
 	import { user } from '../store/user.js';
-	import { challengeList } from '../store/challenge.js';
+	import { getUserChallenge } from '../store/challenge.js';
 	import ChatRoom from './ChatRoom.svelte';
 
 	let challenge_code = null;
 	let chat_on = false;
-	let isClicked = false;
+	let isOpen = false;
+	let challengeList;
 
 	function onClick() {
-		isClicked = !isClicked;
+		isOpen = !isOpen;
 	}
-	function chatOn(id) {
+	function chatOn(idx) {
 		chat_on = true;
-		challenge_code = id-1;
+		challenge_code = idx;
 	}
 	function chatOff() {
 		chat_on = false;
@@ -26,21 +27,26 @@
 	//		challenge_code = $location.split('/')[2];
 	//	};
 	//})
+	onMount(async () => {
+		challengeList = await getUserChallenge();
+	})
 </script>
 
-{#if isClicked}
+{#if isOpen}
 	<div class="chat">
 		<div class="chat_upper">
 			<div class="chat_upper_home" on:click={chatOff}>←</div>
 			<div class="close" on:click={onClick} />
 		</div>
 		{#if chat_on}
-			<ChatRoom title={$challengeList[challenge_code].title} id={$challengeList[challenge_code].id} />
+			<ChatRoom name={challengeList.content[challenge_code].name} id={challengeList.content[challenge_code].id} />
 		{:else}
 			<div class="chat_main">
-				{#each $challengeList as challenge}
-					<div class="chat_main_room" on:click={chatOn(challenge.id)}>
-						<div>{challenge.title}</div>
+				{#each challengeList.content as challenge, idx}
+					<div class="chat_main_room" on:click={() => {
+						chatOn(idx)
+					}}>
+						<div>{challenge.name}</div>
 						<div>last chat</div>
 					</div>
 				{/each}

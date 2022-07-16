@@ -4,7 +4,7 @@
 	import { useEffect } from '../common/hook.js';
 	import * as StompJs from '@stomp/stompjs';
 	import SockJS from 'sockjs-client';
-	export let title;
+	export let name;
 	export let id;
 	
 	let message = '';
@@ -34,20 +34,14 @@
 
 	const connect = () => {
 		client = new StompJs.Client({
-			// brokerURL: "wss://localhost:8080/api/stomp/chat", // 웹소켓 서버로 직접 접속
 			webSocketFactory: () => new SockJS("https://grabit-backend.link/api/stomp/chat"), // proxy를 통한 접속
 			connectHeaders: {
 				"auth-token": "spring-chat-auth-token",
-			},
-			debug: function (str) {
-				console.log(str);
 			},
 			reconnectDelay: 5000,
 			heartbeatIncoming: 4000,
 			heartbeatOutgoing: 4000,
 			onConnect: () => {
-				// subscribe();
-				console.log(client);
 				sub = client.subscribe('/sub/chat', onReceive);
 			},
 			onStompError: (frame) => {
@@ -96,7 +90,7 @@
 </script>
 
 <div class="chat_room">
-	<div class="chat_room_upper">{title}</div>
+	<div class="chat_room_upper">{name}</div>
 	<div id="chat_room_body" class="chat_room_body">
 		{#each chat_logs as log}
 			{#if log.id == $user?.githubId}
