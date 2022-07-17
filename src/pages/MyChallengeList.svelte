@@ -18,7 +18,7 @@
 	
 	onMount(async () => {
 		changeTab(index.MYCHALLENGE);
-		const myChallengeData = await getUserChallenge();
+		await getUserChallenge();
 	})
 	onDestroy(() => {
 		changeTab(index.HOME);
