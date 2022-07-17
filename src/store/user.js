@@ -6,7 +6,7 @@ const tempUser = {
 	githubId: 'MOBUMIN',
 }
 
-export const user = writable(tempUser);
+export const user = writable(null);
 
 export async function login() {
 	await fetchGetRedirectUrl(`oauth2/authorization/github?${getQueryUri({ 'redirect_uri' : CALLBACK_URL+'#/redirect'})}`, {redirect: 'manual'})
