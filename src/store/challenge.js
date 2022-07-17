@@ -37,7 +37,7 @@ function failGetChallenge(){
 }
 
 export async function getUserChallenge() {
-	const res = await fetchGet(`users/challenge`);
+	const res = await fetchGet(`users/challenges`);
 	return res;
 }
 
