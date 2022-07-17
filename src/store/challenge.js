@@ -36,11 +36,6 @@ function failGetChallenge(){
     notifications.send("불러오기 실패!  다시 시도해주세요!");
 }
 
-export async function getUserChallenge() {
-	const res = await fetchGet(`users/challenges`);
-	return res;
-}
-
 export async function joinChallenge( challenge_id ) {
 	const res = await fetchPatch(`challenges/${challenge_id}/join`);
 	return res;

@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { location } from 'svelte-spa-router';
 	import { user } from '../store/user.js';
-	import { getUserChallenge } from '../store/challenge.js';
+	import { getUserChallenge } from '../store/myChallenge.js';
 	import ChatRoom from './ChatRoom.svelte';
 
 	let challenge_code = null;
@@ -39,10 +39,10 @@
 			<div class="close" on:click={onClick} />
 		</div>
 		{#if chat_on}
-			<ChatRoom name={challengeList.content[challenge_code].name} id={challengeList.content[challenge_code].id} />
+			<ChatRoom name={challengeList[challenge_code].name} id={challengeList[challenge_code].id} />
 		{:else}
 			<div class="chat_main">
-				{#each challengeList.content as challenge, idx}
+				{#each challengeList as challenge, idx}
 					<div class="chat_main_room" on:click={() => {
 						chatOn(idx)
 					}}>

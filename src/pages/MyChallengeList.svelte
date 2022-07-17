@@ -2,7 +2,6 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { push } from 'svelte-spa-router'
 	import { changeTab } from '../store/page';
-  	import { challengeList } from '../store/challenge.js';
 	
 	import { index } from '../const/tab';
 
@@ -11,7 +10,7 @@
 	import ChallengeBox from '../components/ChallengeBox.svelte';
 	import { Button, SearchInput } from '../storybook';
 
-	import { getUserChallenge } from '../store/challenge.js'
+	import { myChallengeList, getUserChallenge, myChallengePage } from '../store/myChallenge.js'
 	
 	function onClick() {
 		push('/createchallenge');
@@ -19,10 +18,7 @@
 	
 	onMount(async () => {
 		changeTab(index.MYCHALLENGE);
-		if(!challengeList) {
-			const myChallengeData = await getUserChallenge();
-			challengeList.set(myChallengeData);
-		}
+		await getUserChallenge();
 	})
 	onDestroy(() => {
 		changeTab(index.HOME);
@@ -42,7 +38,7 @@
 			<Button {onClick} width="4rem" height="1.9rem" backgroundColor="#50CE92" style="border: none; color: white;">New</Button>
 		</div>
 		<div class="MyChallengeList__list">
-			{#each $challengeList as c}
+			{#each $myChallengeList as c}
 				<ChallengeBox challenge={c} />
 			{/each}
 		</div>
