@@ -2,6 +2,7 @@
 	import Header from './components/Header.svelte';
 	import Footer from './components/Footer.svelte';
 	import Container from './components/Container.svelte';
+	import ChatButton from './components/ChatButton.svelte';
 	import Router  from 'svelte-spa-router';
 	import routes from './pages';
 </script>
@@ -13,6 +14,7 @@
 			<Router {routes} />
 		</Container>
 	</div>
+	<ChatButton />
 	<Footer />
 </main>
 
