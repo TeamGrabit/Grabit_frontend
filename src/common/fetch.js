@@ -81,12 +81,13 @@ export async function fetchPostFormData(path, body, otherOptions = {}, headers =
 			...bearer,
 			...headers,
 		},
-		body: body,
+		body, 
 		...otherOptions
 	};
 
 	const res = await fetch(url, options);
-	const data =await res.json();
+	const data = await res.json();
+
 	return data;
 }
 

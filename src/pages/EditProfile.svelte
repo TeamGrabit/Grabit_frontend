@@ -22,6 +22,12 @@
             bio=$user.bio;
         }
     })
+    const checkProfileImage = () => {
+		if($user.profileImg)
+			return $user.profileImg
+
+		return GIT_URL+'/'+$user.githubId+'.png'
+	}
     async function Save(){ 
         let body_data
 
@@ -40,7 +46,6 @@
         }
 
         await fetchPatch('users', body_data)
-
         getUser();
         alert("수정되었습니다.");
         push('/');
@@ -53,9 +58,24 @@
         alert("로그인 이후 접근 가능한 페이지입니다.");   
         push('/login')
     }
-
+    function checkFileType(element){
+        const accept_type=['jpg', 'png', 'jpeg', 'PNG', 'JPG', 'JPEG']
+        if(accept_type.includes(element))
+            return true;
+        else
+            return false;
+    }
     function onChange() {
+        if(!input.files[0])
+            return;
 
+        let name_arr=(input.files[0].name).split('.');
+
+        if(!checkFileType(name_arr[name_arr.length-1])){
+            alert('지원하지 않는 파일 형식입니다.\n지원파일타입: .jpg .png .jpeg')
+            return;
+        }
+        
         file = input.files[0];
 
         if (file) {
@@ -69,6 +89,7 @@
         } 
         showImage = false; 
     }
+
 </script>
 
 <GlobalNavigationBar />
@@ -78,16 +99,14 @@
         <div class='div__row'>
             <div class='div__column'>
                 {#if !showImage}
-                    {#if $user.profileImg}
-                        <img src={$user.profileImg} alt='userProfile' class="content__profileImg" />
-                    {:else}
-                        <img src='{GIT_URL}/{$user.githubId}.png' alt='userProfile' class="content__profileImg" />
-                    {/if}
+                    <img src={checkProfileImage()} alt='userProfile' class="content__profileImg" />
                 {:else}
                     <img bind:this={image} src="" alt="Preview" class="content__profileImg" />
                 {/if}
-
-                <input bind:this={input} on:change={onChange} type="file"/>
+                <label class="btn__input_image" for="input-file">
+                    <div class=btn__text>EDIT</div>
+                </label>
+                <input bind:this={input} on:change={onChange} type="file" accept=".jpg,.png,.jpeg" id="input-file" style="display:none;"/>
             </div>
 
             <div class='div__column'>
@@ -162,6 +181,19 @@
         &__text{
             font-size: 1.0rem;
             font-weight: 600;
+        }
+        &__input_image{
+            position: absolute;
+            top:27rem;
+            left:30rem;
+            display: inline-block;
+            padding: .5em 1.5em;
+            font-size: inherit;
+            line-height: normal;
+            background-color: #fdfdfd;
+            cursor: pointer;
+            border: 2px solid var(--border-color);
+            border-radius: .25em;
         }
     }
     .text{

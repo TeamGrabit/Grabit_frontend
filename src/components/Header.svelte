@@ -15,6 +15,12 @@
 	const onClickOut = () => {
 		isOpenDropdown = false;
 	}
+	const checkProfileImage = () => {
+		if($user.profileImg)
+			return $user.profileImg
+
+		return GIT_URL+'/'+$user.githubId+'.png'
+	}
 </script>
 
 <div class="header">
@@ -27,21 +33,12 @@
 		</div>
 		{#if $user}
 			<span class="header__profile">
-				{#if $user.profileImg}
-					<img 
-						src={$user.profileImg}
-						alt='userProfile'
-						class="header__profile__img"
-						on:click={onClickProfile}
-					/>
-				{:else}
-					<img 
-						src='{GIT_URL}/{$user.githubId}.png'
-						alt='userProfile'
-						class="header__profile__img"
-						on:click={onClickProfile}
-					/>
-				{/if}
+				<img 
+					src={checkProfileImage()}
+					alt='userProfile'
+					class="header__profile__img"
+					on:click={onClickProfile}
+				/>
 				<Dropdown open={isOpenDropdown} {onClickOut} right>
 					<DropdownItem onClick=''>내정보</DropdownItem>
 					<DropdownItem onClick={logout}>로그아웃</DropdownItem>

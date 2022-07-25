@@ -9,21 +9,23 @@
 	function onClickLogin(){
 		push('/login')
 	}
+	const checkProfileImage = () => {
+		if($user.profileImg)
+			return $user.profileImg
+
+		return GIT_URL+'/'+$user.githubId+'.png'
+	}
 </script>
 
 <div class="profile">
 	{#if $user}
-		{#if $user.profileImg}
-			<img src={$user.profileImg} alt='userProfile' class="profile__img" />
-		{:else}
-			<img src='{GIT_URL}/{$user.githubId}.png' alt='userProfile' class="profile__img" />
-		{/if}
+			<img src={checkProfileImage()} alt='userProfile' class="profile__img" />
 		<div class="profile__id">{$user.username}</div>
 		<button class="edit_btn" on:click={onClickEditProfile}>
 			<p>Edit profile</p>
 		</button>
 	{:else}
-		<img class="profile__img">
+		<img class="profile__img" src="images/grabit_logo.png" alt='default_image_grabit_logo'>
 		<div class="profile__id">Guest</div>
 		<button class="edit_btn" on:click={onClickLogin}>
 			<p>Sign in</p>
@@ -41,6 +43,7 @@
 
 		&__img{
 			border: #AAAAAA solid 2px;
+			background-color: #FFFFFF;
 			border-radius: 50%;
 			width: 22.5rem;
 			height: 22.5rem;
