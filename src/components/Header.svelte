@@ -15,12 +15,6 @@
 	const onClickOut = () => {
 		isOpenDropdown = false;
 	}
-	const checkProfileImage = () => {
-		if($user.profileImg)
-			return $user.profileImg
-
-		return GIT_URL+'/'+$user.githubId+'.png'
-	}
 </script>
 
 <div class="header">
@@ -34,7 +28,7 @@
 		{#if $user}
 			<span class="header__profile">
 				<img 
-					src={checkProfileImage()}
+					src={$user.profileImg||GIT_URL+'/'+$user.githubId+'.png'}
 					alt='userProfile'
 					class="header__profile__img"
 					on:click={onClickProfile}

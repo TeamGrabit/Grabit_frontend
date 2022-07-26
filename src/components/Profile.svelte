@@ -9,17 +9,11 @@
 	function onClickLogin(){
 		push('/login')
 	}
-	const checkProfileImage = () => {
-		if($user.profileImg)
-			return $user.profileImg
-
-		return GIT_URL+'/'+$user.githubId+'.png'
-	}
 </script>
 
 <div class="profile">
 	{#if $user}
-			<img src={checkProfileImage()} alt='userProfile' class="profile__img" />
+		<img src={$user.profileImg||GIT_URL+'/'+$user.githubId+'.png'} alt='userProfile' class="profile__img" />
 		<div class="profile__id">{$user.username}</div>
 		<button class="edit_btn" on:click={onClickEditProfile}>
 			<p>Edit profile</p>

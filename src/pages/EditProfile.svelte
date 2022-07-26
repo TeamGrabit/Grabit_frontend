@@ -22,12 +22,6 @@
             bio=$user.bio;
         }
     })
-    const checkProfileImage = () => {
-		if($user.profileImg)
-			return $user.profileImg
-
-		return GIT_URL+'/'+$user.githubId+'.png'
-	}
     async function Save(){ 
         let body_data
 
@@ -99,7 +93,7 @@
         <div class='div__row'>
             <div class='div__column'>
                 {#if !showImage}
-                    <img src={checkProfileImage()} alt='userProfile' class="content__profileImg" />
+                    <img src={$user.profileImg||GIT_URL+'/'+$user.githubId+'.png'} alt='userProfile' class="content__profileImg" />
                 {:else}
                     <img bind:this={image} src="" alt="Preview" class="content__profileImg" />
                 {/if}
@@ -154,6 +148,7 @@
         }
         &__column{
             display: flex;
+            position: relative;
             flex-direction: column;
             justify-content:center;
             margin: 0rem 1rem;
@@ -184,8 +179,8 @@
         }
         &__input_image{
             position: absolute;
-            top:27rem;
-            left:30rem;
+            top:18rem;
+            left:16rem;
             display: inline-block;
             padding: .5em 1.5em;
             font-size: inherit;
