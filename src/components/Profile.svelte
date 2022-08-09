@@ -9,12 +9,14 @@
 	function onClickLogin(){
 		push('/login')
 	}
+
+	console.log($user);
 </script>
 
 <div class="profile">
 	{#if $user}
 		<img src={$user.profileImg||GIT_URL+'/'+$user.githubId+'.png'} alt='userProfile' class="profile__img" />
-		<div class="profile__id">{$user.username}</div>
+		<div class="profile__id">{$user.usernam ?? $user.githubId}</div>
 		<button class="edit_btn" on:click={onClickEditProfile}>
 			<p>Edit profile</p>
 		</button>
