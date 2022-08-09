@@ -9,8 +9,6 @@
 	function onClickLogin(){
 		push('/login')
 	}
-
-	console.log($user);
 </script>
 
 <div class="profile">

@@ -12,6 +12,8 @@
 
 	import { myChallengeList, getUserChallenge, myChallengePage } from '../store/myChallenge.js'
 	
+	let filteredList = [];
+	
 	function onClick() {
 		push('/createchallenge');
 	}
@@ -19,13 +21,23 @@
 	onMount(async () => {
 		changeTab(index.MYCHALLENGE);
 		await getUserChallenge();
+		filteredList = $myChallengeList;
 	})
 	onDestroy(() => {
 		changeTab(index.HOME);
 	});
 
-	function searchHandler(val) {
-		alert(val + "를 검색하셨습니다.")
+	async function searchHandler(val) {
+		await getUserChallenge();
+		filteredList = $myChallengeList.filter((challenge) => 
+			challenge.name.includes(val)
+		)
+	}
+
+	function changeHandler(val) {
+		filteredList = $myChallengeList.filter((challenge) => 
+			challenge.name.includes(val)
+		)
 	}
 </script>
 
@@ -34,12 +46,12 @@
 	<Profile />
 	<div class="MyChallengeList__content">
 		<div class="MyChallengeList__input-box">
-			<SearchInput {searchHandler} />
+			<SearchInput {searchHandler} {changeHandler} />
 			<Button {onClick} width="4rem" height="1.9rem" backgroundColor="#50CE92" style="border: none; color: white;">New</Button>
 		</div>
 		<div class="MyChallengeList__list">
-			{#each $myChallengeList as c}
-				<ChallengeBox challenge={c} />
+			{#each filteredList as challenge}
+				<ChallengeBox challenge={challenge} />
 			{/each}
 		</div>
 	</div>
