@@ -16,17 +16,19 @@
 	let name = '';
 	let description = '';
 	let secure = "public";
+	let leader = '';
 
 	onMount(async() => {
 		challengeData = await getChallenge(params.id);
 		name = challengeData.name;
 		description = challengeData.description;
+		leader = challengeData.leader;
 		secure = challengeData.isPrivate ? 'private' : 'public';
 	})
 
 	const onClickSave = () => {
 		const isPrivate = secure === 'private';
-		editChallenge(params.id, { name, description, isPrivate }).then(() => {
+		editChallenge(params.id, { name, description, isPrivate, leader }).then(() => {
 			notifications.send('저장되었습니다.');
 		})
 	}
