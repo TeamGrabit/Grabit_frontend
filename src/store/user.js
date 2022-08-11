@@ -2,10 +2,6 @@ import { writable } from 'svelte/store';
 import { ACCESS_TOKEN, CALLBACK_URL } from '../common/Variable';
 import { fetchGet, fetchGetRedirectUrl, getQueryUri } from '../common/fetch';
 
-const tempUser = {
-	githubId: 'MOBUMIN',
-}
-
 export const user = writable(null);
 
 export async function login() {
