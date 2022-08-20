@@ -1,6 +1,6 @@
 import { writable, get } from 'svelte/store';
 import { notifications } from './notifications.js';
-import { fetchGet, fetchPatch } from '../common/fetch';
+import { fetchGet, fetchPatch, fetchDelete, fetchPost } from '../common/fetch';
 
 const initialState = [];
 
@@ -41,25 +41,25 @@ export async function joinChallenge( challenge_id ) {
 	return res;
 }
 
-export function getApproveList(groupId) {
-	// TODO: api 나오면 연결하기
-	return [
-		{
-			requestId: 1,
-			name: 'tnghd5761',
-			message: '같이 해요 :)같이 해요 :)같이 해요 :)같이 해요 :)'
-		},
-		{
-			requestId: 2,
-			name: 'llJTOll',
-			message: '같이 해요 :)'
-		},
-		{
-			requestId: 2,
-			name: 'MOBUMIN',
-			message: '같이 해요 :)'
-		}
-	]
+export const getApproveList = async(params) => {
+	const res = await fetchGet('challenges/join?' + new URLSearchParams({
+		...params
+	}))
+	return res;
+}
+
+export const approveJoin = async(params) => {
+	const res = await fetchPost('challenges/join/approve?' + new URLSearchParams({
+		...params
+	}))
+	return res;
+}
+
+export const rejectJoin = async(params) => {
+	const res = await fetchPost('challenges/join/reject?' + new URLSearchParams({
+		...params
+	}))
+	return res;
 }
 
 export const editChallenge = async(id, body) => {

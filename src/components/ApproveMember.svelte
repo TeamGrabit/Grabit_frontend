@@ -1,16 +1,25 @@
 <script>
 	import { onMount } from 'svelte';
 	import { Card, Loader, Button } from '../storybook';
-	import { getApproveList } from '../store/challenge.js'
+	import { getApproveList, approveJoin, rejectJoin } from '../store/challenge.js'
 	import { GIT_URL } from '../common/Variable.js';
 	export let params;
 	export let isActive;
 	let CardList;
 
 	onMount(() => {
-		// TODO: API 연결
-		CardList = getApproveList();
+		CardList = getApproveList({challengeId: params.id});
 	})
+
+	const onClickApprove = (requestId) => {
+		// TODO: API정상 작동하면 요청완료된 requeset 필터시켜버리기
+		approveJoin(requestId);
+	}
+
+	const onClickReject = (requestId) => {
+		// TODO: API정상 작동하면 요청완료된 requeset 필터시켜버리기
+		rejectJoin(requestId);
+	}
 	
 </script>
 
@@ -38,6 +47,7 @@
 									height='2rem'
 									backgroundColor='var(--main-green-color)'
 									style='padding: 0;'
+									onClick={onClickApprove(card.id)}
 								>
 									<img src="images/check.svg" class="Card__button__image" alt="Check">
 								</Button>
@@ -46,6 +56,7 @@
 									height='2rem'
 									backgroundColor='#FAE5E5'
 									style='padding: 0;'
+									onClick={onClickReject(card.id)}
 								>
 									<img src="images/x.svg" class="Card__button__image" alt="Reject">
 								</Button>
