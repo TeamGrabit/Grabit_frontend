@@ -6,10 +6,15 @@
 	import { ACCESS_TOKEN } from '../common/Variable';
 	import { user, getUser } from '../store/user.js';
 	import Button from '../storybook/Button.svelte';
-
+	import { getGrass } from '../store/grass';
 
 	export let params = {}
 	let challenge = null;
+	let grass_list = {};
+	let grass_team = new Array(365);
+	for (let i=0; i<371; i+=1){
+		grass_team[i] = {date:'', count: 0};
+	};
 
 	beforeUpdate(() => {
 		if (!$user){
@@ -19,15 +24,17 @@
 	});
 	onMount(async () => {
 		challenge = await getChallenge(params.id);
+		challenge.member.map(member_id => {
+			const member_grass = getGrass(member_id);
+			member_grass.then(value => {
+				grass_list[member_id] =  value;
+				for (let i=0; i<371; i+=1){
+					if (grass_list[member_id][i].count > 0)
+						grass_team[i].count += 1;
+				};
+			})
+		})
 	});
-
-	let group = ["user", "grabit123", "||JTO||", "guest"];
-	let grass_list = new Array(365);
-	let grass_team = new Array(365);
-	for (let i=0; i<365; i+=1){
-		grass_list[i] = {date:'', count: i % 9};
-		grass_team[i] = {date:'', count: i % 5};
-	};
 
 	let req_list = [
 		{num: 1, requester: "user", desc: "feat: challengeDetail", approve: ["grabit_123", "||JTO||"]},
@@ -36,55 +43,61 @@
 		{num: 4, requester: "||JTO||", desc: "feat: commit approve request", approve: ["grabit_123"]},
 		{num: 5, requester: "||JTO||", desc: "feat: commit approve request", approve: ["grabit_123"]},
 	];
-
 </script>
 
-<div class="upper">
-	<!--<div class="upper_title">{challenge.title}</div>-->
-	<!--<div class="upper_description">{challenge.desc}</div>-->
-	<div class="title_desc">
-		<div class="upper_title">챌린지 이름</div>
-		<div class="upper_description">하루 한번 씩</div>
-	</div>
-	{#if !group.includes($user.githubId)}
-		<div class="join">
-			<Button
-				width='5rem'
-				height='2rem'
-				backgroundColor='#B8FFC8'
-				onClick={joinChallenge(params.id)}
-			>
-				<div class="btn_txt">JOIN</div>
-			</Button>
+{#if challenge}
+	<div class="upper">
+		<div class="title_desc">
+			<div class="upper_title">{challenge.name}</div>
+			<div class="upper_description">{challenge.description}</div>
 		</div>
-	{/if}
-</div>
-<div class="content">
-	<div class="team_grass">
-		<p
-			class="grass_title"
-			style="
-				font-weight: bold;
-				font-size: 1.1rem;
-			"
-		>Team의 잔디</p>
-		<Grass grass_list={grass_team} isBig group_num={group.length}/>
+		{#if !challenge.member.includes($user.githubId)}
+			<div class="join">
+				<Button
+					width='5rem'
+					height='2rem'
+					backgroundColor='#B8FFC8'
+					onClick={joinChallenge(params.id)}
+				>
+					<div class="btn_txt">JOIN</div>
+				</Button>
+			</div>
+		{/if}
 	</div>
-	<div class="personal_admit">
-		<div class="personal">
-			{#each group as member}
-				<div class="personal_grass">
-					<div class="grass_title">
-						<p style="font-weight: bold;">{member}</p>
-						<p>의 잔디</p>
+	<div class="content">
+		<div class="team_grass">
+			<p
+				class="grass_title"
+				style="
+					font-weight: bold;
+					font-size: 1.1rem;
+				"
+			>Team의 잔디</p>
+			<Grass grass_list={grass_team} isBig group_num={challenge.member.length}/>
+		</div>
+		<div class="personal_admit">
+			<div class="personal">
+				{#each challenge.member as member}
+					<div class="personal_grass">
+						<div class="grass_title">
+							<p style="font-weight: bold">{member}</p>
+							<p>의 잔디</p>
+						</div>
+						{#if Array.isArray(grass_list[member])}
+							<Grass grass_list={grass_list[member]} />
+						{:else}
+							<p>불러오는 중입니다.</p>
+						{/if}
 					</div>
-					<Grass grass_list={grass_list} />
-				</div>
-			{/each}
+				{/each}
+			</div>
+			<CommitRequest group={challenge.member} req_list={req_list}/>
 		</div>
-		<CommitRequest group={group} req_list={req_list}/>
 	</div>
-</div>
+{:else}
+	<div>loading</div>
+{/if}
+
 
 <style lang="scss">
 	.upper{
