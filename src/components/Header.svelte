@@ -28,7 +28,7 @@
 		{#if $user}
 			<span class="header__profile">
 				<img 
-					src='{GIT_URL}/{$user.githubId}.png'
+					src={$user.profileImg||GIT_URL+'/'+$user.githubId+'.png'}
 					alt='userProfile'
 					class="header__profile__img"
 					on:click={onClickProfile}
@@ -39,7 +39,17 @@
 				</Dropdown>
 			</span>
 		{:else}
-			<span>guest</span>
+			<span class="header__profile">
+				<img 
+					src="images/grabit_logo.png"
+					alt='default_image_grabit_logo'
+					class="header__profile__img"
+					on:click={onClickProfile}
+				/>
+				<Dropdown open={isOpenDropdown} {onClickOut} right>
+					<DropdownItem onClick={()=>{push('/login')}}>로그인</DropdownItem>
+				</Dropdown>
+			</span>
 		{/if}
 	</div>
 </div>

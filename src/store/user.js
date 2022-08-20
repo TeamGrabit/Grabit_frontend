@@ -31,6 +31,6 @@ export function setUserToken() {
 export async function getUser() {
 	// TODO: 로그인 실패시 토스트 알럿 띄우기
 	const userData = await fetchGet('users');
-	if(userData.error) failLogin();
+	if(userData.err) failLogin();
 	else user.set(userData);
 }

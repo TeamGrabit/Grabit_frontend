@@ -6,3 +6,4 @@ export { default as Input } from './Input.svelte';
 export { default as Loader } from './Loader.svelte';
 export { default as SubNav } from './SubNavigation.svelte';
 export { default as SubNavItem } from './SubNavigationItem.svelte';
+export { default as Card } from './Card.svelte';

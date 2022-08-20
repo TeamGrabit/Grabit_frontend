@@ -25,12 +25,17 @@ export async function fetchGet(path, otherOptions = {}, headers = {}) {
 		},
 		...otherOptions
 	}
+	
+	let data;
 
-	const res = await fetch(url, options);
-	const data = await res.json();
+	try{
+		const res = await fetch(url, options);
+		data = await res.json();
+	} catch(error) {
+		data = { err: error.name, errMsg: error.message }
+	}
 
 	return data;
-
 }
 
 export async function fetchGetRedirectUrl(path, options = {}) {
@@ -43,7 +48,6 @@ export async function fetchGetRedirectUrl(path, options = {}) {
 
 export async function fetchPost(path, body, otherOptions = {}, headers = {}) {
 	const url = `${API_URL}/${path}`;
-
 	const options = {
 		method: "POST",
 		headers: {
@@ -65,6 +69,24 @@ export async function fetchPost(path, body, otherOptions = {}, headers = {}) {
 			throw Error(data);
 		}
 	*/
+
+	return data;
+}
+export async function fetchPostFormData(path, body, otherOptions = {}, headers = {}) {
+
+	const url = `${API_URL}/${path}`;
+	const options = {
+		method: "POST",
+		headers: {
+			...bearer,
+			...headers,
+		},
+		body, 
+		...otherOptions
+	};
+
+	const res = await fetch(url, options);
+	const data = await res.json();
 
 	return data;
 }

@@ -1,10 +1,15 @@
 <script>
 	export let searchHandler;
+	export let changeHandler;
 	let searchVal = "";
 
     const onKeyPress = e => {
         if (e.charCode === 13) searchHandler(searchVal);
     };
+
+	const onChange = () => {
+		changeHandler(searchVal);
+	}
 </script>
 
 <div class="search">
@@ -13,6 +18,7 @@
         placeholder="Search..."
         on:keypress={onKeyPress}
         bind:value={searchVal}
+		on:input={onChange}
     />
     <img class="search__icon" src="images/search.png" alt="search_img" />
 </div>
