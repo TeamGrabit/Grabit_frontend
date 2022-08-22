@@ -11,8 +11,9 @@
 	export let params = {}
 	let challenge = null;
 	let grass_list = {};
-	let grass_team = new Array(365);
-	for (let i=0; i<371; i+=1){
+	let grass_amount = 365 + new Date().getDay();
+	let grass_team = new Array(grass_amount);
+	for (let i=0; i<grass_amount; i+=1){
 		grass_team[i] = {date:'', count: 0};
 	};
 
@@ -28,7 +29,7 @@
 			const member_grass = getGrass(member_id);
 			member_grass.then(value => {
 				grass_list[member_id] =  value;
-				for (let i=0; i<371; i+=1){
+				for (let i=0; i<grass_amount; i++){
 					if (grass_list[member_id][i].count > 0)
 						grass_team[i].count += 1;
 				};

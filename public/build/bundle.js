@@ -15545,11 +15545,11 @@ var app = (function () {
 
     function get_each_context$3(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[6] = list[i];
+    	child_ctx[7] = list[i];
     	return child_ctx;
     }
 
-    // (97:0) {:else}
+    // (98:0) {:else}
     function create_else_block_1$1(ctx) {
     	let div;
 
@@ -15557,7 +15557,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			div.textContent = "loading";
-    			add_location(div, file$8, 97, 1, 2811);
+    			add_location(div, file$8, 98, 1, 2884);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -15574,14 +15574,14 @@ var app = (function () {
     		block,
     		id: create_else_block_1$1.name,
     		type: "else",
-    		source: "(97:0) {:else}",
+    		source: "(98:0) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (48:0) {#if challenge}
+    // (49:0) {#if challenge}
     function create_if_block$3(ctx) {
     	let div3;
     	let div2;
@@ -15666,25 +15666,25 @@ var app = (function () {
     			t8 = space();
     			create_component(commitrequest.$$.fragment);
     			attr_dev(div0, "class", "upper_title svelte-mh2seb");
-    			add_location(div0, file$8, 50, 3, 1650);
+    			add_location(div0, file$8, 51, 3, 1723);
     			attr_dev(div1, "class", "upper_description svelte-mh2seb");
-    			add_location(div1, file$8, 51, 3, 1701);
+    			add_location(div1, file$8, 52, 3, 1774);
     			attr_dev(div2, "class", "title_desc");
-    			add_location(div2, file$8, 49, 2, 1622);
+    			add_location(div2, file$8, 50, 2, 1695);
     			attr_dev(div3, "class", "upper svelte-mh2seb");
-    			add_location(div3, file$8, 48, 1, 1600);
+    			add_location(div3, file$8, 49, 1, 1673);
     			attr_dev(p, "class", "grass_title svelte-mh2seb");
     			set_style(p, "font-weight", "bold");
     			set_style(p, "font-size", "1.1rem");
-    			add_location(p, file$8, 68, 3, 2100);
+    			add_location(p, file$8, 69, 3, 2173);
     			attr_dev(div4, "class", "team_grass svelte-mh2seb");
-    			add_location(div4, file$8, 67, 2, 2072);
+    			add_location(div4, file$8, 68, 2, 2145);
     			attr_dev(div5, "class", "personal svelte-mh2seb");
-    			add_location(div5, file$8, 78, 3, 2331);
+    			add_location(div5, file$8, 79, 3, 2404);
     			attr_dev(div6, "class", "personal_admit svelte-mh2seb");
-    			add_location(div6, file$8, 77, 2, 2299);
+    			add_location(div6, file$8, 78, 2, 2372);
     			attr_dev(div7, "class", "content svelte-mh2seb");
-    			add_location(div7, file$8, 66, 1, 2048);
+    			add_location(div7, file$8, 67, 1, 2121);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div3, anchor);
@@ -15818,14 +15818,14 @@ var app = (function () {
     		block,
     		id: create_if_block$3.name,
     		type: "if",
-    		source: "(48:0) {#if challenge}",
+    		source: "(49:0) {#if challenge}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (54:2) {#if !challenge.member.includes($user.githubId)}
+    // (55:2) {#if !challenge.member.includes($user.githubId)}
     function create_if_block_2$1(ctx) {
     	let div;
     	let button;
@@ -15848,7 +15848,7 @@ var app = (function () {
     			div = element("div");
     			create_component(button.$$.fragment);
     			attr_dev(div, "class", "join");
-    			add_location(div, file$8, 54, 3, 1825);
+    			add_location(div, file$8, 55, 3, 1898);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -15859,7 +15859,7 @@ var app = (function () {
     			const button_changes = {};
     			if (dirty & /*params*/ 1) button_changes.onClick = joinChallenge(/*params*/ ctx[0].id);
 
-    			if (dirty & /*$$scope*/ 512) {
+    			if (dirty & /*$$scope*/ 1024) {
     				button_changes.$$scope = { dirty, ctx };
     			}
 
@@ -15884,14 +15884,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2$1.name,
     		type: "if",
-    		source: "(54:2) {#if !challenge.member.includes($user.githubId)}",
+    		source: "(55:2) {#if !challenge.member.includes($user.githubId)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (56:4) <Button      width='5rem'      height='2rem'      backgroundColor='#B8FFC8'      onClick={joinChallenge(params.id)}     >
+    // (57:4) <Button      width='5rem'      height='2rem'      backgroundColor='#B8FFC8'      onClick={joinChallenge(params.id)}     >
     function create_default_slot$6(ctx) {
     	let div;
 
@@ -15900,7 +15900,7 @@ var app = (function () {
     			div = element("div");
     			div.textContent = "JOIN";
     			attr_dev(div, "class", "btn_txt");
-    			add_location(div, file$8, 61, 5, 1975);
+    			add_location(div, file$8, 62, 5, 2048);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -15914,14 +15914,14 @@ var app = (function () {
     		block,
     		id: create_default_slot$6.name,
     		type: "slot",
-    		source: "(56:4) <Button      width='5rem'      height='2rem'      backgroundColor='#B8FFC8'      onClick={joinChallenge(params.id)}     >",
+    		source: "(57:4) <Button      width='5rem'      height='2rem'      backgroundColor='#B8FFC8'      onClick={joinChallenge(params.id)}     >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (88:6) {:else}
+    // (89:6) {:else}
     function create_else_block$3(ctx) {
     	let p;
 
@@ -15929,7 +15929,7 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			p.textContent = "불러오는 중입니다.";
-    			add_location(p, file$8, 88, 7, 2656);
+    			add_location(p, file$8, 89, 7, 2729);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -15946,21 +15946,21 @@ var app = (function () {
     		block,
     		id: create_else_block$3.name,
     		type: "else",
-    		source: "(88:6) {:else}",
+    		source: "(89:6) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (86:6) {#if Array.isArray(grass_list[member])}
+    // (87:6) {#if Array.isArray(grass_list[member])}
     function create_if_block_1$3(ctx) {
     	let grass;
     	let current;
 
     	grass = new Grass({
     			props: {
-    				grass_list: /*grass_list*/ ctx[2][/*member*/ ctx[6]]
+    				grass_list: /*grass_list*/ ctx[2][/*member*/ ctx[7]]
     			},
     			$$inline: true
     		});
@@ -15975,7 +15975,7 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			const grass_changes = {};
-    			if (dirty & /*grass_list, challenge*/ 6) grass_changes.grass_list = /*grass_list*/ ctx[2][/*member*/ ctx[6]];
+    			if (dirty & /*grass_list, challenge*/ 6) grass_changes.grass_list = /*grass_list*/ ctx[2][/*member*/ ctx[7]];
     			grass.$set(grass_changes);
     		},
     		i: function intro(local) {
@@ -15996,19 +15996,19 @@ var app = (function () {
     		block,
     		id: create_if_block_1$3.name,
     		type: "if",
-    		source: "(86:6) {#if Array.isArray(grass_list[member])}",
+    		source: "(87:6) {#if Array.isArray(grass_list[member])}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (80:4) {#each challenge.member as member}
+    // (81:4) {#each challenge.member as member}
     function create_each_block$3(ctx) {
     	let div1;
     	let div0;
     	let p0;
-    	let t0_value = /*member*/ ctx[6] + "";
+    	let t0_value = /*member*/ ctx[7] + "";
     	let t0;
     	let t1;
     	let p1;
@@ -16023,7 +16023,7 @@ var app = (function () {
 
     	function select_block_type_1(ctx, dirty) {
     		if (dirty & /*grass_list, challenge*/ 6) show_if = null;
-    		if (show_if == null) show_if = !!Array.isArray(/*grass_list*/ ctx[2][/*member*/ ctx[6]]);
+    		if (show_if == null) show_if = !!Array.isArray(/*grass_list*/ ctx[2][/*member*/ ctx[7]]);
     		if (show_if) return 0;
     		return 1;
     	}
@@ -16044,12 +16044,12 @@ var app = (function () {
     			if_block.c();
     			t4 = space();
     			set_style(p0, "font-weight", "bold");
-    			add_location(p0, file$8, 82, 7, 2466);
-    			add_location(p1, file$8, 83, 7, 2515);
+    			add_location(p0, file$8, 83, 7, 2539);
+    			add_location(p1, file$8, 84, 7, 2588);
     			attr_dev(div0, "class", "grass_title svelte-mh2seb");
-    			add_location(div0, file$8, 81, 6, 2433);
+    			add_location(div0, file$8, 82, 6, 2506);
     			attr_dev(div1, "class", "personal_grass svelte-mh2seb");
-    			add_location(div1, file$8, 80, 5, 2398);
+    			add_location(div1, file$8, 81, 5, 2471);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -16064,7 +16064,7 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if ((!current || dirty & /*challenge*/ 2) && t0_value !== (t0_value = /*member*/ ctx[6] + "")) set_data_dev(t0, t0_value);
+    			if ((!current || dirty & /*challenge*/ 2) && t0_value !== (t0_value = /*member*/ ctx[7] + "")) set_data_dev(t0, t0_value);
     			let previous_block_index = current_block_type_index;
     			current_block_type_index = select_block_type_1(ctx, dirty);
 
@@ -16110,7 +16110,7 @@ var app = (function () {
     		block,
     		id: create_each_block$3.name,
     		type: "each",
-    		source: "(80:4) {#each challenge.member as member}",
+    		source: "(81:4) {#each challenge.member as member}",
     		ctx
     	});
 
@@ -16208,9 +16208,10 @@ var app = (function () {
     	let { params = {} } = $$props;
     	let challenge = null;
     	let grass_list = {};
-    	let grass_team = new Array(365);
+    	let grass_amount = 365 + new Date().getDay();
+    	let grass_team = new Array(grass_amount);
 
-    	for (let i = 0; i < 371; i += 1) {
+    	for (let i = 0; i < grass_amount; i += 1) {
     		grass_team[i] = { date: '', count: 0 };
     	}
 
@@ -16229,7 +16230,7 @@ var app = (function () {
     			member_grass.then(value => {
     				$$invalidate(2, grass_list[member_id] = value, grass_list);
 
-    				for (let i = 0; i < 371; i += 1) {
+    				for (let i = 0; i < grass_amount; i++) {
     					if (grass_list[member_id][i].count > 0) $$invalidate(3, grass_team[i].count += 1, grass_team);
     				}
     			});
@@ -16294,6 +16295,7 @@ var app = (function () {
     		params,
     		challenge,
     		grass_list,
+    		grass_amount,
     		grass_team,
     		req_list,
     		$user
@@ -16303,6 +16305,7 @@ var app = (function () {
     		if ('params' in $$props) $$invalidate(0, params = $$props.params);
     		if ('challenge' in $$props) $$invalidate(1, challenge = $$props.challenge);
     		if ('grass_list' in $$props) $$invalidate(2, grass_list = $$props.grass_list);
+    		if ('grass_amount' in $$props) grass_amount = $$props.grass_amount;
     		if ('grass_team' in $$props) $$invalidate(3, grass_team = $$props.grass_team);
     		if ('req_list' in $$props) $$invalidate(5, req_list = $$props.req_list);
     	};
