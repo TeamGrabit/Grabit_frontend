@@ -1,11 +1,11 @@
 <script>
+	import { API_URL } from "../common/Variable.js";
 	import { user } from '../store/user.js';
 	import { onMount } from 'svelte';
 	import { useEffect } from '../common/hook.js';
 	import * as StompJs from '@stomp/stompjs';
 	import SockJS from 'sockjs-client';
-	export let name;
-	export let id;
+	export let challenge;
 	
 	let message = '';
 	let client;
@@ -34,7 +34,8 @@
 
 	const connect = () => {
 		client = new StompJs.Client({
-			webSocketFactory: () => new SockJS("https://grabit-backend.link/api/stomp/chat"), // proxy를 통한 접속
+			// webSocketFactory: () => new SockJS(`${API_URL}/stomp/chat/${challenge.id}`), // proxy를 통한 접속
+			webSocketFactory: () => new SockJS(`${API_URL}/stomp/chat`), // 임시
 			connectHeaders: {
 				"auth-token": "spring-chat-auth-token",
 			},
@@ -90,7 +91,7 @@
 </script>
 
 <div class="chat_room">
-	<div class="chat_room_upper">{name}</div>
+	<div class="chat_room_upper">{challenge.name}</div>
 	<div id="chat_room_body" class="chat_room_body">
 		{#each chat_logs as log}
 			{#if log.id == $user?.githubId}

@@ -10,8 +10,9 @@
 	let isOpen = false;
 	let challengeList;
 
-	function onClick() {
+	async function onClick() {
 		isOpen = !isOpen;
+		challengeList = await getUserChallenge();
 	}
 	function chatOn(idx) {
 		chat_on = true;
@@ -39,7 +40,7 @@
 			<div class="close" on:click={onClick} />
 		</div>
 		{#if chat_on}
-			<ChatRoom name={challengeList[challenge_code].name} id={challengeList[challenge_code].id} />
+			<ChatRoom challenge={challengeList[challenge_code]} />
 		{:else}
 			<div class="chat_main">
 				{#each challengeList as challenge, idx}
