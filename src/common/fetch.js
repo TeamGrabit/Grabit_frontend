@@ -27,12 +27,13 @@ export async function fetchGet(path, otherOptions = {}, headers = {}) {
 	}
 	
 	let data;
+	let res;
 
 	try{
-		const res = await fetch(url, options);
+		res = await fetch(url, options);
 		data = await res.json();
 	} catch(error) {
-		data = { err: error.name, errMsg: error.message }
+		data = { err: error.name, errMsg: error.message, status: res.status };
 	}
 
 	return data;
