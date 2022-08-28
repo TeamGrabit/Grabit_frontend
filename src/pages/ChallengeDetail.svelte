@@ -10,7 +10,9 @@
 
 	export let params = {}
 
+	let isLoading = true;
 	let isPrivate = true;
+	
 	let challenge = null;
 	let grass_list = {};
 	let grass_amount = 365 + new Date().getDay();
@@ -28,6 +30,7 @@
 	onMount(async () => {
 		challenge = await getChallenge(params.id);
 
+		isLoading = false;
 		if (challenge.status != 401) {
 			isPrivate = false;
 		} else {
@@ -59,8 +62,9 @@
 	}
 </script>
 
-
-{#if isPrivate}
+{#if isLoading}
+	<Loader />
+{:else if isPrivate}
 	<div class="upper">
 		<div class="title_desc">
 			<div class="upper_title">private challenge</div>
