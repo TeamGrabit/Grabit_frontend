@@ -2176,12 +2176,13 @@ var app = (function () {
     	};
     	
     	let data;
+    	let res;
 
     	try{
-    		const res = await fetch(url, options);
+    		res = await fetch(url, options);
     		data = await res.json();
     	} catch(error) {
-    		data = { err: error.name, errMsg: error.message };
+    		data = { err: error.name, errMsg: error.message, status: res.status };
     	}
 
     	return data;
@@ -2251,6 +2252,24 @@ var app = (function () {
     			...headers,
     		},
     		body: JSON.stringify(body),
+    		...otherOptions
+    	};
+
+    	const res = await fetch(url, options);
+    	const data = await res.json();
+
+    	return data;
+    }
+
+    async function fetchDelete(path, otherOptions = {}, headers = {}) {
+    	const url = `${API_URL}/${path}`;
+
+    	const options = {
+    		method: "DELETE",
+    		headers: {
+    			...bearer,
+    			...headers
+    		},
     		...otherOptions
     	};
 
@@ -4096,7 +4115,7 @@ var app = (function () {
     }
 
     // (38:5) <DropdownItem onClick={logout}>
-    function create_default_slot_1$7(ctx) {
+    function create_default_slot_1$8(ctx) {
     	let t;
 
     	const block = {
@@ -4113,7 +4132,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_1$7.name,
+    		id: create_default_slot_1$8.name,
     		type: "slot",
     		source: "(38:5) <DropdownItem onClick={logout}>",
     		ctx
@@ -4141,7 +4160,7 @@ var app = (function () {
     	dropdownitem1 = new DropdownItem({
     			props: {
     				onClick: logout,
-    				$$slots: { default: [create_default_slot_1$7] },
+    				$$slots: { default: [create_default_slot_1$8] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -12415,31 +12434,31 @@ var app = (function () {
         notifications.send("불러오기 실패!  다시 시도해주세요!");
     }
 
-    async function joinChallenge( challenge_id ) {
-    	const res = await fetchPatch(`challenges/${challenge_id}/join`);
+    async function joinChallenge(challenge_id) {
+    	const res = await fetchPost(`challenges/${challenge_id}/join`);
     	return res;
     }
 
-    function getApproveList(groupId) {
-    	// TODO: api 나오면 연결하기
-    	return [
-    		{
-    			requestId: 1,
-    			name: 'tnghd5761',
-    			message: '같이 해요 :)같이 해요 :)같이 해요 :)같이 해요 :)'
-    		},
-    		{
-    			requestId: 2,
-    			name: 'llJTOll',
-    			message: '같이 해요 :)'
-    		},
-    		{
-    			requestId: 2,
-    			name: 'MOBUMIN',
-    			message: '같이 해요 :)'
-    		}
-    	]
-    }
+    const getApproveList = async(params) => {
+    	const res = await fetchGet('challenges/join?' + new URLSearchParams({
+    		...params
+    	}));
+    	return res;
+    };
+
+    const approveJoin = async(params) => {
+    	const res = await fetchPost('challenges/join/approve?' + new URLSearchParams({
+    		...params
+    	}));
+    	return res;
+    };
+
+    const rejectJoin = async(params) => {
+    	const res = await fetchPost('challenges/join/reject?' + new URLSearchParams({
+    		...params
+    	}));
+    	return res;
+    };
 
     const editChallenge = async(id, body) => {
     	const res = await fetchPatch(`challenges/${id}`, body);
@@ -13224,7 +13243,7 @@ var app = (function () {
 
     const file$c = "src/components/SettingChallenge.svelte";
 
-    // (40:0) {#if isActive}
+    // (42:0) {#if isActive}
     function create_if_block$5(ctx) {
     	let current_block_type_index;
     	let if_block;
@@ -13297,14 +13316,14 @@ var app = (function () {
     		block,
     		id: create_if_block$5.name,
     		type: "if",
-    		source: "(40:0) {#if isActive}",
+    		source: "(42:0) {#if isActive}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (43:1) {:else}
+    // (45:1) {:else}
     function create_else_block$5(ctx) {
     	let toast;
     	let t0;
@@ -13392,7 +13411,7 @@ var app = (function () {
     				height: "2.5rem",
     				backgroundColor: "var(--main-green-color)",
     				onClick: /*onClickSave*/ ctx[5],
-    				$$slots: { default: [create_default_slot_1$6] },
+    				$$slots: { default: [create_default_slot_1$7] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -13465,63 +13484,63 @@ var app = (function () {
     			t23 = space();
     			create_component(button1.$$.fragment);
     			attr_dev(div0, "class", "title svelte-1j99ca0");
-    			add_location(div0, file$c, 46, 4, 1122);
+    			add_location(div0, file$c, 48, 4, 1181);
     			attr_dev(div1, "class", "text svelte-1j99ca0");
-    			add_location(div1, file$c, 48, 5, 1187);
-    			add_location(span, file$c, 49, 5, 1229);
+    			add_location(div1, file$c, 50, 5, 1246);
+    			add_location(span, file$c, 51, 5, 1288);
     			attr_dev(div2, "class", "text svelte-1j99ca0");
-    			add_location(div2, file$c, 53, 5, 1318);
+    			add_location(div2, file$c, 55, 5, 1377);
     			attr_dev(div3, "class", "sub_content svelte-1j99ca0");
-    			add_location(div3, file$c, 47, 4, 1158);
+    			add_location(div3, file$c, 49, 4, 1217);
     			attr_dev(hr0, "align", "left");
     			attr_dev(hr0, "class", "hr svelte-1j99ca0");
-    			add_location(hr0, file$c, 57, 4, 1419);
+    			add_location(hr0, file$c, 59, 4, 1478);
     			attr_dev(input2, "type", "radio");
     			attr_dev(input2, "name", "secure");
     			input2.__value = "public";
     			input2.value = input2.__value;
     			/*$$binding_groups*/ ctx[11][0].push(input2);
-    			add_location(input2, file$c, 60, 6, 1505);
+    			add_location(input2, file$c, 62, 6, 1564);
     			attr_dev(img0, "class", "image svelte-1j99ca0");
     			if (!src_url_equal(img0.src, img0_src_value = "images/public.png")) attr_dev(img0, "src", img0_src_value);
     			attr_dev(img0, "alt", "public_img");
-    			add_location(img0, file$c, 61, 6, 1581);
+    			add_location(img0, file$c, 63, 6, 1640);
     			attr_dev(div4, "class", "small_text svelte-1j99ca0");
-    			add_location(div4, file$c, 63, 7, 1663);
+    			add_location(div4, file$c, 65, 7, 1722);
     			attr_dev(div5, "class", "explain_text svelte-1j99ca0");
-    			add_location(div5, file$c, 64, 7, 1705);
-    			add_location(div6, file$c, 62, 6, 1650);
+    			add_location(div5, file$c, 66, 7, 1764);
+    			add_location(div6, file$c, 64, 6, 1709);
     			attr_dev(div7, "class", "contain svelte-1j99ca0");
-    			add_location(div7, file$c, 59, 5, 1479);
+    			add_location(div7, file$c, 61, 5, 1538);
     			attr_dev(input3, "type", "radio");
     			attr_dev(input3, "name", "secure");
     			attr_dev(input3, "align", "middle");
     			input3.__value = "private";
     			input3.value = input3.__value;
     			/*$$binding_groups*/ ctx[11][0].push(input3);
-    			add_location(input3, file$c, 69, 6, 1839);
+    			add_location(input3, file$c, 71, 6, 1898);
     			attr_dev(img1, "class", "image svelte-1j99ca0");
     			if (!src_url_equal(img1.src, img1_src_value = "images/private.png")) attr_dev(img1, "src", img1_src_value);
     			attr_dev(img1, "alt", "private_img");
-    			add_location(img1, file$c, 70, 6, 1931);
+    			add_location(img1, file$c, 72, 6, 1990);
     			attr_dev(div8, "class", "small_text svelte-1j99ca0");
-    			add_location(div8, file$c, 72, 7, 2015);
+    			add_location(div8, file$c, 74, 7, 2074);
     			attr_dev(div9, "class", "explain_text svelte-1j99ca0");
-    			add_location(div9, file$c, 73, 7, 2058);
-    			add_location(div10, file$c, 71, 6, 2002);
+    			add_location(div9, file$c, 75, 7, 2117);
+    			add_location(div10, file$c, 73, 6, 2061);
     			attr_dev(div11, "class", "contain svelte-1j99ca0");
-    			add_location(div11, file$c, 68, 5, 1813);
+    			add_location(div11, file$c, 70, 5, 1872);
     			attr_dev(div12, "class", "sub_content svelte-1j99ca0");
-    			add_location(div12, file$c, 58, 4, 1450);
+    			add_location(div12, file$c, 60, 4, 1509);
     			attr_dev(hr1, "align", "left");
     			attr_dev(hr1, "class", "hr svelte-1j99ca0");
-    			add_location(hr1, file$c, 77, 4, 2179);
+    			add_location(hr1, file$c, 79, 4, 2238);
     			attr_dev(div13, "class", "sub_content button_group svelte-1j99ca0");
-    			add_location(div13, file$c, 78, 4, 2210);
+    			add_location(div13, file$c, 80, 4, 2269);
     			attr_dev(div14, "class", "content svelte-1j99ca0");
-    			add_location(div14, file$c, 45, 3, 1096);
+    			add_location(div14, file$c, 47, 3, 1155);
     			attr_dev(div15, "class", "page svelte-1j99ca0");
-    			add_location(div15, file$c, 44, 2, 1074);
+    			add_location(div15, file$c, 46, 2, 1133);
     		},
     		m: function mount(target, anchor) {
     			mount_component(toast, target, anchor);
@@ -13612,14 +13631,14 @@ var app = (function () {
 
     			const button0_changes = {};
 
-    			if (dirty & /*$$scope*/ 8192) {
+    			if (dirty & /*$$scope*/ 16384) {
     				button0_changes.$$scope = { dirty, ctx };
     			}
 
     			button0.$set(button0_changes);
     			const button1_changes = {};
 
-    			if (dirty & /*$$scope*/ 8192) {
+    			if (dirty & /*$$scope*/ 16384) {
     				button1_changes.$$scope = { dirty, ctx };
     			}
 
@@ -13661,14 +13680,14 @@ var app = (function () {
     		block,
     		id: create_else_block$5.name,
     		type: "else",
-    		source: "(43:1) {:else}",
+    		source: "(45:1) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (41:1) {#if !challengeData}
+    // (43:1) {#if !challengeData}
     function create_if_block_1$5(ctx) {
     	let loader;
     	let current;
@@ -13701,15 +13720,15 @@ var app = (function () {
     		block,
     		id: create_if_block_1$5.name,
     		type: "if",
-    		source: "(41:1) {#if !challengeData}",
+    		source: "(43:1) {#if !challengeData}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (80:5) <Button        width='8rem'       height='2.5rem'       backgroundColor='var(--main-green-color)'       onClick={onClickSave}      >
-    function create_default_slot_1$6(ctx) {
+    // (82:5) <Button        width='8rem'       height='2.5rem'       backgroundColor='var(--main-green-color)'       onClick={onClickSave}      >
+    function create_default_slot_1$7(ctx) {
     	let div;
 
     	const block = {
@@ -13717,7 +13736,7 @@ var app = (function () {
     			div = element("div");
     			div.textContent = "Save";
     			attr_dev(div, "class", "button_text");
-    			add_location(div, file$c, 85, 6, 2394);
+    			add_location(div, file$c, 87, 6, 2453);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -13729,16 +13748,16 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_1$6.name,
+    		id: create_default_slot_1$7.name,
     		type: "slot",
-    		source: "(80:5) <Button        width='8rem'       height='2.5rem'       backgroundColor='var(--main-green-color)'       onClick={onClickSave}      >",
+    		source: "(82:5) <Button        width='8rem'       height='2.5rem'       backgroundColor='var(--main-green-color)'       onClick={onClickSave}      >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (89:5) <Button        width='8rem'       height='2.5rem'       backgroundColor='#FAE5E5'       onClick={onClickDelete}      >
+    // (91:5) <Button        width='8rem'       height='2.5rem'       backgroundColor='#FAE5E5'       onClick={onClickDelete}      >
     function create_default_slot$a(ctx) {
     	let div;
 
@@ -13747,7 +13766,7 @@ var app = (function () {
     			div = element("div");
     			div.textContent = "Delete";
     			attr_dev(div, "class", "button_text");
-    			add_location(div, file$c, 94, 6, 2575);
+    			add_location(div, file$c, 96, 6, 2634);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -13761,7 +13780,7 @@ var app = (function () {
     		block,
     		id: create_default_slot$a.name,
     		type: "slot",
-    		source: "(89:5) <Button        width='8rem'       height='2.5rem'       backgroundColor='#FAE5E5'       onClick={onClickDelete}      >",
+    		source: "(91:5) <Button        width='8rem'       height='2.5rem'       backgroundColor='#FAE5E5'       onClick={onClickDelete}      >",
     		ctx
     	});
 
@@ -13845,18 +13864,20 @@ var app = (function () {
     	let name = '';
     	let description = '';
     	let secure = "public";
+    	let leader = '';
 
     	onMount(async () => {
     		$$invalidate(1, challengeData = await getChallenge(params.id));
     		$$invalidate(2, name = challengeData.name);
     		$$invalidate(3, description = challengeData.description);
+    		leader = challengeData.leader;
     		$$invalidate(4, secure = challengeData.isPrivate ? 'private' : 'public');
     	});
 
     	const onClickSave = () => {
     		const isPrivate = secure === 'private';
 
-    		editChallenge(params.id, { name, description, isPrivate }).then(() => {
+    		editChallenge(params.id, { name, description, isPrivate, leader }).then(() => {
     			notifications.send('저장되었습니다.');
     		});
     	};
@@ -13918,6 +13939,7 @@ var app = (function () {
     		name,
     		description,
     		secure,
+    		leader,
     		onClickSave,
     		onClickDelete
     	});
@@ -13929,6 +13951,7 @@ var app = (function () {
     		if ('name' in $$props) $$invalidate(2, name = $$props.name);
     		if ('description' in $$props) $$invalidate(3, description = $$props.description);
     		if ('secure' in $$props) $$invalidate(4, secure = $$props.secure);
+    		if ('leader' in $$props) leader = $$props.leader;
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -13998,11 +14021,11 @@ var app = (function () {
 
     function get_each_context$6(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[3] = list[i];
+    	child_ctx[5] = list[i];
     	return child_ctx;
     }
 
-    // (17:0) {#if isActive}
+    // (26:0) {#if isActive}
     function create_if_block$4(ctx) {
     	let current_block_type_index;
     	let if_block;
@@ -14075,14 +14098,14 @@ var app = (function () {
     		block,
     		id: create_if_block$4.name,
     		type: "if",
-    		source: "(17:0) {#if isActive}",
+    		source: "(26:0) {#if isActive}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (20:1) {:else}
+    // (29:1) {:else}
     function create_else_block$4(ctx) {
     	let div1;
     	let div0;
@@ -14109,9 +14132,9 @@ var app = (function () {
     			}
 
     			attr_dev(div0, "class", "Card__list svelte-1a12pbs");
-    			add_location(div0, file$b, 21, 3, 423);
+    			add_location(div0, file$b, 30, 3, 684);
     			attr_dev(div1, "class", "Card svelte-1a12pbs");
-    			add_location(div1, file$b, 20, 2, 401);
+    			add_location(div1, file$b, 29, 2, 662);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -14124,7 +14147,7 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*CardList, GIT_URL*/ 2) {
+    			if (dirty & /*onClickReject, CardList, onClickApprove, GIT_URL*/ 14) {
     				each_value = /*CardList*/ ctx[1];
     				validate_each_argument(each_value);
     				let i;
@@ -14180,14 +14203,14 @@ var app = (function () {
     		block,
     		id: create_else_block$4.name,
     		type: "else",
-    		source: "(20:1) {:else}",
+    		source: "(29:1) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (18:1) {#if !CardList}
+    // (27:1) {#if !CardList}
     function create_if_block_1$4(ctx) {
     	let loader;
     	let current;
@@ -14220,14 +14243,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1$4.name,
     		type: "if",
-    		source: "(18:1) {#if !CardList}",
+    		source: "(27:1) {#if !CardList}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (36:8) <Button          width='2rem'          height='2rem'          backgroundColor='var(--main-green-color)'          style='padding: 0;'         >
+    // (45:8) <Button          width='2rem'          height='2rem'          backgroundColor='var(--main-green-color)'          style='padding: 0;'          onClick={onClickApprove(card.id)}         >
     function create_default_slot_2(ctx) {
     	let img;
     	let img_src_value;
@@ -14238,7 +14261,7 @@ var app = (function () {
     			if (!src_url_equal(img.src, img_src_value = "images/check.svg")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "class", "Card__button__image svelte-1a12pbs");
     			attr_dev(img, "alt", "Check");
-    			add_location(img, file$b, 41, 9, 1007);
+    			add_location(img, file$b, 51, 9, 1311);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, img, anchor);
@@ -14252,15 +14275,15 @@ var app = (function () {
     		block,
     		id: create_default_slot_2.name,
     		type: "slot",
-    		source: "(36:8) <Button          width='2rem'          height='2rem'          backgroundColor='var(--main-green-color)'          style='padding: 0;'         >",
+    		source: "(45:8) <Button          width='2rem'          height='2rem'          backgroundColor='var(--main-green-color)'          style='padding: 0;'          onClick={onClickApprove(card.id)}         >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (44:8) <Button          width='2rem'          height='2rem'          backgroundColor='#FAE5E5'          style='padding: 0;'         >
-    function create_default_slot_1$5(ctx) {
+    // (54:8) <Button          width='2rem'          height='2rem'          backgroundColor='#FAE5E5'          style='padding: 0;'          onClick={onClickReject(card.id)}         >
+    function create_default_slot_1$6(ctx) {
     	let img;
     	let img_src_value;
 
@@ -14270,7 +14293,7 @@ var app = (function () {
     			if (!src_url_equal(img.src, img_src_value = "images/x.svg")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "class", "Card__button__image svelte-1a12pbs");
     			attr_dev(img, "alt", "Reject");
-    			add_location(img, file$b, 49, 9, 1238);
+    			add_location(img, file$b, 60, 9, 1584);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, img, anchor);
@@ -14282,16 +14305,16 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_1$5.name,
+    		id: create_default_slot_1$6.name,
     		type: "slot",
-    		source: "(44:8) <Button          width='2rem'          height='2rem'          backgroundColor='#FAE5E5'          style='padding: 0;'         >",
+    		source: "(54:8) <Button          width='2rem'          height='2rem'          backgroundColor='#FAE5E5'          style='padding: 0;'          onClick={onClickReject(card.id)}         >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (24:5) <Card>
+    // (33:5) <Card>
     function create_default_slot$9(ctx) {
     	let div2;
     	let img;
@@ -14299,11 +14322,11 @@ var app = (function () {
     	let t0;
     	let div0;
     	let h3;
-    	let t1_value = /*card*/ ctx[3].name + "";
+    	let t1_value = /*card*/ ctx[5].name + "";
     	let t1;
     	let t2;
     	let p;
-    	let t3_value = /*card*/ ctx[3].message + "";
+    	let t3_value = /*card*/ ctx[5].message + "";
     	let t3;
     	let t4;
     	let div1;
@@ -14319,6 +14342,7 @@ var app = (function () {
     				height: "2rem",
     				backgroundColor: "var(--main-green-color)",
     				style: "padding: 0;",
+    				onClick: /*onClickApprove*/ ctx[2](/*card*/ ctx[5].id),
     				$$slots: { default: [create_default_slot_2] },
     				$$scope: { ctx }
     			},
@@ -14331,7 +14355,8 @@ var app = (function () {
     				height: "2rem",
     				backgroundColor: "#FAE5E5",
     				style: "padding: 0;",
-    				$$slots: { default: [create_default_slot_1$5] },
+    				onClick: /*onClickReject*/ ctx[3](/*card*/ ctx[5].id),
+    				$$slots: { default: [create_default_slot_1$6] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -14354,19 +14379,19 @@ var app = (function () {
     			t5 = space();
     			create_component(button1.$$.fragment);
     			t6 = space();
-    			if (!src_url_equal(img.src, img_src_value = "" + (GIT_URL + "/" + /*card*/ ctx[3].name + ".png"))) attr_dev(img, "src", img_src_value);
+    			if (!src_url_equal(img.src, img_src_value = "" + (GIT_URL + "/" + /*card*/ ctx[5].name + ".png"))) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "userProfile");
     			attr_dev(img, "class", "Card__profile svelte-1a12pbs");
-    			add_location(img, file$b, 25, 7, 527);
+    			add_location(img, file$b, 34, 7, 788);
     			attr_dev(h3, "class", "Card__body__head Card__body--ellipsis svelte-1a12pbs");
-    			add_location(h3, file$b, 27, 8, 656);
+    			add_location(h3, file$b, 36, 8, 917);
     			attr_dev(p, "class", "Card__body--ellipsis svelte-1a12pbs");
-    			add_location(p, file$b, 30, 8, 750);
+    			add_location(p, file$b, 39, 8, 1011);
     			attr_dev(div0, "class", "Card__body__content svelte-1a12pbs");
-    			add_location(div0, file$b, 26, 7, 614);
-    			add_location(div1, file$b, 34, 7, 841);
+    			add_location(div0, file$b, 35, 7, 875);
+    			add_location(div1, file$b, 43, 7, 1102);
     			attr_dev(div2, "class", "Card__body svelte-1a12pbs");
-    			add_location(div2, file$b, 24, 6, 495);
+    			add_location(div2, file$b, 33, 6, 756);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -14387,22 +14412,24 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if (!current || dirty & /*CardList*/ 2 && !src_url_equal(img.src, img_src_value = "" + (GIT_URL + "/" + /*card*/ ctx[3].name + ".png"))) {
+    			if (!current || dirty & /*CardList*/ 2 && !src_url_equal(img.src, img_src_value = "" + (GIT_URL + "/" + /*card*/ ctx[5].name + ".png"))) {
     				attr_dev(img, "src", img_src_value);
     			}
 
-    			if ((!current || dirty & /*CardList*/ 2) && t1_value !== (t1_value = /*card*/ ctx[3].name + "")) set_data_dev(t1, t1_value);
-    			if ((!current || dirty & /*CardList*/ 2) && t3_value !== (t3_value = /*card*/ ctx[3].message + "")) set_data_dev(t3, t3_value);
+    			if ((!current || dirty & /*CardList*/ 2) && t1_value !== (t1_value = /*card*/ ctx[5].name + "")) set_data_dev(t1, t1_value);
+    			if ((!current || dirty & /*CardList*/ 2) && t3_value !== (t3_value = /*card*/ ctx[5].message + "")) set_data_dev(t3, t3_value);
     			const button0_changes = {};
+    			if (dirty & /*CardList*/ 2) button0_changes.onClick = /*onClickApprove*/ ctx[2](/*card*/ ctx[5].id);
 
-    			if (dirty & /*$$scope*/ 64) {
+    			if (dirty & /*$$scope*/ 256) {
     				button0_changes.$$scope = { dirty, ctx };
     			}
 
     			button0.$set(button0_changes);
     			const button1_changes = {};
+    			if (dirty & /*CardList*/ 2) button1_changes.onClick = /*onClickReject*/ ctx[3](/*card*/ ctx[5].id);
 
-    			if (dirty & /*$$scope*/ 64) {
+    			if (dirty & /*$$scope*/ 256) {
     				button1_changes.$$scope = { dirty, ctx };
     			}
 
@@ -14431,14 +14458,14 @@ var app = (function () {
     		block,
     		id: create_default_slot$9.name,
     		type: "slot",
-    		source: "(24:5) <Card>",
+    		source: "(33:5) <Card>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (23:4) {#each CardList as card}
+    // (32:4) {#each CardList as card}
     function create_each_block$6(ctx) {
     	let card;
     	let current;
@@ -14462,7 +14489,7 @@ var app = (function () {
     		p: function update(ctx, dirty) {
     			const card_changes = {};
 
-    			if (dirty & /*$$scope, CardList*/ 66) {
+    			if (dirty & /*$$scope, CardList*/ 258) {
     				card_changes.$$scope = { dirty, ctx };
     			}
 
@@ -14486,7 +14513,7 @@ var app = (function () {
     		block,
     		id: create_each_block$6.name,
     		type: "each",
-    		source: "(23:4) {#each CardList as card}",
+    		source: "(32:4) {#each CardList as card}",
     		ctx
     	});
 
@@ -14569,9 +14596,18 @@ var app = (function () {
     	let CardList;
 
     	onMount(() => {
-    		// TODO: API 연결
-    		$$invalidate(1, CardList = getApproveList());
+    		$$invalidate(1, CardList = getApproveList({ challengeId: params.id }));
     	});
+
+    	const onClickApprove = requestId => {
+    		// TODO: API정상 작동하면 요청완료된 requeset 필터시켜버리기
+    		approveJoin(requestId);
+    	};
+
+    	const onClickReject = requestId => {
+    		// TODO: API정상 작동하면 요청완료된 requeset 필터시켜버리기
+    		rejectJoin(requestId);
+    	};
 
     	const writable_props = ['params', 'isActive'];
 
@@ -14580,7 +14616,7 @@ var app = (function () {
     	});
 
     	$$self.$$set = $$props => {
-    		if ('params' in $$props) $$invalidate(2, params = $$props.params);
+    		if ('params' in $$props) $$invalidate(4, params = $$props.params);
     		if ('isActive' in $$props) $$invalidate(0, isActive = $$props.isActive);
     	};
 
@@ -14590,14 +14626,18 @@ var app = (function () {
     		Loader,
     		Button,
     		getApproveList,
+    		approveJoin,
+    		rejectJoin,
     		GIT_URL,
     		params,
     		isActive,
-    		CardList
+    		CardList,
+    		onClickApprove,
+    		onClickReject
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ('params' in $$props) $$invalidate(2, params = $$props.params);
+    		if ('params' in $$props) $$invalidate(4, params = $$props.params);
     		if ('isActive' in $$props) $$invalidate(0, isActive = $$props.isActive);
     		if ('CardList' in $$props) $$invalidate(1, CardList = $$props.CardList);
     	};
@@ -14606,13 +14646,13 @@ var app = (function () {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [isActive, CardList, params];
+    	return [isActive, CardList, onClickApprove, onClickReject, params];
     }
 
     class ApproveMember extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$c, create_fragment$c, safe_not_equal, { params: 2, isActive: 0 });
+    		init(this, options, instance$c, create_fragment$c, safe_not_equal, { params: 4, isActive: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -14624,7 +14664,7 @@ var app = (function () {
     		const { ctx } = this.$$;
     		const props = options.props || {};
 
-    		if (/*params*/ ctx[2] === undefined && !('params' in props)) {
+    		if (/*params*/ ctx[4] === undefined && !('params' in props)) {
     			console.warn("<ApproveMember> was created without expected prop 'params'");
     		}
 
@@ -14668,7 +14708,7 @@ var app = (function () {
     }
 
     // (25:3) <SubNavItem onClick={() => onClickItem(index)} isActive={activeItem === index}>
-    function create_default_slot_1$4(ctx) {
+    function create_default_slot_1$5(ctx) {
     	let t_value = /*item*/ ctx[10] + "";
     	let t;
 
@@ -14687,7 +14727,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_1$4.name,
+    		id: create_default_slot_1$5.name,
     		type: "slot",
     		source: "(25:3) <SubNavItem onClick={() => onClickItem(index)} isActive={activeItem === index}>",
     		ctx
@@ -14709,7 +14749,7 @@ var app = (function () {
     			props: {
     				onClick: func,
     				isActive: /*activeItem*/ ctx[1] === /*index*/ ctx[9],
-    				$$slots: { default: [create_default_slot_1$4] },
+    				$$slots: { default: [create_default_slot_1$5] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -15134,7 +15174,7 @@ var app = (function () {
     }
 
     // (17:6) <Button        width='5rem'        height='2rem'        backgroundColor='#B8FFC8'       >
-    function create_default_slot_1$3(ctx) {
+    function create_default_slot_1$4(ctx) {
     	let div;
 
     	const block = {
@@ -15154,7 +15194,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_1$3.name,
+    		id: create_default_slot_1$4.name,
     		type: "slot",
     		source: "(17:6) <Button        width='5rem'        height='2rem'        backgroundColor='#B8FFC8'       >",
     		ctx
@@ -15227,7 +15267,7 @@ var app = (function () {
     				width: "5rem",
     				height: "2rem",
     				backgroundColor: "#B8FFC8",
-    				$$slots: { default: [create_default_slot_1$3] },
+    				$$slots: { default: [create_default_slot_1$4] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -15545,55 +15585,23 @@ var app = (function () {
 
     function get_each_context$3(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[7] = list[i];
+    	child_ctx[10] = list[i];
     	return child_ctx;
     }
 
-    // (98:0) {:else}
-    function create_else_block_1$1(ctx) {
-    	let div;
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			div.textContent = "loading";
-    			add_location(div, file$8, 98, 1, 2884);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    		},
-    		p: noop,
-    		i: noop,
-    		o: noop,
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_else_block_1$1.name,
-    		type: "else",
-    		source: "(98:0) {:else}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (49:0) {#if challenge}
-    function create_if_block$3(ctx) {
+    // (85:0) {:else}
+    function create_else_block$3(ctx) {
     	let div3;
     	let div2;
     	let div0;
-    	let t0_value = /*challenge*/ ctx[1].name + "";
+    	let t0_value = /*challenge*/ ctx[2].name + "";
     	let t0;
     	let t1;
     	let div1;
-    	let t2_value = /*challenge*/ ctx[1].description + "";
+    	let t2_value = /*challenge*/ ctx[2].description + "";
     	let t2;
     	let t3;
-    	let show_if = !/*challenge*/ ctx[1].member.includes(/*$user*/ ctx[4].githubId);
+    	let show_if = !/*challenge*/ ctx[2].member.includes(/*$user*/ ctx[5].githubId);
     	let t4;
     	let div7;
     	let div4;
@@ -15606,18 +15614,18 @@ var app = (function () {
     	let t8;
     	let commitrequest;
     	let current;
-    	let if_block = show_if && create_if_block_2$1(ctx);
+    	let if_block = show_if && create_if_block_3$1(ctx);
 
     	grass = new Grass({
     			props: {
-    				grass_list: /*grass_team*/ ctx[3],
+    				grass_list: /*grass_team*/ ctx[4],
     				isBig: true,
-    				group_num: /*challenge*/ ctx[1].member.length
+    				group_num: /*challenge*/ ctx[2].member.length
     			},
     			$$inline: true
     		});
 
-    	let each_value = /*challenge*/ ctx[1].member;
+    	let each_value = /*challenge*/ ctx[2].member;
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -15631,8 +15639,8 @@ var app = (function () {
 
     	commitrequest = new CommitRequest({
     			props: {
-    				group: /*challenge*/ ctx[1].member,
-    				req_list: /*req_list*/ ctx[5]
+    				group: /*challenge*/ ctx[2].member,
+    				req_list: /*req_list*/ ctx[6]
     			},
     			$$inline: true
     		});
@@ -15665,26 +15673,26 @@ var app = (function () {
 
     			t8 = space();
     			create_component(commitrequest.$$.fragment);
-    			attr_dev(div0, "class", "upper_title svelte-mh2seb");
-    			add_location(div0, file$8, 51, 3, 1723);
-    			attr_dev(div1, "class", "upper_description svelte-mh2seb");
-    			add_location(div1, file$8, 52, 3, 1774);
+    			attr_dev(div0, "class", "upper_title svelte-1dwvoh5");
+    			add_location(div0, file$8, 87, 3, 2472);
+    			attr_dev(div1, "class", "upper_description svelte-1dwvoh5");
+    			add_location(div1, file$8, 88, 3, 2523);
     			attr_dev(div2, "class", "title_desc");
-    			add_location(div2, file$8, 50, 2, 1695);
-    			attr_dev(div3, "class", "upper svelte-mh2seb");
-    			add_location(div3, file$8, 49, 1, 1673);
-    			attr_dev(p, "class", "grass_title svelte-mh2seb");
+    			add_location(div2, file$8, 86, 2, 2444);
+    			attr_dev(div3, "class", "upper svelte-1dwvoh5");
+    			add_location(div3, file$8, 85, 1, 2422);
+    			attr_dev(p, "class", "grass_title svelte-1dwvoh5");
     			set_style(p, "font-weight", "bold");
     			set_style(p, "font-size", "1.1rem");
-    			add_location(p, file$8, 69, 3, 2173);
-    			attr_dev(div4, "class", "team_grass svelte-mh2seb");
-    			add_location(div4, file$8, 68, 2, 2145);
-    			attr_dev(div5, "class", "personal svelte-mh2seb");
-    			add_location(div5, file$8, 79, 3, 2404);
-    			attr_dev(div6, "class", "personal_admit svelte-mh2seb");
-    			add_location(div6, file$8, 78, 2, 2372);
-    			attr_dev(div7, "class", "content svelte-mh2seb");
-    			add_location(div7, file$8, 67, 1, 2121);
+    			add_location(p, file$8, 105, 3, 2913);
+    			attr_dev(div4, "class", "team_grass svelte-1dwvoh5");
+    			add_location(div4, file$8, 104, 2, 2885);
+    			attr_dev(div5, "class", "personal svelte-1dwvoh5");
+    			add_location(div5, file$8, 115, 3, 3144);
+    			attr_dev(div6, "class", "personal_admit svelte-1dwvoh5");
+    			add_location(div6, file$8, 114, 2, 3112);
+    			attr_dev(div7, "class", "content svelte-1dwvoh5");
+    			add_location(div7, file$8, 103, 1, 2861);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div3, anchor);
@@ -15715,19 +15723,19 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if ((!current || dirty & /*challenge*/ 2) && t0_value !== (t0_value = /*challenge*/ ctx[1].name + "")) set_data_dev(t0, t0_value);
-    			if ((!current || dirty & /*challenge*/ 2) && t2_value !== (t2_value = /*challenge*/ ctx[1].description + "")) set_data_dev(t2, t2_value);
-    			if (dirty & /*challenge, $user*/ 18) show_if = !/*challenge*/ ctx[1].member.includes(/*$user*/ ctx[4].githubId);
+    			if ((!current || dirty & /*challenge*/ 4) && t0_value !== (t0_value = /*challenge*/ ctx[2].name + "")) set_data_dev(t0, t0_value);
+    			if ((!current || dirty & /*challenge*/ 4) && t2_value !== (t2_value = /*challenge*/ ctx[2].description + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*challenge, $user*/ 36) show_if = !/*challenge*/ ctx[2].member.includes(/*$user*/ ctx[5].githubId);
 
     			if (show_if) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
 
-    					if (dirty & /*challenge, $user*/ 18) {
+    					if (dirty & /*challenge, $user*/ 36) {
     						transition_in(if_block, 1);
     					}
     				} else {
-    					if_block = create_if_block_2$1(ctx);
+    					if_block = create_if_block_3$1(ctx);
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(div3, null);
@@ -15743,12 +15751,12 @@ var app = (function () {
     			}
 
     			const grass_changes = {};
-    			if (dirty & /*grass_team*/ 8) grass_changes.grass_list = /*grass_team*/ ctx[3];
-    			if (dirty & /*challenge*/ 2) grass_changes.group_num = /*challenge*/ ctx[1].member.length;
+    			if (dirty & /*grass_team*/ 16) grass_changes.grass_list = /*grass_team*/ ctx[4];
+    			if (dirty & /*challenge*/ 4) grass_changes.group_num = /*challenge*/ ctx[2].member.length;
     			grass.$set(grass_changes);
 
-    			if (dirty & /*grass_list, challenge, Array*/ 6) {
-    				each_value = /*challenge*/ ctx[1].member;
+    			if (dirty & /*grass_list, challenge, Array*/ 12) {
+    				each_value = /*challenge*/ ctx[2].member;
     				validate_each_argument(each_value);
     				let i;
 
@@ -15776,7 +15784,7 @@ var app = (function () {
     			}
 
     			const commitrequest_changes = {};
-    			if (dirty & /*challenge*/ 2) commitrequest_changes.group = /*challenge*/ ctx[1].member;
+    			if (dirty & /*challenge*/ 4) commitrequest_changes.group = /*challenge*/ ctx[2].member;
     			commitrequest.$set(commitrequest_changes);
     		},
     		i: function intro(local) {
@@ -15816,17 +15824,163 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$3.name,
-    		type: "if",
-    		source: "(49:0) {#if challenge}",
+    		id: create_else_block$3.name,
+    		type: "else",
+    		source: "(85:0) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (55:2) {#if !challenge.member.includes($user.githubId)}
-    function create_if_block_2$1(ctx) {
+    // (67:20) 
+    function create_if_block_1$3(ctx) {
+    	let div4;
+    	let div2;
+    	let div0;
+    	let t1;
+    	let div1;
+    	let t3;
+    	let div3;
+    	let button;
+    	let t4;
+    	let img;
+    	let img_src_value;
+    	let current;
+
+    	button = new Button({
+    			props: {
+    				width: "5rem",
+    				height: "2rem",
+    				backgroundColor: "#B8FFC8",
+    				onClick: /*joinButtonClick*/ ctx[7],
+    				$$slots: { default: [create_default_slot$6] },
+    				$$scope: { ctx }
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			div4 = element("div");
+    			div2 = element("div");
+    			div0 = element("div");
+    			div0.textContent = "private challenge";
+    			t1 = space();
+    			div1 = element("div");
+    			div1.textContent = "-";
+    			t3 = space();
+    			div3 = element("div");
+    			create_component(button.$$.fragment);
+    			t4 = space();
+    			img = element("img");
+    			attr_dev(div0, "class", "upper_title svelte-1dwvoh5");
+    			add_location(div0, file$8, 69, 3, 2005);
+    			attr_dev(div1, "class", "upper_description svelte-1dwvoh5");
+    			add_location(div1, file$8, 70, 3, 2057);
+    			attr_dev(div2, "class", "title_desc");
+    			add_location(div2, file$8, 68, 2, 1977);
+    			attr_dev(div3, "class", "join");
+    			add_location(div3, file$8, 72, 3, 2108);
+    			attr_dev(div4, "class", "upper svelte-1dwvoh5");
+    			add_location(div4, file$8, 67, 1, 1955);
+    			attr_dev(img, "class", "challenge_default_image svelte-1dwvoh5");
+    			if (!src_url_equal(img.src, img_src_value = "images/challenge_detail_default.png")) attr_dev(img, "src", img_src_value);
+    			attr_dev(img, "alt", "blur_image");
+    			add_location(img, file$8, 83, 1, 2314);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div4, anchor);
+    			append_dev(div4, div2);
+    			append_dev(div2, div0);
+    			append_dev(div2, t1);
+    			append_dev(div2, div1);
+    			append_dev(div4, t3);
+    			append_dev(div4, div3);
+    			mount_component(button, div3, null);
+    			insert_dev(target, t4, anchor);
+    			insert_dev(target, img, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const button_changes = {};
+
+    			if (dirty & /*$$scope*/ 8192) {
+    				button_changes.$$scope = { dirty, ctx };
+    			}
+
+    			button.$set(button_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(button.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(button.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div4);
+    			destroy_component(button);
+    			if (detaching) detach_dev(t4);
+    			if (detaching) detach_dev(img);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1$3.name,
+    		type: "if",
+    		source: "(67:20) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (65:0) {#if isLoading}
+    function create_if_block$3(ctx) {
+    	let loader;
+    	let current;
+    	loader = new Loader({ $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			create_component(loader.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(loader, target, anchor);
+    			current = true;
+    		},
+    		p: noop,
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(loader.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(loader.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(loader, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$3.name,
+    		type: "if",
+    		source: "(65:0) {#if isLoading}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (91:2) {#if !challenge.member.includes($user.githubId)}
+    function create_if_block_3$1(ctx) {
     	let div;
     	let button;
     	let current;
@@ -15836,8 +15990,8 @@ var app = (function () {
     				width: "5rem",
     				height: "2rem",
     				backgroundColor: "#B8FFC8",
-    				onClick: joinChallenge(/*params*/ ctx[0].id),
-    				$$slots: { default: [create_default_slot$6] },
+    				onClick: /*joinButtonClick*/ ctx[7],
+    				$$slots: { default: [create_default_slot_1$3] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -15848,7 +16002,7 @@ var app = (function () {
     			div = element("div");
     			create_component(button.$$.fragment);
     			attr_dev(div, "class", "join");
-    			add_location(div, file$8, 55, 3, 1898);
+    			add_location(div, file$8, 91, 3, 2647);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -15857,9 +16011,8 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			const button_changes = {};
-    			if (dirty & /*params*/ 1) button_changes.onClick = joinChallenge(/*params*/ ctx[0].id);
 
-    			if (dirty & /*$$scope*/ 1024) {
+    			if (dirty & /*$$scope*/ 8192) {
     				button_changes.$$scope = { dirty, ctx };
     			}
 
@@ -15882,17 +16035,17 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_2$1.name,
+    		id: create_if_block_3$1.name,
     		type: "if",
-    		source: "(55:2) {#if !challenge.member.includes($user.githubId)}",
+    		source: "(91:2) {#if !challenge.member.includes($user.githubId)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (57:4) <Button      width='5rem'      height='2rem'      backgroundColor='#B8FFC8'      onClick={joinChallenge(params.id)}     >
-    function create_default_slot$6(ctx) {
+    // (93:4) <Button      width='5rem'      height='2rem'      backgroundColor='#B8FFC8'      onClick={joinButtonClick}     >
+    function create_default_slot_1$3(ctx) {
     	let div;
 
     	const block = {
@@ -15900,7 +16053,7 @@ var app = (function () {
     			div = element("div");
     			div.textContent = "JOIN";
     			attr_dev(div, "class", "btn_txt");
-    			add_location(div, file$8, 62, 5, 2048);
+    			add_location(div, file$8, 98, 5, 2788);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -15912,24 +16065,24 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot$6.name,
+    		id: create_default_slot_1$3.name,
     		type: "slot",
-    		source: "(57:4) <Button      width='5rem'      height='2rem'      backgroundColor='#B8FFC8'      onClick={joinChallenge(params.id)}     >",
+    		source: "(93:4) <Button      width='5rem'      height='2rem'      backgroundColor='#B8FFC8'      onClick={joinButtonClick}     >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (89:6) {:else}
-    function create_else_block$3(ctx) {
+    // (125:6) {:else}
+    function create_else_block_1$1(ctx) {
     	let p;
 
     	const block = {
     		c: function create() {
     			p = element("p");
     			p.textContent = "불러오는 중입니다.";
-    			add_location(p, file$8, 89, 7, 2729);
+    			add_location(p, file$8, 125, 7, 3469);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -15944,23 +16097,23 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_else_block$3.name,
+    		id: create_else_block_1$1.name,
     		type: "else",
-    		source: "(89:6) {:else}",
+    		source: "(125:6) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (87:6) {#if Array.isArray(grass_list[member])}
-    function create_if_block_1$3(ctx) {
+    // (123:6) {#if Array.isArray(grass_list[member])}
+    function create_if_block_2$1(ctx) {
     	let grass;
     	let current;
 
     	grass = new Grass({
     			props: {
-    				grass_list: /*grass_list*/ ctx[2][/*member*/ ctx[7]]
+    				grass_list: /*grass_list*/ ctx[3][/*member*/ ctx[10]]
     			},
     			$$inline: true
     		});
@@ -15975,7 +16128,7 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			const grass_changes = {};
-    			if (dirty & /*grass_list, challenge*/ 6) grass_changes.grass_list = /*grass_list*/ ctx[2][/*member*/ ctx[7]];
+    			if (dirty & /*grass_list, challenge*/ 12) grass_changes.grass_list = /*grass_list*/ ctx[3][/*member*/ ctx[10]];
     			grass.$set(grass_changes);
     		},
     		i: function intro(local) {
@@ -15994,21 +16147,21 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_1$3.name,
+    		id: create_if_block_2$1.name,
     		type: "if",
-    		source: "(87:6) {#if Array.isArray(grass_list[member])}",
+    		source: "(123:6) {#if Array.isArray(grass_list[member])}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (81:4) {#each challenge.member as member}
+    // (117:4) {#each challenge.member as member}
     function create_each_block$3(ctx) {
     	let div1;
     	let div0;
     	let p0;
-    	let t0_value = /*member*/ ctx[7] + "";
+    	let t0_value = /*member*/ ctx[10] + "";
     	let t0;
     	let t1;
     	let p1;
@@ -16018,12 +16171,12 @@ var app = (function () {
     	let if_block;
     	let t4;
     	let current;
-    	const if_block_creators = [create_if_block_1$3, create_else_block$3];
+    	const if_block_creators = [create_if_block_2$1, create_else_block_1$1];
     	const if_blocks = [];
 
     	function select_block_type_1(ctx, dirty) {
-    		if (dirty & /*grass_list, challenge*/ 6) show_if = null;
-    		if (show_if == null) show_if = !!Array.isArray(/*grass_list*/ ctx[2][/*member*/ ctx[7]]);
+    		if (dirty & /*grass_list, challenge*/ 12) show_if = null;
+    		if (show_if == null) show_if = !!Array.isArray(/*grass_list*/ ctx[3][/*member*/ ctx[10]]);
     		if (show_if) return 0;
     		return 1;
     	}
@@ -16044,12 +16197,12 @@ var app = (function () {
     			if_block.c();
     			t4 = space();
     			set_style(p0, "font-weight", "bold");
-    			add_location(p0, file$8, 83, 7, 2539);
-    			add_location(p1, file$8, 84, 7, 2588);
-    			attr_dev(div0, "class", "grass_title svelte-mh2seb");
-    			add_location(div0, file$8, 82, 6, 2506);
-    			attr_dev(div1, "class", "personal_grass svelte-mh2seb");
-    			add_location(div1, file$8, 81, 5, 2471);
+    			add_location(p0, file$8, 119, 7, 3279);
+    			add_location(p1, file$8, 120, 7, 3328);
+    			attr_dev(div0, "class", "grass_title svelte-1dwvoh5");
+    			add_location(div0, file$8, 118, 6, 3246);
+    			attr_dev(div1, "class", "personal_grass svelte-1dwvoh5");
+    			add_location(div1, file$8, 117, 5, 3211);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -16064,7 +16217,7 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if ((!current || dirty & /*challenge*/ 2) && t0_value !== (t0_value = /*member*/ ctx[7] + "")) set_data_dev(t0, t0_value);
+    			if ((!current || dirty & /*challenge*/ 4) && t0_value !== (t0_value = /*member*/ ctx[10] + "")) set_data_dev(t0, t0_value);
     			let previous_block_index = current_block_type_index;
     			current_block_type_index = select_block_type_1(ctx, dirty);
 
@@ -16110,7 +16263,37 @@ var app = (function () {
     		block,
     		id: create_each_block$3.name,
     		type: "each",
-    		source: "(81:4) {#each challenge.member as member}",
+    		source: "(117:4) {#each challenge.member as member}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (74:4) <Button      width='5rem'      height='2rem'      backgroundColor='#B8FFC8'      onClick={joinButtonClick}     >
+    function create_default_slot$6(ctx) {
+    	let div;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			div.textContent = "JOIN";
+    			attr_dev(div, "class", "btn_txt");
+    			add_location(div, file$8, 79, 5, 2249);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_default_slot$6.name,
+    		type: "slot",
+    		source: "(74:4) <Button      width='5rem'      height='2rem'      backgroundColor='#B8FFC8'      onClick={joinButtonClick}     >",
     		ctx
     	});
 
@@ -16122,12 +16305,13 @@ var app = (function () {
     	let if_block;
     	let if_block_anchor;
     	let current;
-    	const if_block_creators = [create_if_block$3, create_else_block_1$1];
+    	const if_block_creators = [create_if_block$3, create_if_block_1$3, create_else_block$3];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
-    		if (/*challenge*/ ctx[1]) return 0;
-    		return 1;
+    		if (/*isLoading*/ ctx[0]) return 0;
+    		if (/*isPrivate*/ ctx[1]) return 1;
+    		return 2;
     	}
 
     	current_block_type_index = select_block_type(ctx);
@@ -16202,10 +16386,12 @@ var app = (function () {
     function instance$9($$self, $$props, $$invalidate) {
     	let $user;
     	validate_store(user, 'user');
-    	component_subscribe($$self, user, $$value => $$invalidate(4, $user = $$value));
+    	component_subscribe($$self, user, $$value => $$invalidate(5, $user = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('ChallengeDetail', slots, []);
     	let { params = {} } = $$props;
+    	let isLoading = true;
+    	let isPrivate = true;
     	let challenge = null;
     	let grass_list = {};
     	let grass_amount = 365 + new Date().getDay();
@@ -16222,16 +16408,23 @@ var app = (function () {
     	});
 
     	onMount(async () => {
-    		$$invalidate(1, challenge = await getChallenge(params.id));
+    		$$invalidate(2, challenge = await getChallenge(params.id));
+    		$$invalidate(0, isLoading = false);
+
+    		if (challenge.status != 401) {
+    			$$invalidate(1, isPrivate = false);
+    		} else {
+    			return;
+    		}
 
     		challenge.member.map(member_id => {
     			const member_grass = getGrass(member_id);
 
     			member_grass.then(value => {
-    				$$invalidate(2, grass_list[member_id] = value, grass_list);
+    				$$invalidate(3, grass_list[member_id] = value, grass_list);
 
     				for (let i = 0; i < grass_amount; i++) {
-    					if (grass_list[member_id][i].count > 0) $$invalidate(3, grass_team[i].count += 1, grass_team);
+    					if (grass_list[member_id][i].count > 0) $$invalidate(4, grass_team[i].count += 1, grass_team);
     				}
     			});
     		});
@@ -16270,6 +16463,11 @@ var app = (function () {
     		}
     	];
 
+    	function joinButtonClick() {
+    		joinChallenge(params.id);
+    		alert("챌린지 가입 성공!");
+    	}
+
     	const writable_props = ['params'];
 
     	Object.keys($$props).forEach(key => {
@@ -16277,7 +16475,7 @@ var app = (function () {
     	});
 
     	$$self.$$set = $$props => {
-    		if ('params' in $$props) $$invalidate(0, params = $$props.params);
+    		if ('params' in $$props) $$invalidate(8, params = $$props.params);
     	};
 
     	$$self.$capture_state = () => ({
@@ -16290,37 +16488,53 @@ var app = (function () {
     		ACCESS_TOKEN,
     		user,
     		getUser,
-    		Button,
     		getGrass,
+    		Button,
+    		Loader,
     		params,
+    		isLoading,
+    		isPrivate,
     		challenge,
     		grass_list,
     		grass_amount,
     		grass_team,
     		req_list,
+    		joinButtonClick,
     		$user
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ('params' in $$props) $$invalidate(0, params = $$props.params);
-    		if ('challenge' in $$props) $$invalidate(1, challenge = $$props.challenge);
-    		if ('grass_list' in $$props) $$invalidate(2, grass_list = $$props.grass_list);
+    		if ('params' in $$props) $$invalidate(8, params = $$props.params);
+    		if ('isLoading' in $$props) $$invalidate(0, isLoading = $$props.isLoading);
+    		if ('isPrivate' in $$props) $$invalidate(1, isPrivate = $$props.isPrivate);
+    		if ('challenge' in $$props) $$invalidate(2, challenge = $$props.challenge);
+    		if ('grass_list' in $$props) $$invalidate(3, grass_list = $$props.grass_list);
     		if ('grass_amount' in $$props) grass_amount = $$props.grass_amount;
-    		if ('grass_team' in $$props) $$invalidate(3, grass_team = $$props.grass_team);
-    		if ('req_list' in $$props) $$invalidate(5, req_list = $$props.req_list);
+    		if ('grass_team' in $$props) $$invalidate(4, grass_team = $$props.grass_team);
+    		if ('req_list' in $$props) $$invalidate(6, req_list = $$props.req_list);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [params, challenge, grass_list, grass_team, $user, req_list];
+    	return [
+    		isLoading,
+    		isPrivate,
+    		challenge,
+    		grass_list,
+    		grass_team,
+    		$user,
+    		req_list,
+    		joinButtonClick,
+    		params
+    	];
     }
 
     class ChallengeDetail extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$9, create_fragment$9, safe_not_equal, { params: 0 });
+    		init(this, options, instance$9, create_fragment$9, safe_not_equal, { params: 8 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,

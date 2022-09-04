@@ -5,10 +5,14 @@
 	import { getChallenge, joinChallenge } from '../store/challenge.js';
 	import { ACCESS_TOKEN } from '../common/Variable';
 	import { user, getUser } from '../store/user.js';
-	import Button from '../storybook/Button.svelte';
 	import { getGrass } from '../store/grass';
+	import { Button, Loader } from '../storybook';
 
 	export let params = {}
+
+	let isLoading = true;
+	let isPrivate = true;
+	
 	let challenge = null;
 	let grass_list = {};
 	let grass_amount = 365 + new Date().getDay();
@@ -25,6 +29,13 @@
 	});
 	onMount(async () => {
 		challenge = await getChallenge(params.id);
+
+		isLoading = false;
+		if (challenge.status != 401) {
+			isPrivate = false;
+		} else {
+			return;
+		}
 		challenge.member.map(member_id => {
 			const member_grass = getGrass(member_id);
 			member_grass.then(value => {
@@ -44,9 +55,34 @@
 		{num: 4, requester: "||JTO||", desc: "feat: commit approve request", approve: ["grabit_123"]},
 		{num: 5, requester: "||JTO||", desc: "feat: commit approve request", approve: ["grabit_123"]},
 	];
+
+	function joinButtonClick(){
+		const result = joinChallenge(params.id);
+		alert("챌린지 가입 성공!");
+	}
 </script>
 
-{#if challenge}
+{#if isLoading}
+	<Loader />
+{:else if isPrivate}
+	<div class="upper">
+		<div class="title_desc">
+			<div class="upper_title">private challenge</div>
+			<div class="upper_description">-</div>
+		</div>
+			<div class="join">
+				<Button
+					width='5rem'
+					height='2rem'
+					backgroundColor='#B8FFC8'
+					onClick={joinButtonClick}
+				>
+					<div class="btn_txt">JOIN</div>
+				</Button>
+			</div>
+	</div>
+	<img class="challenge_default_image" src="images/challenge_detail_default.png" alt="blur_image" />
+{:else}
 	<div class="upper">
 		<div class="title_desc">
 			<div class="upper_title">{challenge.name}</div>
@@ -58,7 +94,7 @@
 					width='5rem'
 					height='2rem'
 					backgroundColor='#B8FFC8'
-					onClick={joinChallenge(params.id)}
+					onClick={joinButtonClick}
 				>
 					<div class="btn_txt">JOIN</div>
 				</Button>
@@ -95,12 +131,14 @@
 			<CommitRequest group={challenge.member} req_list={req_list}/>
 		</div>
 	</div>
-{:else}
-	<div>loading</div>
 {/if}
 
 
 <style lang="scss">
+	.challenge_default_image{
+		width: 100%;
+		filter: blur(10px);
+	}
 	.upper{
 		height: 3rem;
 		padding: 1rem;
